@@ -73,61 +73,65 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
           </div>
         </div>
 
-        <div className="md:w-1/2 p-6 md:p-8 overflow-y-auto relative pt-14 max-h-[60vh] md:max-h-[90vh]">
+        <div className="md:w-1/2 flex flex-col relative pt-14 max-h-[65vh] md:max-h-[90vh]">
           <UrgencyBanner className="absolute top-0 left-0 right-0 py-2 text-[10px] md:text-xs z-10" />
-          <h2 className="text-2xl font-bold text-white mb-6">Personalize sua {product.name}</h2>
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-2">Nome gravado</label>
-              <input 
-                type="text" 
-                value={engravedName}
-                onChange={(e) => setEngravedName(e.target.value)}
-                className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none"
-                placeholder="Ex: Pai João"
-              />
-            </div>
+          
+          <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+            <h2 className="text-2xl font-bold text-white mb-2">Personalize sua {product.name}</h2>
+            <p className="text-zinc-500 text-sm mb-6">Toque nas opções abaixo para ver a prévia acima.</p>
             
-            <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-2">Fonte</label>
-              <div className="grid grid-cols-3 gap-2">
-                {fonts.map(font => (
-                  <button 
-                    key={font}
-                    onClick={() => setSelectedFont(font)}
-                    className={`p-2 rounded border text-xs ${selectedFont === font ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-zinc-700 text-zinc-400'}`}
-                  >
-                    {font}
-                  </button>
-                ))}
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Nome gravado</label>
+                <input 
+                  type="text" 
+                  value={engravedName}
+                  onChange={(e) => setEngravedName(e.target.value)}
+                  className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all"
+                  placeholder="Ex: Pai João"
+                  maxLength={25}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Estilo da Fonte</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {fonts.map(font => (
+                    <button 
+                      key={font}
+                      onClick={() => setSelectedFont(font)}
+                      className={`p-2 rounded border text-xs transition-all ${selectedFont === font ? 'border-amber-500 bg-amber-500/10 text-amber-500 font-bold' : 'border-zinc-700 text-zinc-400'}`}
+                    >
+                      {font}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Símbolo Especial</label>
+                <div className="grid grid-cols-4 gap-2">
+                  {symbols.map(symbol => (
+                    <button 
+                      key={symbol}
+                      onClick={() => setSelectedSymbol(symbol)}
+                      className={`p-2 rounded border text-lg transition-all ${selectedSymbol === symbol ? 'border-amber-500 bg-amber-500/10 text-amber-500 scale-105' : 'border-zinc-700 text-zinc-400'}`}
+                    >
+                      {symbol}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-2">Símbolo</label>
-              <div className="grid grid-cols-4 gap-2">
-                {symbols.map(symbol => (
-                  <button 
-                    key={symbol}
-                    onClick={() => setSelectedSymbol(symbol)}
-                    className={`p-2 rounded border text-lg ${selectedSymbol === symbol ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-zinc-700 text-zinc-400'}`}
-                  >
-                    {symbol}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-
-            <div className="pt-6 border-t border-zinc-800">
-              <button 
-                onClick={handleAddToCart}
-                className="w-full bg-amber-600 text-white py-4 rounded-lg font-bold hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(217,119,6,0.2)]"
-              >
-                Adicionar ao Carrinho
-              </button>
-            </div>
-
+          <div className="p-6 border-t border-zinc-800 bg-zinc-900/80 backdrop-blur-sm sticky bottom-0">
+            <button 
+              onClick={handleAddToCart}
+              className="w-full bg-amber-600 text-white py-4 rounded-lg font-bold hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(217,119,6,0.2)]"
+            >
+              Adicionar ao Carrinho
+            </button>
           </div>
         </div>
       </div>
