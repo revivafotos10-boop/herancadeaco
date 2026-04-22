@@ -147,7 +147,7 @@ const Checkout = () => {
               <AlertTitle className="font-bold">Dados de Personalização Incompletos</AlertTitle>
               <AlertDescription className="mt-2 space-y-4">
                 <div className="text-zinc-300">
-                  <p className="mb-2">Detectamos que alguns itens do seu carrinho estão com informações faltando:</p>
+                  <p className="mb-2">Detectamos que alguns itens do seu carrinho ou preferências gerais estão com informações faltando:</p>
                   <ul className="space-y-2 mb-4">
                     {cart.map((item: any) => {
                       const missing = [];
@@ -165,6 +165,11 @@ const Checkout = () => {
                         </li>
                       );
                     })}
+                    {(!localStorage.getItem('selectedSize') || !localStorage.getItem('selectedFont') || !localStorage.getItem('selectedSymbol') || !localStorage.getItem('selectedEngravedName')) && (
+                      <li className="text-sm bg-zinc-900/50 p-2 rounded border border-zinc-800 italic text-zinc-400">
+                        Preferências gerais do sistema também precisam ser recuperadas.
+                      </li>
+                    )}
                   </ul>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-amber-500/20">
