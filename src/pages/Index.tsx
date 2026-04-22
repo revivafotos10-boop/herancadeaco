@@ -401,7 +401,7 @@ export default function Index() {
                 className="relative z-30 drop-shadow-[0_40px_80px_rgba(0,0,0,0.9)] cursor-pointer"
               >
                 <img 
-                  src="https://images.unsplash.com/photo-1593618998160-caf454c70e89?auto=format&fit=crop&q=80&w=1200" 
+                  src="https://images.unsplash.com/photo-1593618998160-caf454c70e89" 
                   alt="Faca Premium Herança" 
                   className="w-full h-auto max-w-[650px] hover:scale-105 transition-transform duration-1000"
                 />
