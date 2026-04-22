@@ -90,12 +90,13 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
 
             <div className="pt-6 border-t border-zinc-800">
               <button 
-                onClick={handleCheckout}
+                onClick={handleAddToCart}
                 className="w-full bg-amber-600 text-white py-4 rounded-lg font-bold hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(217,119,6,0.2)]"
               >
-                Finalizar Compra
+                Adicionar ao Carrinho
               </button>
             </div>
+
           </div>
         </div>
       </div>
