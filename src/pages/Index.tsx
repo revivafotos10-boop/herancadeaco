@@ -104,7 +104,10 @@ export default function Index() {
           </div>
           <h1 className="text-5xl md:text-8xl font-bold mb-6 text-white font-serif">Um presente à altura do seu pai</h1>
           <p className="text-xl mb-10 text-zinc-300">Facas premium personalizadas — um presente que ele guardará para sempre.</p>
-          <button className="bg-amber-600 hover:bg-amber-500 text-white px-10 py-5 rounded-full text-lg font-bold transition-all shadow-[0_0_30px_rgba(217,119,6,0.3)]">
+          <button 
+            onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
+            className="bg-amber-600 hover:bg-amber-500 text-white px-10 py-5 rounded-full text-lg font-bold transition-all shadow-[0_0_30px_rgba(217,119,6,0.3)]"
+          >
             Personalizar minha faca
           </button>
         </div>
