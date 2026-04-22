@@ -14,20 +14,28 @@ const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
 const symbols = ['Nenhum', '⚓', '⚔️', '🔥', '🛡️', '🐎', '🤠'];
 const sizes = ['8"', '10"', '12"'];
 
-
+const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: string }> = {
+  'Cutelo Artesanal': { size: '8"', font: 'Bold', symbol: '⚔️' },
+  'Faca Chef Premium': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
+  'Faca Picanheira': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
+};
 
 const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
-  const [engravedName, setEngravedName] = useState(() => localStorage.getItem('selectedEngravedName') || '');
-  const [selectedFont, setSelectedFont] = useState(() => localStorage.getItem('selectedFont') || fonts[0]);
-  const [selectedSymbol, setSelectedSymbol] = useState(() => localStorage.getItem('selectedSymbol') || symbols[0]);
-  const [selectedSize, setSelectedSize] = useState(() => localStorage.getItem('selectedSize') || sizes[1]);
+  const getProductDefault = (key: 'size' | 'font' | 'symbol') => {
+    return PRODUCT_DEFAULTS[product.name]?.[key] || (key === 'size' ? sizes[1] : key === 'font' ? fonts[0] : symbols[0]);
+  };
+
+  const [engravedName, setEngravedName] = useState(() => localStorage.getItem(`engravedName_${product.id}`) || '');
+  const [selectedFont, setSelectedFont] = useState(() => localStorage.getItem(`selectedFont_${product.id}`) || getProductDefault('font'));
+  const [selectedSymbol, setSelectedSymbol] = useState(() => localStorage.getItem(`selectedSymbol_${product.id}`) || getProductDefault('symbol'));
+  const [selectedSize, setSelectedSize] = useState(() => localStorage.getItem(`selectedSize_${product.id}`) || getProductDefault('size'));
 
   useEffect(() => {
-    localStorage.setItem('selectedEngravedName', engravedName);
-    localStorage.setItem('selectedFont', selectedFont);
-    localStorage.setItem('selectedSymbol', selectedSymbol);
-    localStorage.setItem('selectedSize', selectedSize);
-  }, [engravedName, selectedFont, selectedSymbol, selectedSize]);
+    localStorage.setItem(`engravedName_${product.id}`, engravedName);
+    localStorage.setItem(`selectedFont_${product.id}`, selectedFont);
+    localStorage.setItem(`selectedSymbol_${product.id}`, selectedSymbol);
+    localStorage.setItem(`selectedSize_${product.id}`, selectedSize);
+  }, [engravedName, selectedFont, selectedSymbol, selectedSize, product.id]);
 
   const getSizeScale = () => {
     switch(selectedSize) {

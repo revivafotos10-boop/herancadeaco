@@ -7,6 +7,12 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
 
+const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: string }> = {
+  'Cutelo Artesanal': { size: '8"', font: 'Bold', symbol: '⚔️' },
+  'Faca Chef Premium': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
+  'Faca Picanheira': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
+};
+
 const PaymentStatus = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -30,36 +36,46 @@ const PaymentStatus = () => {
       item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === '' || item.engravedName === ''
     );
     
-    // Check for top-level localStorage items mentioned in prompt
-    const savedSize = localStorage.getItem('selectedSize');
-    const savedFont = localStorage.getItem('selectedFont');
-    const savedSymbol = localStorage.getItem('selectedSymbol');
-    const savedName = localStorage.getItem('selectedEngravedName');
+    // Check if any item in cart has its corresponding product-specific localStorage items missing
+    const isLocalStorageIncomplete = cart.some((item: any) => {
+      const productId = item.product?.id;
+      return !localStorage.getItem(`selectedSize_${productId}`) || 
+             !localStorage.getItem(`selectedFont_${productId}`) || 
+             !localStorage.getItem(`selectedSymbol_${productId}`);
+    });
     
-    if (isIncomplete || !savedSize || !savedFont || !savedSymbol || !savedName) {
+    if (isIncomplete || isLocalStorageIncomplete) {
       setShowValidationAlert(true);
     }
   }, [cart]);
 
   const recoverData = () => {
-    const recoveredCart = cart.map((item: any) => ({
-      ...item,
-      selectedSize: item.selectedSize || localStorage.getItem('selectedSize') || '10"',
-      selectedFont: item.selectedFont || localStorage.getItem('selectedFont') || 'Manuscrita',
-      selectedSymbol: item.selectedSymbol || localStorage.getItem('selectedSymbol') || 'Nenhum',
-      engravedName: item.engravedName || localStorage.getItem('selectedEngravedName') || '',
-    }));
+    const recoveredCart = cart.map((item: any) => {
+      const productName = item.product?.name;
+      const productId = item.product?.id;
+      const defaults = PRODUCT_DEFAULTS[productName] || { size: '10"', font: 'Manuscrita', symbol: 'Nenhum' };
+      
+      return {
+        ...item,
+        selectedSize: item.selectedSize || localStorage.getItem(`selectedSize_${productId}`) || defaults.size,
+        selectedFont: item.selectedFont || localStorage.getItem(`selectedFont_${productId}`) || defaults.font,
+        selectedSymbol: item.selectedSymbol || localStorage.getItem(`selectedSymbol_${productId}`) || defaults.symbol,
+        engravedName: item.engravedName || localStorage.getItem(`engravedName_${productId}`) || '',
+      };
+    });
     
     setOrderData({ ...orderData, cart: recoveredCart });
     
-    // Ensure top-level values are also set if missing
-    if (!localStorage.getItem('selectedSize')) localStorage.setItem('selectedSize', '10"');
-    if (!localStorage.getItem('selectedFont')) localStorage.setItem('selectedFont', 'Manuscrita');
-    if (!localStorage.getItem('selectedSymbol')) localStorage.setItem('selectedSymbol', 'Nenhum');
-    if (!localStorage.getItem('selectedEngravedName')) {
-      const firstItemWithName = cart.find((i: any) => i.engravedName);
-      if (firstItemWithName) localStorage.setItem('selectedEngravedName', firstItemWithName.engravedName);
-    }
+    // Update individual localStorage items if missing
+    recoveredCart.forEach((item: any) => {
+      const productId = item.product?.id;
+      if (!localStorage.getItem(`selectedSize_${productId}`)) localStorage.setItem(`selectedSize_${productId}`, item.selectedSize);
+      if (!localStorage.getItem(`selectedFont_${productId}`)) localStorage.setItem(`selectedFont_${productId}`, item.selectedFont);
+      if (!localStorage.getItem(`selectedSymbol_${productId}`)) localStorage.setItem(`selectedSymbol_${productId}`, item.selectedSymbol);
+      if (!localStorage.getItem(`engravedName_${productId}`) && item.engravedName) {
+        localStorage.setItem(`engravedName_${productId}`, item.engravedName);
+      }
+    });
     
     setShowValidationAlert(false);
     toast.success("Dados de visualização recuperados!");
