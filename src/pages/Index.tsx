@@ -11,6 +11,8 @@ const products = [
 ];
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
+const symbols = ['Nenhum', '⚓', '⚔️', '🔥', '🛡️', '🐎', '🤠'];
+
 
 const KnifeCustomizer = ({ product, onClose }) => {
   const [engravedName, setEngravedName] = useState('');
