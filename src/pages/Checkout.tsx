@@ -34,10 +34,11 @@ const Checkout = () => {
     setTimeout(() => {
       setLoading(false);
       if (paymentMethod === 'pix') {
-        navigate('/payment-status', { state: { status: 'pending', method: 'pix', product, engravedName, selectedFont, selectedSymbol } });
+        navigate('/payment-status', { state: { status: 'pending', method: 'pix', cart } });
       } else {
-        navigate('/payment-status', { state: { status: 'success', method: 'card', product, engravedName, selectedFont, selectedSymbol } });
+        navigate('/payment-status', { state: { status: 'success', method: 'card', cart } });
       }
+
 
     }, 2000);
   };
