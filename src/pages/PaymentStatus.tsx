@@ -9,7 +9,15 @@ import { toast } from "sonner";
 const PaymentStatus = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { status, method, product } = location.state || { status: 'success', method: 'card', product: { name: 'Faca Selecionada', price: 'R$ 299,00' } };
+  const { status, method, cart } = location.state || { status: 'success', method: 'card', cart: [] };
+
+  const cartTotal = cart.reduce((acc, item) => {
+    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
+    return acc + price;
+  }, 0);
+
+  const formattedTotal = `R$ ${cartTotal.toFixed(2).replace('.', ',')}`;
+
 
   const copyPix = () => {
     navigator.clipboard.writeText("00020101021226850014br.gov.bcb.pix013662d59302-604a-4363-9524-766723f6685a5204000053039865802BR5925HERANCA DE ACO6009SAO PAULO62070503***6304E22A");
@@ -72,8 +80,26 @@ const PaymentStatus = () => {
                   <Package className="w-5 h-5 text-amber-500 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-bold">Resumo do Pedido</h3>
-                    <p className="text-sm text-zinc-400">{product.name}</p>
-                    <p className="text-sm font-bold text-amber-500 mt-1">{product.price}</p>
+                    <div className="space-y-4">
+                      {cart.map((item) => (
+                        <div key={item.cartId} className="border-l-2 border-amber-500/30 pl-3">
+                          <p className="text-sm text-zinc-300 font-medium">{item.product.name}</p>
+                          {item.engravedName && (
+                            <div className="mt-1">
+                              <p className="text-sm text-amber-500 font-bold">"{item.engravedName}"</p>
+                              <p className="text-[10px] text-zinc-500">Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
+                            </div>
+                          )}
+                          <p className="text-xs text-zinc-500 mt-1">{item.product.price}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="pt-2 border-t border-zinc-800 flex justify-between items-center mt-4">
+                      <span className="text-sm text-zinc-400">Total Pago</span>
+                      <span className="text-lg font-bold text-amber-500">{formattedTotal}</span>
+                    </div>
+
+
                   </div>
                 </div>
                 <div className="flex items-start gap-4">

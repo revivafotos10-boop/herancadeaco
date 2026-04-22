@@ -12,8 +12,16 @@ import { Separator } from "@/components/ui/separator";
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const product = location.state?.product || { name: 'Faca Selecionada', price: 'R$ 299,00', image: 'https://images.unsplash.com/photo-1593618998160-caf454c70e89?auto=format&fit=crop&q=80&w=600' };
-  const engravedName = location.state?.engravedName || '';
+  const cart = location.state?.cart || (location.state?.product ? [{ product: location.state.product, engravedName: location.state.engravedName, selectedFont: location.state.selectedFont, selectedSymbol: location.state.selectedSymbol, cartId: Date.now() }] : []);
+  
+  const cartTotal = cart.reduce((acc, item) => {
+    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
+    return acc + price;
+  }, 0);
+
+  const formattedTotal = `R$ ${cartTotal.toFixed(2).replace('.', ',')}`;
+
+
 
   const [paymentMethod, setPaymentMethod] = useState('pix');
   const [loading, setLoading] = useState(false);
@@ -26,10 +34,12 @@ const Checkout = () => {
     setTimeout(() => {
       setLoading(false);
       if (paymentMethod === 'pix') {
-        navigate('/payment-status', { state: { status: 'pending', method: 'pix', product } });
+        navigate('/payment-status', { state: { status: 'pending', method: 'pix', cart } });
       } else {
-        navigate('/payment-status', { state: { status: 'success', method: 'card', product } });
+        navigate('/payment-status', { state: { status: 'success', method: 'card', cart } });
       }
+
+
     }, 2000);
   };
 
@@ -166,7 +176,7 @@ const Checkout = () => {
                       disabled={loading}
                       className="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-6 text-lg"
                     >
-                      {loading ? "Processando..." : `Pagar ${product.price}`}
+                      {loading ? "Processando..." : `Pagar ${formattedTotal}`}
                     </Button>
                   </CardFooter>
                 </Card>
@@ -180,23 +190,29 @@ const Checkout = () => {
                 <CardTitle className="text-lg">Resumo do Pedido</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex gap-4">
-                  <div className="w-20 h-20 bg-zinc-950 rounded overflow-hidden flex-shrink-0">
-                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                {cart.map((item) => (
+                  <div key={item.cartId} className="flex gap-4 mb-4">
+                    <div className="w-20 h-20 bg-zinc-950 rounded overflow-hidden flex-shrink-0">
+                      <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-sm">{item.product.name}</h3>
+                      {item.engravedName && (
+                        <div className="mt-1 space-y-0.5">
+                          <p className="text-xs text-amber-500">Gravação: "{item.engravedName}"</p>
+                          <p className="text-[10px] text-zinc-500">Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
+                        </div>
+                      )}
+                      <p className="text-sm text-zinc-400 mt-1">{item.product.price}</p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-sm">{product.name}</h3>
-                    {engravedName && (
-                      <p className="text-xs text-amber-500 mt-1">Gravação: "{engravedName}"</p>
-                    )}
-                    <p className="text-sm text-zinc-400 mt-1">{product.price}</p>
-                  </div>
-                </div>
+                ))}
+                
                 <Separator className="bg-zinc-800" />
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-400">Subtotal</span>
-                    <span>{product.price}</span>
+                    <span>{formattedTotal}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-400">Frete</span>
@@ -205,9 +221,10 @@ const Checkout = () => {
                   <Separator className="bg-zinc-800" />
                   <div className="flex justify-between font-bold text-lg pt-2">
                     <span>Total</span>
-                    <span className="text-amber-500">{product.price}</span>
+                    <span className="text-amber-500">{formattedTotal}</span>
                   </div>
                 </div>
+
               </CardContent>
               <CardFooter className="flex-col gap-4 text-xs text-zinc-500 text-center">
                 <div className="flex items-center gap-2">

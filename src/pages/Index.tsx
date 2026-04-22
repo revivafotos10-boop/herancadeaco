@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck, Truck, Star, Pencil, X, Flame, Timer } from 'lucide-react';
+import { ShieldCheck, Truck, Star, Pencil, X, Flame, Timer, ShoppingBag, Trash2 } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
 
 const products = [
@@ -11,15 +11,19 @@ const products = [
 ];
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
+const symbols = ['Nenhum', '⚓', '⚔️', '🔥', '🛡️', '🐎', '🤠'];
 
-const KnifeCustomizer = ({ product, onClose }) => {
+
+const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
   const [engravedName, setEngravedName] = useState('');
   const [selectedFont, setSelectedFont] = useState(fonts[0]);
-  const navigate = useNavigate();
+  const [selectedSymbol, setSelectedSymbol] = useState(symbols[0]);
 
-  const handleCheckout = () => {
-    navigate('/checkout', { state: { product, engravedName, selectedFont } });
+  const handleAddToCart = () => {
+    onAddToCart({ product, engravedName, selectedFont, selectedSymbol });
   };
+
+
 
   return (
     <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4">
@@ -33,7 +37,7 @@ const KnifeCustomizer = ({ product, onClose }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: engravedName ? 1 : 0 }}
           >
-            {engravedName || "Seu Nome"}
+            {engravedName || "Seu Nome"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
           </motion.div>
           <p className="mt-6 text-sm text-zinc-400 italic">Simulação de gravação a laser</p>
         </div>
@@ -68,14 +72,31 @@ const KnifeCustomizer = ({ product, onClose }) => {
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-zinc-400 mb-2">Símbolo</label>
+              <div className="grid grid-cols-4 gap-2">
+                {symbols.map(symbol => (
+                  <button 
+                    key={symbol}
+                    onClick={() => setSelectedSymbol(symbol)}
+                    className={`p-2 rounded border text-lg ${selectedSymbol === symbol ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-zinc-700 text-zinc-400'}`}
+                  >
+                    {symbol}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+
             <div className="pt-6 border-t border-zinc-800">
               <button 
-                onClick={handleCheckout}
+                onClick={handleAddToCart}
                 className="w-full bg-amber-600 text-white py-4 rounded-lg font-bold hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(217,119,6,0.2)]"
               >
-                Finalizar Compra
+                Adicionar ao Carrinho
               </button>
             </div>
+
           </div>
         </div>
       </div>
@@ -85,6 +106,25 @@ const KnifeCustomizer = ({ product, onClose }) => {
 
 export default function Index() {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const addToCart = (productData) => {
+    setCart([...cart, { ...productData, cartId: Date.now() }]);
+    setSelectedProduct(null);
+    setIsCartOpen(true);
+  };
+
+  const removeFromCart = (cartId) => {
+    setCart(cart.filter(item => item.cartId !== cartId));
+  };
+
+  const cartTotal = cart.reduce((acc, item) => {
+    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
+    return acc + price;
+  }, 0);
+
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans">
@@ -92,9 +132,23 @@ export default function Index() {
       <nav className="fixed w-full z-40 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 py-4 top-14 md:top-10">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-amber-500 font-serif">Herança de Aço</h1>
-          <button className="bg-zinc-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-700">Login</button>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2 text-zinc-400 hover:text-white transition-colors"
+            >
+              <ShoppingBag className="w-6 h-6" />
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-amber-500 text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  {cart.length}
+                </span>
+              )}
+            </button>
+            <button className="bg-zinc-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-700">Login</button>
+          </div>
         </div>
       </nav>
+
 
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1632733958172-881b490f23f8?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center brightness-[0.4]" />
@@ -152,9 +206,86 @@ export default function Index() {
 
       <AnimatePresence>
         {selectedProduct && (
-          <KnifeCustomizer product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+          <KnifeCustomizer 
+            product={selectedProduct} 
+            onClose={() => setSelectedProduct(null)} 
+            onAddToCart={addToCart}
+          />
+        )}
+
+        {isCartOpen && (
+          <div className="fixed inset-0 z-[60] flex justify-end">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCartOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              className="relative w-full max-w-md bg-zinc-900 h-full shadow-2xl flex flex-col"
+            >
+              <div className="p-6 border-b border-zinc-800 flex items-center justify-between">
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <ShoppingBag className="w-5 h-5 text-amber-500" />
+                  Seu Carrinho
+                </h2>
+                <button onClick={() => setIsCartOpen(false)} className="p-2 text-zinc-400 hover:text-white">
+                  <X />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                {cart.length === 0 ? (
+                  <div className="text-center py-12">
+                    <ShoppingBag className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
+                    <p className="text-zinc-500">Seu carrinho está vazio.</p>
+                  </div>
+                ) : (
+                  cart.map((item) => (
+                    <div key={item.cartId} className="flex gap-4 bg-zinc-800/50 p-4 rounded-xl border border-zinc-800">
+                      <img src={item.product.image} className="w-20 h-20 object-cover rounded-lg" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start">
+                          <h3 className="font-bold text-sm truncate">{item.product.name}</h3>
+                          <button 
+                            onClick={() => removeFromCart(item.cartId)}
+                            className="text-zinc-500 hover:text-red-500"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                        <p className="text-xs text-amber-500 mt-1">"{item.engravedName}"</p>
+                        <p className="text-[10px] text-zinc-400">Fonte: {item.selectedFont} | {item.selectedSymbol}</p>
+                        <p className="text-sm font-bold mt-2">{item.product.price}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {cart.length > 0 && (
+                <div className="p-6 border-t border-zinc-800 bg-zinc-900/50 space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-zinc-400">Total do pedido</span>
+                    <span className="text-xl font-bold text-amber-500">R$ {cartTotal.toFixed(2).replace('.', ',')}</span>
+                  </div>
+                  <button 
+                    onClick={() => navigate('/checkout', { state: { cart } })}
+                    className="w-full bg-amber-600 hover:bg-amber-500 text-white py-4 rounded-xl font-bold transition-all shadow-lg"
+                  >
+                    Finalizar Compra
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }
