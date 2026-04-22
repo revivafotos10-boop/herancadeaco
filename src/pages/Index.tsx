@@ -69,15 +69,14 @@ const CountdownBanner = ({ className = "" }: { className?: string }) => {
   );
 };
 
-
 const KnifeCustomizer = ({ product, onClose }) => {
   const [engravedName, setEngravedName] = useState('');
   const [selectedFont, setSelectedFont] = useState(fonts[0]);
 
   return (
     <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4">
-      <div className="bg-zinc-900 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-zinc-800">
-        <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-amber-500 z-10 p-2"><X /></button>
+      <div className="bg-zinc-900 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-zinc-800 relative">
+        <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-amber-500 z-20 p-2"><X /></button>
         
         <div className="md:w-1/2 p-8 bg-zinc-800/50 flex flex-col items-center justify-center relative">
           <img src={product.image} alt={product.name} className="w-full h-auto rounded-lg shadow-2xl" />
@@ -91,7 +90,8 @@ const KnifeCustomizer = ({ product, onClose }) => {
           <p className="mt-6 text-sm text-zinc-400 italic">Simulação de gravação a laser</p>
         </div>
 
-        <div className="md:w-1/2 p-8 overflow-y-auto">
+        <div className="md:w-1/2 p-8 overflow-y-auto relative pt-14">
+          <CountdownBanner className="absolute top-0 left-0 right-0 py-2 text-[10px] md:text-xs z-10" />
           <h2 className="text-2xl font-bold text-white mb-6">Personalize sua {product.name}</h2>
           <div className="space-y-6">
             <div>
@@ -137,7 +137,8 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans">
-      <nav className="fixed w-full z-40 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 py-4">
+      <CountdownBanner className="fixed top-0 w-full z-50 shadow-md h-14 md:h-10" />
+      <nav className="fixed w-full z-40 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 py-4 top-14 md:top-10">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-amber-500 font-serif">Herança de Aço</h1>
           <button className="bg-zinc-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-700">Login</button>
@@ -146,7 +147,7 @@ export default function Index() {
 
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1632733958172-881b490f23f8?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center brightness-[0.4]" />
-        <div className="relative z-10 text-center px-4 max-w-3xl">
+        <div className="relative z-10 text-center px-4 max-w-3xl mt-10">
           <div className="inline-flex items-center gap-2 bg-amber-950/50 text-amber-400 px-4 py-2 rounded-full mb-6 border border-amber-800/50">
             <Flame className="w-4 h-4" /> Entrega garantida para o Dia dos Pais
           </div>
