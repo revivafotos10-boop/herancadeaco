@@ -14,6 +14,9 @@ const Checkout = () => {
   const location = useLocation();
   const product = location.state?.product || { name: 'Faca Selecionada', price: 'R$ 299,00', image: 'https://images.unsplash.com/photo-1593618998160-caf454c70e89?auto=format&fit=crop&q=80&w=600' };
   const engravedName = location.state?.engravedName || '';
+  const selectedFont = location.state?.selectedFont || 'Manuscrita';
+  const selectedSymbol = location.state?.selectedSymbol || 'Nenhum';
+
 
   const [paymentMethod, setPaymentMethod] = useState('pix');
   const [loading, setLoading] = useState(false);
