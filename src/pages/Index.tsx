@@ -329,7 +329,7 @@ export default function Index() {
                           </button>
                         </div>
                         <p className="text-xs text-amber-500 mt-1">"{item.engravedName}"</p>
-                        <p className="text-[10px] text-zinc-400">Fonte: {item.selectedFont} | {item.selectedSymbol}</p>
+                        <p className="text-[10px] text-zinc-400">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | {item.selectedSymbol}</p>
                         <p className="text-sm font-bold mt-2">{item.product.price}</p>
                       </div>
                     </div>
