@@ -191,8 +191,12 @@ const Checkout = () => {
                   <div className="flex-1">
                     <h3 className="font-bold text-sm">{product.name}</h3>
                     {engravedName && (
-                      <p className="text-xs text-amber-500 mt-1">Gravação: "{engravedName}"</p>
+                      <div className="mt-1 space-y-0.5">
+                        <p className="text-xs text-amber-500">Gravação: "{engravedName}"</p>
+                        <p className="text-[10px] text-zinc-500">Fonte: {selectedFont} | Símbolo: {selectedSymbol}</p>
+                      </div>
                     )}
+
                     <p className="text-sm text-zinc-400 mt-1">{product.price}</p>
                   </div>
                 </div>
