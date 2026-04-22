@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Clock, Copy, QrCode, ChevronLeft, Package, Calendar } from 'lucide-react';
@@ -9,7 +9,16 @@ import { toast } from "sonner";
 const PaymentStatus = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { status, method, cart } = location.state || { status: 'success', method: 'card', cart: [] };
+  const [orderData] = useState(() => {
+    if (location.state) return location.state;
+    const savedCart = localStorage.getItem('cart');
+    return {
+      status: 'success',
+      method: 'card',
+      cart: savedCart ? JSON.parse(savedCart) : []
+    };
+  });
+  const { status, method, cart } = orderData;
 
   const cartTotal = cart.reduce((acc, item) => {
     const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
@@ -84,12 +93,14 @@ const PaymentStatus = () => {
                       {cart.map((item) => (
                         <div key={item.cartId} className="border-l-2 border-amber-500/30 pl-3">
                           <p className="text-sm text-zinc-300 font-medium">{item.product.name}</p>
-                          {item.engravedName && (
-                            <div className="mt-1">
+                          <div className="mt-1">
+                            {item.engravedName && (
                               <p className="text-sm text-amber-500 font-bold">"{item.engravedName}"</p>
-                              <p className="text-[10px] text-zinc-500">Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
-                            </div>
-                          )}
+                            )}
+                            <p className="text-[10px] text-zinc-500">
+                              Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}
+                            </p>
+                          </div>
                           <p className="text-xs text-zinc-500 mt-1">{item.product.price}</p>
                         </div>
                       ))}

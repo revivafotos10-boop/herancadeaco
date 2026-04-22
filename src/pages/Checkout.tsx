@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CreditCard, QrCode, ShieldCheck, Truck, ChevronLeft, Lock } from 'lucide-react';
@@ -28,6 +28,10 @@ const Checkout = () => {
     return savedCart ? JSON.parse(savedCart) : [];
   });
   
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
   const cartTotal = cart.reduce((acc, item) => {
     const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
     return acc + price;
@@ -211,12 +215,12 @@ const Checkout = () => {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-sm">{item.product.name}</h3>
-                      {item.engravedName && (
-                        <div className="mt-1 space-y-0.5">
+                      <div className="mt-1 space-y-0.5">
+                        {item.engravedName && (
                           <p className="text-xs text-amber-500">Gravação: "{item.engravedName}"</p>
-                          <p className="text-[10px] text-zinc-500">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
-                        </div>
-                      )}
+                        )}
+                        <p className="text-[10px] text-zinc-500">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
+                      </div>
                       <p className="text-sm text-zinc-400 mt-1">{item.product.price}</p>
                     </div>
                   </div>
