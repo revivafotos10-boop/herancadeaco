@@ -100,6 +100,22 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
             
             <div className="space-y-6">
               <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Tamanho da Lâmina</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {sizes.map(size => (
+                    <button 
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`p-2 rounded border text-xs transition-all ${selectedSize === size ? 'border-amber-500 bg-amber-500/10 text-amber-500 font-bold' : 'border-zinc-700 text-zinc-400'}`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+
                 <label className="block text-sm font-medium text-zinc-400 mb-2">Nome gravado</label>
                 <input 
                   type="text" 
