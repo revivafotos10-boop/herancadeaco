@@ -72,6 +72,22 @@ const KnifeCustomizer = ({ product, onClose }) => {
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-zinc-400 mb-2">Símbolo</label>
+              <div className="grid grid-cols-4 gap-2">
+                {symbols.map(symbol => (
+                  <button 
+                    key={symbol}
+                    onClick={() => setSelectedSymbol(symbol)}
+                    className={`p-2 rounded border text-lg ${selectedSymbol === symbol ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-zinc-700 text-zinc-400'}`}
+                  >
+                    {symbol}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+
             <div className="pt-6 border-t border-zinc-800">
               <button 
                 onClick={handleCheckout}
