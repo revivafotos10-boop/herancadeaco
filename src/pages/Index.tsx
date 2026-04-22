@@ -175,10 +175,24 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
 };
 
 export default function Index() {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [cart, setCart] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(() => {
+    const saved = localStorage.getItem('selectedProduct');
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem('cart');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem('selectedProduct', JSON.stringify(selectedProduct));
+  }, [selectedProduct]);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = (productData) => {
     setCart([...cart, { ...productData, cartId: Date.now() }]);
