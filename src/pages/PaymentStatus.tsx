@@ -28,24 +28,33 @@ const PaymentStatus = () => {
   const { status, method, cart } = orderData;
   
   const [showValidationAlert, setShowValidationAlert] = useState(false);
+  const [missingDetails, setMissingDetails] = useState<{itemName: string, fields: string[]}[]>([]);
 
   useEffect(() => {
-    // Validate cart items
-    const isIncomplete = cart.some((item: any) => 
-      !item.selectedSize || !item.selectedFont || !item.selectedSymbol || !item.engravedName ||
-      item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === '' || item.engravedName === ''
-    );
+    const incompleteItems: {itemName: string, fields: string[]}[] = [];
     
-    // Check if any item in cart has its corresponding product-specific localStorage items missing
-    const isLocalStorageIncomplete = cart.some((item: any) => {
+    cart.forEach((item: any) => {
+      const missing: string[] = [];
       const productId = item.product?.id;
-      return !localStorage.getItem(`selectedSize_${productId}`) || 
-             !localStorage.getItem(`selectedFont_${productId}`) || 
-             !localStorage.getItem(`selectedSymbol_${productId}`);
+      
+      if (!item.selectedSize && !localStorage.getItem(`selectedSize_${productId}`)) missing.push('Tamanho');
+      if (!item.selectedFont && !localStorage.getItem(`selectedFont_${productId}`)) missing.push('Fonte');
+      if (!item.selectedSymbol && !localStorage.getItem(`selectedSymbol_${productId}`)) missing.push('Símbolo');
+      if (!item.engravedName && !localStorage.getItem(`engravedName_${productId}`)) missing.push('Nome para Gravação');
+      
+      if (missing.length > 0) {
+        incompleteItems.push({
+          itemName: item.product?.name || 'Item do Carrinho',
+          fields: missing
+        });
+      }
     });
     
-    if (isIncomplete || isLocalStorageIncomplete) {
+    if (incompleteItems.length > 0) {
+      setMissingDetails(incompleteItems);
       setShowValidationAlert(true);
+    } else {
+      setShowValidationAlert(false);
     }
   }, [cart]);
 
@@ -106,12 +115,28 @@ const PaymentStatus = () => {
               <AlertCircle className="h-4 w-4" />
               <AlertTitle className="font-bold">Aviso: Informações Ausentes</AlertTitle>
               <AlertDescription className="flex flex-col gap-3 mt-2">
-                <p className="text-sm text-zinc-300">Alguns detalhes técnicos do seu pedido não foram carregados completamente na visualização.</p>
+                <div className="space-y-2">
+                  <p className="text-sm text-zinc-300">Alguns detalhes técnicos não foram carregados completamente:</p>
+                  <ul className="space-y-2">
+                    {missingDetails.map((item, idx) => (
+                      <li key={idx} className="text-xs bg-amber-500/5 border border-amber-500/20 p-2 rounded-md">
+                        <span className="font-bold block text-amber-500 mb-1">{item.itemName}</span>
+                        <div className="flex flex-wrap gap-1">
+                          {item.fields.map((field, fIdx) => (
+                            <span key={fIdx} className="bg-amber-500/20 px-1.5 py-0.5 rounded text-[10px]">
+                              {field}
+                            </span>
+                          ))}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 <Button 
                   variant="outline" 
                   size="sm" 
                   onClick={recoverData}
-                  className="bg-amber-500 text-black hover:bg-amber-400 border-none font-bold self-start flex items-center gap-2"
+                  className="bg-amber-500 text-black hover:bg-amber-400 border-none font-bold self-start flex items-center gap-2 mt-1"
                 >
                   <RefreshCw className="h-4 w-4" />
                   Corrigir Visualização
