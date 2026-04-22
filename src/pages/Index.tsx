@@ -27,21 +27,21 @@ const products = [
     id: 1, 
     name: 'Cutelo Artesanal Brut', 
     price: 'R$ 349,00', 
-    image: 'https://images.unsplash.com/photo-1593618998160-caf454c70e89?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1594263155174-8b89e35c246b?auto=format&fit=crop&q=80&w=800',
     description: 'Forjado em aço carbono, ideal para cortes robustos e precisos.'
   },
   { 
     id: 2, 
     name: 'Faca Chef Premium Gold', 
     price: 'R$ 299,00', 
-    image: 'https://images.unsplash.com/photo-1590947162383-231aab744a7f?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1614364650220-33230a10c9c3?auto=format&fit=crop&q=80&w=800',
     description: 'Equilíbrio perfeito e fio de navalha para alta gastronomia.'
   },
   { 
     id: 3, 
     name: 'Faca Picanheira Raiz', 
     price: 'R$ 389,00', 
-    image: 'https://images.unsplash.com/photo-1577705998142-b363b95764d9?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1554941068-a252680d25d9?auto=format&fit=crop&q=80&w=800',
     description: 'O clássico do churrasco brasileiro, com cabo em madeira nobre.'
   },
 ];
@@ -293,7 +293,7 @@ export default function Index() {
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-black">
         {/* Multi-layered Cinematic Background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1513512147376-c09da5f8b2c4?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-luminosity" />
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent z-10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 z-10" />
           
@@ -389,7 +389,7 @@ export default function Index() {
                 transition={{ duration: 1.5, delay: 0.4 }}
                 className="absolute w-[450px] h-[550px] bg-[#111] rounded-2xl shadow-[0_50px_100px_rgba(0,0,0,0.9)] border border-zinc-800/30 overflow-hidden"
               >
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=800')] bg-cover opacity-20" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1594263155174-8b89e35c246b?auto=format&fit=crop&q=80&w=800')] bg-cover opacity-20" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-white/5" />
               </motion.div>
 
@@ -401,7 +401,7 @@ export default function Index() {
                 className="relative z-30 drop-shadow-[0_40px_80px_rgba(0,0,0,0.9)] cursor-pointer"
               >
                 <img 
-                  src="https://images.unsplash.com/photo-1593618998160-caf454c70e89?q=80&w=800" 
+                  src="https://images.unsplash.com/photo-1594263155174-8b89e35c246b?q=80&w=800" 
                   alt="Faca Premium Herança" 
                   className="w-full h-auto max-w-[550px] relative z-50 rounded-2xl shadow-2xl"
                 />
