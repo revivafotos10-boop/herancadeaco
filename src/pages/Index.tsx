@@ -27,7 +27,7 @@ const products = [
     id: 1, 
     name: 'Cutelo Artesanal Brut', 
     price: 'R$ 349,00', 
-    image: 'https://images.unsplash.com/photo-1614364650220-33230a10c9c3?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1622591605333-85e7ed220f4c?auto=format&fit=crop&q=80&w=800',
     description: 'Forjado em aço carbono, ideal para cortes robustos e precisos.'
   },
   { 
