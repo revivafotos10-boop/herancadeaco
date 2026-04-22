@@ -12,10 +12,15 @@ import { Separator } from "@/components/ui/separator";
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const product = location.state?.product || { name: 'Faca Selecionada', price: 'R$ 299,00', image: 'https://images.unsplash.com/photo-1593618998160-caf454c70e89?auto=format&fit=crop&q=80&w=600' };
-  const engravedName = location.state?.engravedName || '';
-  const selectedFont = location.state?.selectedFont || 'Manuscrita';
-  const selectedSymbol = location.state?.selectedSymbol || 'Nenhum';
+  const cart = location.state?.cart || (location.state?.product ? [{ product: location.state.product, engravedName: location.state.engravedName, selectedFont: location.state.selectedFont, selectedSymbol: location.state.selectedSymbol, cartId: Date.now() }] : []);
+  
+  const cartTotal = cart.reduce((acc, item) => {
+    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
+    return acc + price;
+  }, 0);
+
+  const formattedTotal = `R$ ${cartTotal.toFixed(2).replace('.', ',')}`;
+
 
 
   const [paymentMethod, setPaymentMethod] = useState('pix');
