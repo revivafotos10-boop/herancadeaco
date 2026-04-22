@@ -206,9 +206,86 @@ export default function Index() {
 
       <AnimatePresence>
         {selectedProduct && (
-          <KnifeCustomizer product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+          <KnifeCustomizer 
+            product={selectedProduct} 
+            onClose={() => setSelectedProduct(null)} 
+            onAddToCart={addToCart}
+          />
+        )}
+
+        {isCartOpen && (
+          <div className="fixed inset-0 z-[60] flex justify-end">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCartOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              className="relative w-full max-w-md bg-zinc-900 h-full shadow-2xl flex flex-col"
+            >
+              <div className="p-6 border-b border-zinc-800 flex items-center justify-between">
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <ShoppingBag className="w-5 h-5 text-amber-500" />
+                  Seu Carrinho
+                </h2>
+                <button onClick={() => setIsCartOpen(false)} className="p-2 text-zinc-400 hover:text-white">
+                  <X />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                {cart.length === 0 ? (
+                  <div className="text-center py-12">
+                    <ShoppingBag className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
+                    <p className="text-zinc-500">Seu carrinho está vazio.</p>
+                  </div>
+                ) : (
+                  cart.map((item) => (
+                    <div key={item.cartId} className="flex gap-4 bg-zinc-800/50 p-4 rounded-xl border border-zinc-800">
+                      <img src={item.product.image} className="w-20 h-20 object-cover rounded-lg" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start">
+                          <h3 className="font-bold text-sm truncate">{item.product.name}</h3>
+                          <button 
+                            onClick={() => removeFromCart(item.cartId)}
+                            className="text-zinc-500 hover:text-red-500"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                        <p className="text-xs text-amber-500 mt-1">"{item.engravedName}"</p>
+                        <p className="text-[10px] text-zinc-400">Fonte: {item.selectedFont} | {item.selectedSymbol}</p>
+                        <p className="text-sm font-bold mt-2">{item.product.price}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {cart.length > 0 && (
+                <div className="p-6 border-t border-zinc-800 bg-zinc-900/50 space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-zinc-400">Total do pedido</span>
+                    <span className="text-xl font-bold text-amber-500">R$ {cartTotal.toFixed(2).replace('.', ',')}</span>
+                  </div>
+                  <button 
+                    onClick={() => navigate('/checkout', { state: { cart } })}
+                    className="w-full bg-amber-600 hover:bg-amber-500 text-white py-4 rounded-xl font-bold transition-all shadow-lg"
+                  >
+                    Finalizar Compra
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }
