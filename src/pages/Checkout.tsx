@@ -14,7 +14,7 @@ import { toast } from "sonner";
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [cart] = useState(() => {
+  const [cart, setCart] = useState(() => {
     if (location.state?.cart) return location.state.cart;
     if (location.state?.product) {
       return [{ 
@@ -30,9 +30,47 @@ const Checkout = () => {
     return savedCart ? JSON.parse(savedCart) : [];
   });
   
+  const [showValidationAlert, setShowValidationAlert] = useState(false);
+
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Validate cart items
+    const isIncomplete = cart.some((item: any) => 
+      !item.selectedSize || !item.selectedFont || !item.selectedSymbol ||
+      item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === ''
+    );
+    
+    // Check for top-level localStorage items mentioned in prompt
+    const savedSize = localStorage.getItem('selectedSize');
+    const savedFont = localStorage.getItem('selectedFont');
+    const savedSymbol = localStorage.getItem('selectedSymbol');
+    
+    if (isIncomplete || !savedSize || !savedFont || !savedSymbol) {
+      setShowValidationAlert(true);
+    } else {
+      setShowValidationAlert(false);
+    }
   }, [cart]);
+
+  const recoverData = () => {
+    const recoveredCart = cart.map((item: any) => ({
+      ...item,
+      selectedSize: item.selectedSize || localStorage.getItem('selectedSize') || '10"',
+      selectedFont: item.selectedFont || localStorage.getItem('selectedFont') || 'Manuscrita',
+      selectedSymbol: item.selectedSymbol || localStorage.getItem('selectedSymbol') || 'Nenhum',
+    }));
+    
+    setCart(recoveredCart);
+    
+    // Ensure top-level values are also set if missing
+    if (!localStorage.getItem('selectedSize')) localStorage.setItem('selectedSize', '10"');
+    if (!localStorage.getItem('selectedFont')) localStorage.setItem('selectedFont', 'Manuscrita');
+    if (!localStorage.getItem('selectedSymbol')) localStorage.setItem('selectedSymbol', 'Nenhum');
+    
+    setShowValidationAlert(false);
+    toast.success("Dados recuperados com sucesso!");
+  };
 
   const cartTotal = cart.reduce((acc, item) => {
     const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
