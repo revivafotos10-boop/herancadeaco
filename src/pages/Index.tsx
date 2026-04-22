@@ -110,7 +110,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-24 px-4">
+      <section id="produtos" className="py-24 px-4">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-3 gap-12 mb-20">
             {[
