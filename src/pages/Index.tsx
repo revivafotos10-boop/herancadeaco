@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, Truck, Star, Pencil, X, Flame, Timer } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
@@ -14,6 +15,11 @@ const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
 const KnifeCustomizer = ({ product, onClose }) => {
   const [engravedName, setEngravedName] = useState('');
   const [selectedFont, setSelectedFont] = useState(fonts[0]);
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    navigate('/checkout', { state: { product, engravedName, selectedFont } });
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4">
@@ -63,7 +69,10 @@ const KnifeCustomizer = ({ product, onClose }) => {
             </div>
 
             <div className="pt-6 border-t border-zinc-800">
-              <button className="w-full bg-amber-600 text-white py-4 rounded-lg font-bold hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(217,119,6,0.2)]">
+              <button 
+                onClick={handleCheckout}
+                className="w-full bg-amber-600 text-white py-4 rounded-lg font-bold hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(217,119,6,0.2)]"
+              >
                 Finalizar Compra
               </button>
             </div>
@@ -95,13 +104,16 @@ export default function Index() {
           </div>
           <h1 className="text-5xl md:text-8xl font-bold mb-6 text-white font-serif">Um presente à altura do seu pai</h1>
           <p className="text-xl mb-10 text-zinc-300">Facas premium personalizadas — um presente que ele guardará para sempre.</p>
-          <button className="bg-amber-600 hover:bg-amber-500 text-white px-10 py-5 rounded-full text-lg font-bold transition-all shadow-[0_0_30px_rgba(217,119,6,0.3)]">
+          <button 
+            onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
+            className="bg-amber-600 hover:bg-amber-500 text-white px-10 py-5 rounded-full text-lg font-bold transition-all shadow-[0_0_30px_rgba(217,119,6,0.3)]"
+          >
             Personalizar minha faca
           </button>
         </div>
       </section>
 
-      <section className="py-24 px-4">
+      <section id="produtos" className="py-24 px-4">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-3 gap-12 mb-20">
             {[
