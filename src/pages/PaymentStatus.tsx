@@ -74,7 +74,30 @@ const PaymentStatus = () => {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-lg space-y-4">
+        {showValidationAlert && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Alert className="bg-amber-500/10 border-amber-500/50 text-amber-500">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle className="font-bold">Aviso: Informações Ausentes</AlertTitle>
+              <AlertDescription className="flex flex-col gap-3 mt-2">
+                <p className="text-sm text-zinc-300">Alguns detalhes técnicos do seu pedido não foram carregados completamente na visualização.</p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={recoverData}
+                  className="bg-amber-500 text-black hover:bg-amber-400 border-none font-bold self-start flex items-center gap-2"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Corrigir Visualização
+                </Button>
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
