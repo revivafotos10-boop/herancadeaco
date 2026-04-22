@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, Truck, Star, Pencil, X, Flame, Timer } from 'lucide-react';
+import UrgencyBanner from '@/components/UrgencyBanner';
 
 const products = [
   { id: 1, name: 'Cutelo Artesanal', price: 'R$ 299,00', image: 'https://images.unsplash.com/photo-1593618998160-caf454c70e89?auto=format&fit=crop&q=80&w=600' },
@@ -9,65 +10,6 @@ const products = [
 ];
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
-
-const CountdownBanner = ({ className = "" }: { className?: string }) => {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    // Definindo uma data futura para o Dia dos Pais (ex: 2º domingo de Agosto)
-    // Para fins de demonstração, vamos usar uma data de 5 dias a partir de agora se estivermos fora de época
-    const target = new Date('2024-08-11T00:00:00').getTime();
-    
-    const updateCountdown = () => {
-      const now = new Date().getTime();
-      let distance = target - now;
-      
-      if (distance < 0) {
-        // Se a data já passou, mostramos um contador de 3 dias para simular a urgência
-        const demoDate = new Date();
-        demoDate.setDate(demoDate.getDate() + 3);
-        distance = demoDate.getTime() - now;
-      }
-      
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((distance % (1000 * 60)) / 1000)
-      });
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className={`bg-amber-600 text-white py-2 px-4 text-center text-sm font-bold flex flex-wrap items-center justify-center gap-2 md:gap-4 overflow-hidden ${className}`}>
-      <div className="flex items-center gap-1">
-        <Flame className="w-4 h-4 animate-pulse" />
-        <span className="uppercase tracking-wider">Entrega garantida para o Dia dos Pais</span>
-      </div>
-      <div className="flex gap-2 items-center">
-        <Timer className="w-4 h-4 text-amber-200" />
-        <div className="flex gap-1.5 font-mono">
-          <div className="flex flex-col items-center">
-            <span className="bg-black/20 px-1.5 py-0.5 rounded min-w-[2rem]">{timeLeft.days}d</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="bg-black/20 px-1.5 py-0.5 rounded min-w-[2rem]">{timeLeft.hours}h</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="bg-black/20 px-1.5 py-0.5 rounded min-w-[2rem]">{timeLeft.minutes}m</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="bg-black/20 px-1.5 py-0.5 rounded min-w-[2rem]">{timeLeft.seconds}s</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const KnifeCustomizer = ({ product, onClose }) => {
   const [engravedName, setEngravedName] = useState('');
@@ -91,7 +33,7 @@ const KnifeCustomizer = ({ product, onClose }) => {
         </div>
 
         <div className="md:w-1/2 p-8 overflow-y-auto relative pt-14">
-          <CountdownBanner className="absolute top-0 left-0 right-0 py-2 text-[10px] md:text-xs z-10" />
+          <UrgencyBanner className="absolute top-0 left-0 right-0 py-2 text-[10px] md:text-xs z-10" />
           <h2 className="text-2xl font-bold text-white mb-6">Personalize sua {product.name}</h2>
           <div className="space-y-6">
             <div>
@@ -137,7 +79,7 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans">
-      <CountdownBanner className="fixed top-0 w-full z-50 shadow-md h-14 md:h-10" />
+      <UrgencyBanner className="fixed top-0 w-full z-50 shadow-md h-14 md:h-10" />
       <nav className="fixed w-full z-40 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 py-4 top-14 md:top-10">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-amber-500 font-serif">Herança de Aço</h1>
