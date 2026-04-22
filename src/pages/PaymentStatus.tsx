@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Clock, Copy, QrCode, ChevronLeft, Package, Calendar } from 'lucide-react';
+import { CheckCircle2, Clock, Copy, QrCode, ChevronLeft, Package, Calendar, AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
 
 const PaymentStatus = () => {
