@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Clock, Copy, QrCode, ChevronLeft, Package, Calendar } from 'lucide-react';
+import { CheckCircle2, Clock, Copy, QrCode, ChevronLeft, Package, Calendar, AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
 
 const PaymentStatus = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [orderData] = useState(() => {
+  const [orderData, setOrderData] = useState(() => {
     if (location.state) return location.state;
     const savedCart = localStorage.getItem('cart');
     return {
@@ -19,6 +20,44 @@ const PaymentStatus = () => {
     };
   });
   const { status, method, cart } = orderData;
+  
+  const [showValidationAlert, setShowValidationAlert] = useState(false);
+
+  useEffect(() => {
+    // Validate cart items
+    const isIncomplete = cart.some((item: any) => 
+      !item.selectedSize || !item.selectedFont || !item.selectedSymbol ||
+      item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === ''
+    );
+    
+    // Check for top-level localStorage items mentioned in prompt
+    const savedSize = localStorage.getItem('selectedSize');
+    const savedFont = localStorage.getItem('selectedFont');
+    const savedSymbol = localStorage.getItem('selectedSymbol');
+    
+    if (isIncomplete || !savedSize || !savedFont || !savedSymbol) {
+      setShowValidationAlert(true);
+    }
+  }, [cart]);
+
+  const recoverData = () => {
+    const recoveredCart = cart.map((item: any) => ({
+      ...item,
+      selectedSize: item.selectedSize || localStorage.getItem('selectedSize') || '10"',
+      selectedFont: item.selectedFont || localStorage.getItem('selectedFont') || 'Manuscrita',
+      selectedSymbol: item.selectedSymbol || localStorage.getItem('selectedSymbol') || 'Nenhum',
+    }));
+    
+    setOrderData({ ...orderData, cart: recoveredCart });
+    
+    // Ensure top-level values are also set if missing
+    if (!localStorage.getItem('selectedSize')) localStorage.setItem('selectedSize', '10"');
+    if (!localStorage.getItem('selectedFont')) localStorage.setItem('selectedFont', 'Manuscrita');
+    if (!localStorage.getItem('selectedSymbol')) localStorage.setItem('selectedSymbol', 'Nenhum');
+    
+    setShowValidationAlert(false);
+    toast.success("Dados de visualização recuperados!");
+  };
 
   const cartTotal = cart.reduce((acc, item) => {
     const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
@@ -35,7 +74,30 @@ const PaymentStatus = () => {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-lg space-y-4">
+        {showValidationAlert && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Alert className="bg-amber-500/10 border-amber-500/50 text-amber-500">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle className="font-bold">Aviso: Informações Ausentes</AlertTitle>
+              <AlertDescription className="flex flex-col gap-3 mt-2">
+                <p className="text-sm text-zinc-300">Alguns detalhes técnicos do seu pedido não foram carregados completamente na visualização.</p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={recoverData}
+                  className="bg-amber-500 text-black hover:bg-amber-400 border-none font-bold self-start flex items-center gap-2"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Corrigir Visualização
+                </Button>
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -17,10 +17,17 @@ const sizes = ['8"', '10"', '12"'];
 
 
 const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
-  const [engravedName, setEngravedName] = useState('');
-  const [selectedFont, setSelectedFont] = useState(fonts[0]);
-  const [selectedSymbol, setSelectedSymbol] = useState(symbols[0]);
-  const [selectedSize, setSelectedSize] = useState(sizes[1]);
+  const [engravedName, setEngravedName] = useState(() => localStorage.getItem('selectedEngravedName') || '');
+  const [selectedFont, setSelectedFont] = useState(() => localStorage.getItem('selectedFont') || fonts[0]);
+  const [selectedSymbol, setSelectedSymbol] = useState(() => localStorage.getItem('selectedSymbol') || symbols[0]);
+  const [selectedSize, setSelectedSize] = useState(() => localStorage.getItem('selectedSize') || sizes[1]);
+
+  useEffect(() => {
+    localStorage.setItem('selectedEngravedName', engravedName);
+    localStorage.setItem('selectedFont', selectedFont);
+    localStorage.setItem('selectedSymbol', selectedSymbol);
+    localStorage.setItem('selectedSize', selectedSize);
+  }, [engravedName, selectedFont, selectedSymbol, selectedSize]);
 
   const getSizeScale = () => {
     switch(selectedSize) {

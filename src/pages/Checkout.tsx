@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CreditCard, QrCode, ShieldCheck, Truck, ChevronLeft, Lock } from 'lucide-react';
+import { CreditCard, QrCode, ShieldCheck, Truck, ChevronLeft, Lock, AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { toast } from "sonner";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [cart] = useState(() => {
+  const [cart, setCart] = useState(() => {
     if (location.state?.cart) return location.state.cart;
     if (location.state?.product) {
       return [{ 
@@ -28,9 +30,47 @@ const Checkout = () => {
     return savedCart ? JSON.parse(savedCart) : [];
   });
   
+  const [showValidationAlert, setShowValidationAlert] = useState(false);
+
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Validate cart items
+    const isIncomplete = cart.some((item: any) => 
+      !item.selectedSize || !item.selectedFont || !item.selectedSymbol ||
+      item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === ''
+    );
+    
+    // Check for top-level localStorage items mentioned in prompt
+    const savedSize = localStorage.getItem('selectedSize');
+    const savedFont = localStorage.getItem('selectedFont');
+    const savedSymbol = localStorage.getItem('selectedSymbol');
+    
+    if (isIncomplete || !savedSize || !savedFont || !savedSymbol) {
+      setShowValidationAlert(true);
+    } else {
+      setShowValidationAlert(false);
+    }
   }, [cart]);
+
+  const recoverData = () => {
+    const recoveredCart = cart.map((item: any) => ({
+      ...item,
+      selectedSize: item.selectedSize || localStorage.getItem('selectedSize') || '10"',
+      selectedFont: item.selectedFont || localStorage.getItem('selectedFont') || 'Manuscrita',
+      selectedSymbol: item.selectedSymbol || localStorage.getItem('selectedSymbol') || 'Nenhum',
+    }));
+    
+    setCart(recoveredCart);
+    
+    // Ensure top-level values are also set if missing
+    if (!localStorage.getItem('selectedSize')) localStorage.setItem('selectedSize', '10"');
+    if (!localStorage.getItem('selectedFont')) localStorage.setItem('selectedFont', 'Manuscrita');
+    if (!localStorage.getItem('selectedSymbol')) localStorage.setItem('selectedSymbol', 'Nenhum');
+    
+    setShowValidationAlert(false);
+    toast.success("Dados recuperados com sucesso!");
+  };
 
   const cartTotal = cart.reduce((acc, item) => {
     const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
@@ -78,6 +118,30 @@ const Checkout = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        {showValidationAlert && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="mb-8"
+          >
+            <Alert className="bg-amber-500/10 border-amber-500/50 text-amber-500">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle className="font-bold">Dados de Personalização Incompletos</AlertTitle>
+              <AlertDescription className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
+                <span className="text-zinc-300">Detectamos que alguns itens do seu carrinho ou preferências de personalização não foram carregados corretamente.</span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={recoverData}
+                  className="bg-amber-500 text-black hover:bg-amber-400 border-none font-bold flex items-center gap-2 whitespace-nowrap"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Recuperar Dados
+                </Button>
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <section>
