@@ -28,24 +28,33 @@ const PaymentStatus = () => {
   const { status, method, cart } = orderData;
   
   const [showValidationAlert, setShowValidationAlert] = useState(false);
+  const [missingDetails, setMissingDetails] = useState<{itemName: string, fields: string[]}[]>([]);
 
   useEffect(() => {
-    // Validate cart items
-    const isIncomplete = cart.some((item: any) => 
-      !item.selectedSize || !item.selectedFont || !item.selectedSymbol || !item.engravedName ||
-      item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === '' || item.engravedName === ''
-    );
+    const incompleteItems: {itemName: string, fields: string[]}[] = [];
     
-    // Check if any item in cart has its corresponding product-specific localStorage items missing
-    const isLocalStorageIncomplete = cart.some((item: any) => {
+    cart.forEach((item: any) => {
+      const missing: string[] = [];
       const productId = item.product?.id;
-      return !localStorage.getItem(`selectedSize_${productId}`) || 
-             !localStorage.getItem(`selectedFont_${productId}`) || 
-             !localStorage.getItem(`selectedSymbol_${productId}`);
+      
+      if (!item.selectedSize && !localStorage.getItem(`selectedSize_${productId}`)) missing.push('Tamanho');
+      if (!item.selectedFont && !localStorage.getItem(`selectedFont_${productId}`)) missing.push('Fonte');
+      if (!item.selectedSymbol && !localStorage.getItem(`selectedSymbol_${productId}`)) missing.push('Símbolo');
+      if (!item.engravedName && !localStorage.getItem(`engravedName_${productId}`)) missing.push('Nome para Gravação');
+      
+      if (missing.length > 0) {
+        incompleteItems.push({
+          itemName: item.product?.name || 'Item do Carrinho',
+          fields: missing
+        });
+      }
     });
     
-    if (isIncomplete || isLocalStorageIncomplete) {
+    if (incompleteItems.length > 0) {
+      setMissingDetails(incompleteItems);
       setShowValidationAlert(true);
+    } else {
+      setShowValidationAlert(false);
     }
   }, [cart]);
 
