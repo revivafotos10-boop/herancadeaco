@@ -200,7 +200,7 @@ const Checkout = () => {
                       {item.engravedName && (
                         <div className="mt-1 space-y-0.5">
                           <p className="text-xs text-amber-500">Gravação: "{item.engravedName}"</p>
-                          <p className="text-[10px] text-zinc-500">Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
+                          <p className="text-[10px] text-zinc-500">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
                         </div>
                       )}
                       <p className="text-sm text-zinc-400 mt-1">{item.product.price}</p>
