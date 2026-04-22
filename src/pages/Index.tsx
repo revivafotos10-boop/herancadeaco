@@ -342,8 +342,14 @@ export default function Index() {
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
-                        <p className="text-xs text-amber-500 mt-1">"{item.engravedName}"</p>
-                        <p className="text-[10px] text-zinc-400">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | {item.selectedSymbol}</p>
+                        <div className="mt-1">
+                          {item.engravedName && (
+                            <p className="text-xs text-amber-500 font-bold">"{item.engravedName}"</p>
+                          )}
+                          <p className="text-[10px] text-zinc-400">
+                            Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}
+                          </p>
+                        </div>
                         <p className="text-sm font-bold mt-2">{item.product.price}</p>
                       </div>
                     </div>
