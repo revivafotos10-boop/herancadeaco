@@ -12,7 +12,21 @@ import { Separator } from "@/components/ui/separator";
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const cart = location.state?.cart || (location.state?.product ? [{ product: location.state.product, engravedName: location.state.engravedName, selectedFont: location.state.selectedFont, selectedSymbol: location.state.selectedSymbol, cartId: Date.now() }] : []);
+  const [cart] = useState(() => {
+    if (location.state?.cart) return location.state.cart;
+    if (location.state?.product) {
+      return [{ 
+        product: location.state.product, 
+        engravedName: location.state.engravedName || '', 
+        selectedFont: location.state.selectedFont || 'Manuscrita', 
+        selectedSymbol: location.state.selectedSymbol || 'Nenhum', 
+        selectedSize: location.state.selectedSize || '10"',
+        cartId: Date.now() 
+      }];
+    }
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
   
   const cartTotal = cart.reduce((acc, item) => {
     const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
