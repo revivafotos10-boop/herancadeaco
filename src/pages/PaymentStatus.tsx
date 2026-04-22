@@ -10,7 +10,7 @@ import { toast } from "sonner";
 const PaymentStatus = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [orderData] = useState(() => {
+  const [orderData, setOrderData] = useState(() => {
     if (location.state) return location.state;
     const savedCart = localStorage.getItem('cart');
     return {
@@ -20,6 +20,44 @@ const PaymentStatus = () => {
     };
   });
   const { status, method, cart } = orderData;
+  
+  const [showValidationAlert, setShowValidationAlert] = useState(false);
+
+  useEffect(() => {
+    // Validate cart items
+    const isIncomplete = cart.some((item: any) => 
+      !item.selectedSize || !item.selectedFont || !item.selectedSymbol ||
+      item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === ''
+    );
+    
+    // Check for top-level localStorage items mentioned in prompt
+    const savedSize = localStorage.getItem('selectedSize');
+    const savedFont = localStorage.getItem('selectedFont');
+    const savedSymbol = localStorage.getItem('selectedSymbol');
+    
+    if (isIncomplete || !savedSize || !savedFont || !savedSymbol) {
+      setShowValidationAlert(true);
+    }
+  }, [cart]);
+
+  const recoverData = () => {
+    const recoveredCart = cart.map((item: any) => ({
+      ...item,
+      selectedSize: item.selectedSize || localStorage.getItem('selectedSize') || '10"',
+      selectedFont: item.selectedFont || localStorage.getItem('selectedFont') || 'Manuscrita',
+      selectedSymbol: item.selectedSymbol || localStorage.getItem('selectedSymbol') || 'Nenhum',
+    }));
+    
+    setOrderData({ ...orderData, cart: recoveredCart });
+    
+    // Ensure top-level values are also set if missing
+    if (!localStorage.getItem('selectedSize')) localStorage.setItem('selectedSize', '10"');
+    if (!localStorage.getItem('selectedFont')) localStorage.setItem('selectedFont', 'Manuscrita');
+    if (!localStorage.getItem('selectedSymbol')) localStorage.setItem('selectedSymbol', 'Nenhum');
+    
+    setShowValidationAlert(false);
+    toast.success("Dados de visualização recuperados!");
+  };
 
   const cartTotal = cart.reduce((acc, item) => {
     const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
