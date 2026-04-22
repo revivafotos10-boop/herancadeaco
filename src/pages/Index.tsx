@@ -12,16 +12,31 @@ const products = [
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
 const symbols = ['Nenhum', '⚓', '⚔️', '🔥', '🛡️', '🐎', '🤠'];
+const sizes = ['8"', '10"', '12"'];
+
 
 
 const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
   const [engravedName, setEngravedName] = useState('');
   const [selectedFont, setSelectedFont] = useState(fonts[0]);
   const [selectedSymbol, setSelectedSymbol] = useState(symbols[0]);
+  const [selectedSize, setSelectedSize] = useState(sizes[1]);
+
+  const getSizeScale = () => {
+    switch(selectedSize) {
+      case '8"': return { width: '50%', height: '35%', fontSize: '1.2rem' };
+      case '12"': return { width: '70%', height: '45%', fontSize: '1.8rem' };
+      default: return { width: '60%', height: '40%', fontSize: '1.5rem' };
+    }
+  };
+
+  const scale = getSizeScale();
+
 
   const handleAddToCart = () => {
-    onAddToCart({ product, engravedName, selectedFont, selectedSymbol });
+    onAddToCart({ product, engravedName, selectedFont, selectedSymbol, selectedSize });
   };
+
 
 
 
@@ -36,12 +51,16 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
             
             {/* Visual Guide Overlay */}
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[40%] border-x border-dashed border-amber-500/30">
+              <div 
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-x border-dashed border-amber-500/30 transition-all duration-300"
+                style={{ width: scale.width, height: scale.height }}
+              >
                 <div className="absolute -top-10 left-0 right-0 flex flex-col items-center whitespace-nowrap">
-                  <span className="text-[10px] text-amber-500/60 font-bold uppercase tracking-widest bg-zinc-900/80 px-2 py-0.5 rounded">Área de Gravação</span>
-                  <span className="text-[9px] text-zinc-500 mt-1 italic">1,5cm à frente do cabo</span>
+                  <span className="text-[10px] text-amber-500/60 font-bold uppercase tracking-widest bg-zinc-900/80 px-2 py-0.5 rounded">Área de Gravação ({selectedSize})</span>
+                  <span className="text-[9px] text-zinc-500 mt-1 italic">Personalizado para o tamanho da lâmina</span>
                 </div>
               </div>
+
             </div>
 
             <motion.div 
@@ -56,7 +75,7 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
                              selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
                              selectedFont === 'Serif' ? 'serif' : 'sans-serif',
                   fontWeight: selectedFont === 'Bold' ? 'bold' : 'normal',
-                  fontSize: engravedName.length > 15 ? '1rem' : '1.5rem',
+                  fontSize: engravedName.length > 15 ? `calc(${scale.fontSize} * 0.7)` : scale.fontSize,
                   letterSpacing: '0.1em',
                   textShadow: '0 0 10px rgba(217,119,6,0.5)'
                 }}
@@ -82,6 +101,22 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
             
             <div className="space-y-6">
               <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Tamanho da Lâmina</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {sizes.map(size => (
+                    <button 
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`p-2 rounded border text-xs transition-all ${selectedSize === size ? 'border-amber-500 bg-amber-500/10 text-amber-500 font-bold' : 'border-zinc-700 text-zinc-400'}`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+
                 <label className="block text-sm font-medium text-zinc-400 mb-2">Nome gravado</label>
                 <input 
                   type="text" 
@@ -294,7 +329,7 @@ export default function Index() {
                           </button>
                         </div>
                         <p className="text-xs text-amber-500 mt-1">"{item.engravedName}"</p>
-                        <p className="text-[10px] text-zinc-400">Fonte: {item.selectedFont} | {item.selectedSymbol}</p>
+                        <p className="text-[10px] text-zinc-400">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | {item.selectedSymbol}</p>
                         <p className="text-sm font-bold mt-2">{item.product.price}</p>
                       </div>
                     </div>
