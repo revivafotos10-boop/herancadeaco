@@ -118,6 +118,30 @@ const Checkout = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        {showValidationAlert && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="mb-8"
+          >
+            <Alert className="bg-amber-500/10 border-amber-500/50 text-amber-500">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle className="font-bold">Dados de Personalização Incompletos</AlertTitle>
+              <AlertDescription className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
+                <span className="text-zinc-300">Detectamos que alguns itens do seu carrinho ou preferências de personalização não foram carregados corretamente.</span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={recoverData}
+                  className="bg-amber-500 text-black hover:bg-amber-400 border-none font-bold flex items-center gap-2 whitespace-nowrap"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Recuperar Dados
+                </Button>
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <section>
