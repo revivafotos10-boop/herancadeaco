@@ -17,11 +17,13 @@ const symbols = ['Nenhum', '⚓', '⚔️', '🔥', '🛡️', '🐎', '🤠'];
 const KnifeCustomizer = ({ product, onClose }) => {
   const [engravedName, setEngravedName] = useState('');
   const [selectedFont, setSelectedFont] = useState(fonts[0]);
+  const [selectedSymbol, setSelectedSymbol] = useState(symbols[0]);
   const navigate = useNavigate();
 
   const handleCheckout = () => {
-    navigate('/checkout', { state: { product, engravedName, selectedFont } });
+    navigate('/checkout', { state: { product, engravedName, selectedFont, selectedSymbol } });
   };
+
 
   return (
     <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4">
