@@ -9,7 +9,15 @@ import { toast } from "sonner";
 const PaymentStatus = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { status, method, product, engravedName, selectedFont, selectedSymbol } = location.state || { status: 'success', method: 'card', product: { name: 'Faca Selecionada', price: 'R$ 299,00' }, engravedName: '', selectedFont: '', selectedSymbol: '' };
+  const { status, method, cart } = location.state || { status: 'success', method: 'card', cart: [] };
+
+  const cartTotal = cart.reduce((acc, item) => {
+    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
+    return acc + price;
+  }, 0);
+
+  const formattedTotal = `R$ ${cartTotal.toFixed(2).replace('.', ',')}`;
+
 
   const copyPix = () => {
     navigator.clipboard.writeText("00020101021226850014br.gov.bcb.pix013662d59302-604a-4363-9524-766723f6685a5204000053039865802BR5925HERANCA DE ACO6009SAO PAULO62070503***6304E22A");
