@@ -37,7 +37,7 @@ const KnifeCustomizer = ({ product, onClose }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: engravedName ? 1 : 0 }}
           >
-            {engravedName || "Seu Nome"}
+            {engravedName || "Seu Nome"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
           </motion.div>
           <p className="mt-6 text-sm text-zinc-400 italic">Simulação de gravação a laser</p>
         </div>
