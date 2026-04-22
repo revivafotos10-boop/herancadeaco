@@ -73,7 +73,15 @@ const PaymentStatus = () => {
                   <div>
                     <h3 className="font-bold">Resumo do Pedido</h3>
                     <p className="text-sm text-zinc-400">{product.name}</p>
-                    <p className="text-sm font-bold text-amber-500 mt-1">{product.price}</p>
+                    {engravedName && (
+                      <div className="mt-2 p-3 bg-zinc-950 rounded-lg border border-zinc-800">
+                        <p className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Personalização</p>
+                        <p className="text-sm text-amber-500 font-bold">"{engravedName}"</p>
+                        <p className="text-xs text-zinc-400 mt-1">Fonte: {selectedFont} | Símbolo: {selectedSymbol}</p>
+                      </div>
+                    )}
+                    <p className="text-sm font-bold text-amber-500 mt-2">{product.price}</p>
+
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
