@@ -30,73 +30,108 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
       <div className="bg-zinc-900 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-zinc-800 relative">
         <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-amber-500 z-20 p-2"><X /></button>
         
-        <div className="md:w-1/2 p-8 bg-zinc-800/50 flex flex-col items-center justify-center relative">
-          <img src={product.image} alt={product.name} className="w-full h-auto rounded-lg shadow-2xl" />
-          <motion.div 
-            className="absolute bottom-[35%] w-full text-center text-amber-500/90 font-serif text-3xl tracking-widest uppercase pointer-events-none drop-shadow-[0_0_10px_rgba(217,119,6,0.8)]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: engravedName ? 1 : 0 }}
-          >
-            {engravedName || "Seu Nome"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
-          </motion.div>
-          <p className="mt-6 text-sm text-zinc-400 italic">Simulação de gravação a laser</p>
+        <div className="md:w-1/2 p-6 md:p-12 bg-zinc-800/50 flex flex-col items-center justify-center relative min-h-[350px] md:min-h-[500px]">
+          <div className="relative w-full max-w-lg mx-auto">
+            <img src={product.image} alt={product.name} className="w-full h-auto rounded-xl shadow-2xl border border-zinc-700/50" />
+            
+            {/* Visual Guide Overlay */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[40%] border-x border-dashed border-amber-500/30">
+                <div className="absolute -top-10 left-0 right-0 flex flex-col items-center whitespace-nowrap">
+                  <span className="text-[10px] text-amber-500/60 font-bold uppercase tracking-widest bg-zinc-900/80 px-2 py-0.5 rounded">Área de Gravação</span>
+                  <span className="text-[9px] text-zinc-500 mt-1 italic">1,5cm à frente do cabo</span>
+                </div>
+              </div>
+            </div>
+
+            <motion.div 
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: engravedName ? 1 : 0.3 }}
+            >
+              <span 
+                className={`text-amber-500/90 text-center px-4 py-1 transition-all ${!engravedName && 'opacity-20'}`}
+                style={{ 
+                  fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
+                             selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
+                             selectedFont === 'Serif' ? 'serif' : 'sans-serif',
+                  fontWeight: selectedFont === 'Bold' ? 'bold' : 'normal',
+                  fontSize: engravedName.length > 15 ? '1rem' : '1.5rem',
+                  letterSpacing: '0.1em',
+                  textShadow: '0 0 10px rgba(217,119,6,0.5)'
+                }}
+              >
+                {engravedName || "SEU NOME"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
+              </span>
+            </motion.div>
+          </div>
+          <div className="mt-8 flex flex-col items-center gap-2">
+            <p className="text-[10px] text-zinc-500 uppercase tracking-tighter flex items-center gap-1.5 font-medium text-center">
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-500/60" /> 
+              Simulação Realista da Gravação a Laser
+            </p>
+          </div>
         </div>
 
-        <div className="md:w-1/2 p-8 overflow-y-auto relative pt-14">
+        <div className="md:w-1/2 flex flex-col relative pt-14 max-h-[65vh] md:max-h-[90vh]">
           <UrgencyBanner className="absolute top-0 left-0 right-0 py-2 text-[10px] md:text-xs z-10" />
-          <h2 className="text-2xl font-bold text-white mb-6">Personalize sua {product.name}</h2>
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-2">Nome gravado</label>
-              <input 
-                type="text" 
-                value={engravedName}
-                onChange={(e) => setEngravedName(e.target.value)}
-                className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none"
-                placeholder="Ex: Pai João"
-              />
-            </div>
+          
+          <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+            <h2 className="text-2xl font-bold text-white mb-2">Personalize sua {product.name}</h2>
+            <p className="text-zinc-500 text-sm mb-6">Toque nas opções abaixo para ver a prévia acima.</p>
             
-            <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-2">Fonte</label>
-              <div className="grid grid-cols-3 gap-2">
-                {fonts.map(font => (
-                  <button 
-                    key={font}
-                    onClick={() => setSelectedFont(font)}
-                    className={`p-2 rounded border text-xs ${selectedFont === font ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-zinc-700 text-zinc-400'}`}
-                  >
-                    {font}
-                  </button>
-                ))}
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Nome gravado</label>
+                <input 
+                  type="text" 
+                  value={engravedName}
+                  onChange={(e) => setEngravedName(e.target.value)}
+                  className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all"
+                  placeholder="Ex: Pai João"
+                  maxLength={25}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Estilo da Fonte</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {fonts.map(font => (
+                    <button 
+                      key={font}
+                      onClick={() => setSelectedFont(font)}
+                      className={`p-2 rounded border text-xs transition-all ${selectedFont === font ? 'border-amber-500 bg-amber-500/10 text-amber-500 font-bold' : 'border-zinc-700 text-zinc-400'}`}
+                    >
+                      {font}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Símbolo Especial</label>
+                <div className="grid grid-cols-4 gap-2">
+                  {symbols.map(symbol => (
+                    <button 
+                      key={symbol}
+                      onClick={() => setSelectedSymbol(symbol)}
+                      className={`p-2 rounded border text-lg transition-all ${selectedSymbol === symbol ? 'border-amber-500 bg-amber-500/10 text-amber-500 scale-105' : 'border-zinc-700 text-zinc-400'}`}
+                    >
+                      {symbol}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-2">Símbolo</label>
-              <div className="grid grid-cols-4 gap-2">
-                {symbols.map(symbol => (
-                  <button 
-                    key={symbol}
-                    onClick={() => setSelectedSymbol(symbol)}
-                    className={`p-2 rounded border text-lg ${selectedSymbol === symbol ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-zinc-700 text-zinc-400'}`}
-                  >
-                    {symbol}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-
-            <div className="pt-6 border-t border-zinc-800">
-              <button 
-                onClick={handleAddToCart}
-                className="w-full bg-amber-600 text-white py-4 rounded-lg font-bold hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(217,119,6,0.2)]"
-              >
-                Adicionar ao Carrinho
-              </button>
-            </div>
-
+          <div className="p-6 border-t border-zinc-800 bg-zinc-900/80 backdrop-blur-sm sticky bottom-0">
+            <button 
+              onClick={handleAddToCart}
+              className="w-full bg-amber-600 text-white py-4 rounded-lg font-bold hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(217,119,6,0.2)]"
+            >
+              Adicionar ao Carrinho
+            </button>
           </div>
         </div>
       </div>
