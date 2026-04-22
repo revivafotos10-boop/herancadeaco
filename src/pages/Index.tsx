@@ -14,15 +14,15 @@ const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
 const symbols = ['Nenhum', '⚓', '⚔️', '🔥', '🛡️', '🐎', '🤠'];
 
 
-const KnifeCustomizer = ({ product, onClose }) => {
+const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
   const [engravedName, setEngravedName] = useState('');
   const [selectedFont, setSelectedFont] = useState(fonts[0]);
   const [selectedSymbol, setSelectedSymbol] = useState(symbols[0]);
-  const navigate = useNavigate();
 
-  const handleCheckout = () => {
-    navigate('/checkout', { state: { product, engravedName, selectedFont, selectedSymbol } });
+  const handleAddToCart = () => {
+    onAddToCart({ product, engravedName, selectedFont, selectedSymbol });
   };
+
 
 
   return (
