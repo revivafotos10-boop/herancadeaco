@@ -80,15 +80,25 @@ const PaymentStatus = () => {
                   <Package className="w-5 h-5 text-amber-500 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-bold">Resumo do Pedido</h3>
-                    <p className="text-sm text-zinc-400">{product.name}</p>
-                    {engravedName && (
-                      <div className="mt-2 p-3 bg-zinc-950 rounded-lg border border-zinc-800">
-                        <p className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Personalização</p>
-                        <p className="text-sm text-amber-500 font-bold">"{engravedName}"</p>
-                        <p className="text-xs text-zinc-400 mt-1">Fonte: {selectedFont} | Símbolo: {selectedSymbol}</p>
-                      </div>
-                    )}
-                    <p className="text-sm font-bold text-amber-500 mt-2">{product.price}</p>
+                    <div className="space-y-4">
+                      {cart.map((item) => (
+                        <div key={item.cartId} className="border-l-2 border-amber-500/30 pl-3">
+                          <p className="text-sm text-zinc-300 font-medium">{item.product.name}</p>
+                          {item.engravedName && (
+                            <div className="mt-1">
+                              <p className="text-sm text-amber-500 font-bold">"{item.engravedName}"</p>
+                              <p className="text-[10px] text-zinc-500">Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
+                            </div>
+                          )}
+                          <p className="text-xs text-zinc-500 mt-1">{item.product.price}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="pt-2 border-t border-zinc-800 flex justify-between items-center mt-4">
+                      <span className="text-sm text-zinc-400">Total Pago</span>
+                      <span className="text-lg font-bold text-amber-500">{formattedTotal}</span>
+                    </div>
+
 
                   </div>
                 </div>
