@@ -34,8 +34,9 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
 
 
   const handleAddToCart = () => {
-    onAddToCart({ product, engravedName, selectedFont, selectedSymbol });
+    onAddToCart({ product, engravedName, selectedFont, selectedSymbol, selectedSize });
   };
+
 
 
 
