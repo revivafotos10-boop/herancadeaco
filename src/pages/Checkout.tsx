@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CreditCard, QrCode, ShieldCheck, Truck, ChevronLeft, Lock, AlertCircle, RefreshCw } from 'lucide-react';
+import { CreditCard, QrCode, ShieldCheck, Truck, ChevronLeft, Lock, AlertCircle, RefreshCw, Trash2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -78,6 +78,18 @@ const Checkout = () => {
     toast.success("Dados recuperados com sucesso!");
   };
 
+  const clearCartAndGoHome = () => {
+    localStorage.removeItem('cart');
+    localStorage.removeItem('selectedSize');
+    localStorage.removeItem('selectedFont');
+    localStorage.removeItem('selectedSymbol');
+    localStorage.removeItem('selectedEngravedName');
+    setCart([]);
+    setShowValidationAlert(false);
+    toast.info("Carrinho limpo. Redirecionando...");
+    navigate('/');
+  };
+
   const cartTotal = cart.reduce((acc, item) => {
     const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
     return acc + price;
@@ -135,15 +147,26 @@ const Checkout = () => {
               <AlertTitle className="font-bold">Dados de Personalização Incompletos</AlertTitle>
               <AlertDescription className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
                 <span className="text-zinc-300">Detectamos que alguns itens do seu carrinho ou preferências de personalização não foram carregados corretamente.</span>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={recoverData}
-                  className="bg-amber-500 text-black hover:bg-amber-400 border-none font-bold flex items-center gap-2 whitespace-nowrap"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                  Recuperar Dados
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={recoverData}
+                    className="bg-amber-500 text-black hover:bg-amber-400 border-none font-bold flex items-center gap-2 whitespace-nowrap"
+                  >
+                    <RefreshCw className="h-4 w-4" />
+                    Recuperar Dados
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={clearCartAndGoHome}
+                    className="bg-zinc-800 text-zinc-300 hover:bg-zinc-700 border-none font-bold flex items-center gap-2 whitespace-nowrap"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Limpar e Início
+                  </Button>
+                </div>
               </AlertDescription>
             </Alert>
           </motion.div>
