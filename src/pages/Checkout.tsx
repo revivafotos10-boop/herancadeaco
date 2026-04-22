@@ -37,16 +37,17 @@ const Checkout = () => {
     
     // Validate cart items
     const isIncomplete = cart.some((item: any) => 
-      !item.selectedSize || !item.selectedFont || !item.selectedSymbol ||
-      item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === ''
+      !item.selectedSize || !item.selectedFont || !item.selectedSymbol || !item.engravedName ||
+      item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === '' || item.engravedName === ''
     );
     
     // Check for top-level localStorage items mentioned in prompt
     const savedSize = localStorage.getItem('selectedSize');
     const savedFont = localStorage.getItem('selectedFont');
     const savedSymbol = localStorage.getItem('selectedSymbol');
+    const savedName = localStorage.getItem('selectedEngravedName');
     
-    if (isIncomplete || !savedSize || !savedFont || !savedSymbol) {
+    if (isIncomplete || !savedSize || !savedFont || !savedSymbol || !savedName) {
       setShowValidationAlert(true);
     } else {
       setShowValidationAlert(false);
@@ -59,6 +60,7 @@ const Checkout = () => {
       selectedSize: item.selectedSize || localStorage.getItem('selectedSize') || '10"',
       selectedFont: item.selectedFont || localStorage.getItem('selectedFont') || 'Manuscrita',
       selectedSymbol: item.selectedSymbol || localStorage.getItem('selectedSymbol') || 'Nenhum',
+      engravedName: item.engravedName || localStorage.getItem('selectedEngravedName') || '',
     }));
     
     setCart(recoveredCart);
@@ -67,6 +69,10 @@ const Checkout = () => {
     if (!localStorage.getItem('selectedSize')) localStorage.setItem('selectedSize', '10"');
     if (!localStorage.getItem('selectedFont')) localStorage.setItem('selectedFont', 'Manuscrita');
     if (!localStorage.getItem('selectedSymbol')) localStorage.setItem('selectedSymbol', 'Nenhum');
+    if (!localStorage.getItem('selectedEngravedName')) {
+      const firstItemWithName = cart.find((i: any) => i.engravedName);
+      if (firstItemWithName) localStorage.setItem('selectedEngravedName', firstItemWithName.engravedName);
+    }
     
     setShowValidationAlert(false);
     toast.success("Dados recuperados com sucesso!");
