@@ -105,6 +105,25 @@ const KnifeCustomizer = ({ product, onClose }) => {
 
 export default function Index() {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const addToCart = (productData) => {
+    setCart([...cart, { ...productData, cartId: Date.now() }]);
+    setSelectedProduct(null);
+    setIsCartOpen(true);
+  };
+
+  const removeFromCart = (cartId) => {
+    setCart(cart.filter(item => item.cartId !== cartId));
+  };
+
+  const cartTotal = cart.reduce((acc, item) => {
+    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
+    return acc + price;
+  }, 0);
+
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans">
