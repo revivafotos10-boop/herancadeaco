@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck, Truck, Star, Pencil, X, Flame, Timer } from 'lucide-react';
+import { ShieldCheck, Truck, Star, Pencil, X, Flame, Timer, ShoppingBag, Trash2 } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
 
 const products = [
