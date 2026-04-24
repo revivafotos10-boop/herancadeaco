@@ -19,7 +19,8 @@ import {
   User,
   Gift,
   ArrowRight,
-  Loader2
+  Loader2,
+  Sword
 } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
 import { supabase } from '@/lib/supabase';
@@ -305,7 +306,7 @@ export default function Index() {
       <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-8 mt-10 md:mt-12'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2 group cursor-pointer">
-            <Crown className="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform" />
+            <Sword className="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform" />
             <h1 className="text-xl md:text-2xl font-black font-serif tracking-[0.3em] text-white uppercase group-hover:text-amber-500 transition-colors">Herança de Aço</h1>
           </div>
           
@@ -417,7 +418,7 @@ export default function Index() {
               <div className="relative aspect-square">
                 <div className="absolute inset-0 bg-amber-600/10 blur-[120px] rounded-full animate-pulse" />
                 <img 
-                  src="https://images.unsplash.com/photo-1593014168095-2dfb9f2913f0?auto=format&fit=crop&q=80&w=800" 
+                  src="https://images.unsplash.com/photo-1594470117722-da419337297b?auto=format&fit=crop&q=80&w=800" 
                   alt="Faca de Elite" 
                   className="w-full h-full object-contain relative z-10 drop-shadow-[0_35px_35px_rgba(0,0,0,0.8)]"
                 />
@@ -679,7 +680,7 @@ export default function Index() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-10">
             <div className="flex items-center gap-3">
-              <Crown className="w-6 h-6 text-amber-500" />
+              <Sword className="w-6 h-6 text-amber-500" />
               <h2 className="text-xl font-black font-serif tracking-[0.4em] uppercase">Herança de Aço</h2>
             </div>
             <div className="flex gap-10 text-[10px] font-black tracking-[0.3em] text-zinc-500">
