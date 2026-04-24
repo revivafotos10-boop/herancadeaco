@@ -422,13 +422,24 @@ export default function Index() {
                 initial={{ opacity: 0, scale: 0.7, rotate: -25, x: 150 }}
                 animate={{ opacity: 1, scale: 1, rotate: -15, x: 0 }}
                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                className="relative z-30 drop-shadow-[0_40px_80px_rgba(0,0,0,0.9)] cursor-pointer"
+                className="relative z-30 group cursor-pointer"
               >
-                <img 
-                  src="https://images.unsplash.com/photo-1614364650220-33230a10c9c3?q=80&w=800" 
-                  alt="Faca Premium Herança" 
-                  className="w-full h-auto max-w-[550px] relative z-50 rounded-2xl shadow-2xl"
-                />
+                <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700">
+                  <div className="relative overflow-hidden rounded-[32px]">
+                    <img 
+                      src="https://images.unsplash.com/photo-1614364650220-33230a10c9c3?q=80&w=800" 
+                      alt="Faca Premium Herança" 
+                      className="w-full h-auto relative z-50 transition-transform duration-1000 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-[55] flex flex-col justify-end p-8">
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500">Edição Especial</span>
+                        <h3 className="text-3xl font-bold font-serif">Faca Premium Herança</h3>
+                        <p className="text-2xl font-black text-white">R$ 499,00</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 
                 {/* Dynamic Blade Shine */}
                 <motion.div 
