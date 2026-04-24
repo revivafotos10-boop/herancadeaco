@@ -1,0 +1,1 @@
+ALTER TABLE public.products ADD COLUMN preview_text TEXT DEFAULT 'MARCELO';
