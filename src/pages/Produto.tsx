@@ -133,22 +133,31 @@ export default function Produto() {
 
   const getEngravingStyle = () => {
     const isAmiro = product?.name?.includes('Amiro');
+    const nameLength = engravedName.length;
     
     if (isAmiro) {
+      const baseSize = 22;
+      // Aggressive scaling for long names to keep them on the blade
+      const adjustedSize = nameLength > 20 ? baseSize * 0.5 : 
+                           nameLength > 12 ? baseSize * 0.75 : baseSize;
+      
       return {
         left: '33%',
         top: '44%',
-        transform: 'translate(-50%, -50%) rotate(-18deg)',
-        fontSize: '22px',
+        transform: `translate(-50%, -50%) rotate(-18deg) ${nameLength > 20 ? 'scaleX(0.9)' : ''}`,
+        fontSize: `${adjustedSize}px`,
         color: '#111111',
         opacity: 0.8,
         mixBlendMode: 'multiply' as const,
+        maxWidth: '40%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
       };
     }
 
     // Default for other products
     const baseSize = selectedSize === '8"' ? 16 : selectedSize === '12"' ? 24 : 20;
-    const adjustedSize = engravedName.length > 15 ? baseSize * 0.7 : baseSize;
+    const adjustedSize = nameLength > 15 ? baseSize * 0.7 : baseSize;
 
     return {
       left: '55%',
