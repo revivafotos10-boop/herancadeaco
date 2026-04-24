@@ -21,58 +21,18 @@ import {
   ArrowRight
 } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
+import { supabase } from '@/lib/supabase';
 
-const products = [
-  { 
-    id: 1, 
-    name: 'Cutelo Artesanal Brut', 
-    price: 'R$ 499,00', 
-    image: 'https://images.unsplash.com/photo-1593014168095-2dfb9f2913f0?auto=format&fit=crop&q=80&w=600', 
-    description: 'Uma obra-prima em aço premium, personalizada com exclusividade para você.'
-  },
-  { 
-    id: 2, 
-    name: 'Lâmina de Elite Gold', 
-    price: 'R$ 549,00', 
-    image: 'https://images.unsplash.com/photo-1594913533870-1378f84400a0?auto=format&fit=crop&q=80&w=600', 
-    description: 'Design sofisticado e fio de navalha, o ápice da cutelaria artesanal.'
-  },
-  { 
-    id: 3, 
-    name: 'Herança Silvestre', 
-    price: 'R$ 589,00', 
-    image: 'https://images.unsplash.com/photo-1592156328737-023a1a364be1?auto=format&fit=crop&q=80&w=600', 
-    description: 'O legado que atravessa gerações, forjado com precisão e alma.'
-  },
-  { 
-    id: 4, 
-    name: 'Faca Guardião 20cm Inox', 
-    price: 'R$ 99,90', 
-    oldPrice: 'R$ 129,90',
-    image: '/faca-guardiao.png', 
-    description: 'Compacta, afiada e extremamente resistente. Feita em aço inox com cabo em madeira premium e design exclusivo com detalhe em cruz.',
-    features: [
-      'Aço inox resistente',
-      'Cabo em madeira nobre',
-      'Tamanho ideal 20cm',
-      'Acompanha bainha'
-    ]
-  },
-  { 
-    id: 5, 
-    name: 'Faca Imperador 31cm – Cabo em Osso', 
-    price: 'R$ 149,90', 
-    oldPrice: 'R$ 199,90',
-    image: '/faca-imperador.png', 
-    description: 'Faca imponente com lâmina longa de 31cm e cabo em osso com acabamento premium. Ideal para quem busca desempenho, presença e estilo.',
-    features: [
-      'Lâmina longa e precisa',
-      'Cabo em osso premium',
-      'Design sofisticado',
-      'Pegada firme'
-    ]
-  },
-];
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  old_price: number | null;
+  image_url: string;
+  features: string[];
+  active: boolean;
+}
 
 const testimonials = [
   {
