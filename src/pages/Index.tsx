@@ -128,21 +128,19 @@ export default function Index() {
       </nav>
 
       {/* 1. New Hero Banner Image */}
-      <section className="relative w-full overflow-hidden bg-[#0b0b0b]">
+      <section className="relative w-full overflow-hidden bg-[#000000]">
         <div 
-          className="w-full h-auto min-h-[450px] bg-cover bg-center bg-no-repeat"
+          className="w-full h-[280px] md:h-[520px] bg-contain bg-top bg-no-repeat"
           style={{ 
             backgroundImage: `url('https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/banners//image.png')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundSize: 'contain',
+            backgroundPosition: 'center top',
             backgroundRepeat: 'no-repeat',
+            backgroundColor: '#000000',
             width: '100%',
           }}
           aria-label="Banner principal"
-        >
-          {/* Mobile height aspect ratio maintainer */}
-          <div className="block md:hidden pb-[56.25%] w-full h-0" />
-        </div>
+        />
       </section>
 
       {/* 2. Seção de produtos (vitrine) */}
