@@ -58,6 +58,20 @@ const products = [
       'Acompanha bainha'
     ]
   },
+  { 
+    id: 5, 
+    name: 'Faca Imperador 31cm – Cabo em Osso', 
+    price: 'R$ 149,90', 
+    oldPrice: 'R$ 199,90',
+    image: '/faca-imperador.png', 
+    description: 'Faca imponente com lâmina longa de 31cm e cabo em osso com acabamento premium. Ideal para quem busca desempenho, presença e estilo.',
+    features: [
+      'Lâmina longa e precisa',
+      'Cabo em osso premium',
+      'Design sofisticado',
+      'Pegada firme'
+    ]
+  },
 ];
 
 const testimonials = [
