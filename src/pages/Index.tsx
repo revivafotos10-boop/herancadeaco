@@ -25,24 +25,24 @@ import UrgencyBanner from '@/components/UrgencyBanner';
 const products = [
   { 
     id: 1, 
-    name: 'Cutelo Artesanal Brut', 
-    price: 'R$ 349,00', 
+    name: 'Aguardando Imagem...', 
+    price: 'R$ 499,00', 
     image: '', 
-    description: 'Forjado em aço carbono de alta densidade, com acabamento bruto e resistência extrema.'
+    description: 'Uma obra-prima em aço premium, personalizada com exclusividade para você.'
   },
   { 
     id: 2, 
-    name: 'Lâmina de Elite Gold', 
-    price: 'R$ 299,00', 
+    name: 'Aguardando Imagem...', 
+    price: 'R$ 549,00', 
     image: '', 
-    description: 'Equilíbrio milimétrico e fio de navalha, desenvolvida para precisão absoluta em cada movimento.'
+    description: 'Design sofisticado e fio de navalha, o ápice da cutelaria artesanal.'
   },
   { 
     id: 3, 
-    name: 'Herança Silvestre', 
-    price: 'R$ 389,00', 
+    name: 'Aguardando Imagem...', 
+    price: 'R$ 589,00', 
     image: '', 
-    description: 'Design clássico atemporal com cabo em madeira nobre e empunhadura ergonômica superior.'
+    description: 'O legado que atravessa gerações, forjado com precisão e alma.'
   },
 ];
 
