@@ -591,6 +591,16 @@ export default function Index() {
                     <p className="text-zinc-500 text-sm leading-relaxed font-light min-h-[3rem]">
                       {product.description}
                     </p>
+                    {product.features && (
+                      <ul className="space-y-1 pt-2">
+                        {product.features.map((feature, idx) => (
+                          <li key={idx} className="text-[10px] text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                            <div className="w-1 h-1 rounded-full bg-amber-500/50" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                   
                   <div className="flex flex-col space-y-6">
