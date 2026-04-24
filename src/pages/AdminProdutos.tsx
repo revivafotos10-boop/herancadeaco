@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Slider } from "@/components/ui/slider";
 import { 
   Table, 
   TableBody, 
@@ -22,7 +23,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Pencil, Trash2, Loader2, Upload, X, Save, ImagePlus } from 'lucide-react';
+import { Plus, Pencil, Trash2, Loader2, Upload, X, Save, ImagePlus, Minus } from 'lucide-react';
 import { toast } from "sonner";
 
 interface Product {
@@ -52,6 +53,7 @@ interface Product {
   engraving_start_y: number;
   engraving_end_x: number;
   engraving_end_y: number;
+  preview_text: string;
   created_at?: string;
 }
 
@@ -81,6 +83,7 @@ const INITIAL_PRODUCT: Product = {
   engraving_start_y: 44,
   engraving_end_x: 60,
   engraving_end_y: 35,
+  preview_text: 'MARCELO',
 };
 
 export default function AdminProdutos() {
@@ -297,6 +300,7 @@ export default function AdminProdutos() {
           engraving_start_y: 44,
           engraving_end_x: 60,
           engraving_end_y: 35,
+          preview_text: 'MARCELO',
         };
 
         const { data, error: insertError } = await supabase
@@ -532,15 +536,78 @@ export default function AdminProdutos() {
                   {formData.image_url ? (
                     <>
                       <img src={formData.image_url} alt="Preview" className="w-full h-full object-contain p-4" />
+                      
+                      {/* Simulation Overlay - Auto positioning logic */}
+                      {(() => {
+                        const x1 = formData.engraving_start_x;
+                        const y1 = formData.engraving_start_y;
+                        const x2 = formData.engraving_end_x;
+                        const y2 = formData.engraving_end_y;
+
+                        // Center point
+                        const x = (x1 + x2) / 2;
+                        const y = (y1 + y2) / 2;
+
+                        // Distance (width of the area)
+                        const dx = x2 - x1;
+                        const dy = y2 - y1;
+                        const w = Math.sqrt(dx * dx + dy * dy);
+                        
+                        // Rotation in degrees
+                        const rot = Math.atan2(dy, dx) * (180 / Math.PI);
+                        
+                        // Standard height for the text area - adjusted by font size
+                        const h = (formData.engraving_font_size || 20) / 2.5;
+
+                        return (
+                          <div 
+                            className="absolute pointer-events-none flex items-center justify-center mix-blend-multiply opacity-75"
+                            style={{
+                              left: `${x - (w / 2)}%`,
+                              top: `${y - (h / 2)}%`,
+                              width: `${w}%`,
+                              height: `${h}%`,
+                              transform: `rotate(${rot}deg)`,
+                              zIndex: 20,
+                            }}
+                          >
+                            <svg 
+                              viewBox="0 0 200 40" 
+                              width="100%" 
+                              height="100%" 
+                              preserveAspectRatio="xMidYMid meet"
+                            >
+                              <text 
+                                x="100" 
+                                y="20" 
+                                textAnchor="middle" 
+                                dominantBaseline="middle"
+                                textLength="190"
+                                lengthAdjust="spacing"
+                                style={{ 
+                                  fontSize: `${formData.engraving_font_size * 1.5}px`, 
+                                  fontWeight: '600',
+                                  fill: formData.engraving_color || '#2b2b2b',
+                                  fontFamily: 'Dancing Script, cursive',
+                                  letterSpacing: '0.01em',
+                                }}
+                              >
+                                {formData.preview_text || "MARCELO"}
+                              </text>
+                            </svg>
+                          </div>
+                        );
+                      })()}
+
                       {/* Visual indicators for points */}
-                      <div className="absolute w-3 h-3 bg-green-500 rounded-full border-2 border-white -translate-x-1/2 -translate-y-1/2 shadow-lg" style={{ left: `${formData.engraving_start_x}%`, top: `${formData.engraving_start_y}%` }}>
+                      <div className="absolute w-3 h-3 bg-green-500 rounded-full border-2 border-white -translate-x-1/2 -translate-y-1/2 shadow-lg z-30" style={{ left: `${formData.engraving_start_x}%`, top: `${formData.engraving_start_y}%` }}>
                         <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[8px] font-bold bg-black px-1 rounded">INÍCIO</span>
                       </div>
-                      <div className="absolute w-3 h-3 bg-red-500 rounded-full border-2 border-white -translate-x-1/2 -translate-y-1/2 shadow-lg" style={{ left: `${formData.engraving_end_x}%`, top: `${formData.engraving_end_y}%` }}>
+                      <div className="absolute w-3 h-3 bg-red-500 rounded-full border-2 border-white -translate-x-1/2 -translate-y-1/2 shadow-lg z-30" style={{ left: `${formData.engraving_end_x}%`, top: `${formData.engraving_end_y}%` }}>
                         <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[8px] font-bold bg-black px-1 rounded">FIM</span>
                       </div>
                       {/* Line connecting points */}
-                      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
+                      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30 z-25">
                         <line 
                           x1={`${formData.engraving_start_x}%`} 
                           y1={`${formData.engraving_start_y}%`} 
@@ -653,6 +720,50 @@ export default function AdminProdutos() {
                       <Input type="number" value={Math.round(formData.engraving_end_x)} onChange={(e) => setFormData({...formData, engraving_end_x: Number(e.target.value)})} className="bg-zinc-950 border-zinc-800 h-8 text-[10px]" />
                       <Input type="number" value={Math.round(formData.engraving_end_y)} onChange={(e) => setFormData({...formData, engraving_end_y: Number(e.target.value)})} className="bg-zinc-950 border-zinc-800 h-8 text-[10px]" />
                     </div>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="preview_text">Texto de Preview</Label>
+                    <Input 
+                      id="preview_text" 
+                      value={formData.preview_text} 
+                      onChange={(e) => setFormData({...formData, preview_text: e.target.value})} 
+                      className="bg-zinc-900 border-zinc-800"
+                      placeholder="MARCELO"
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] text-zinc-400">Tamanho da Fonte ({formData.engraving_font_size})</Label>
+                      <div className="flex gap-1">
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          className="h-6 w-6 bg-zinc-800 border-zinc-700"
+                          onClick={() => setFormData(prev => ({ ...prev, engraving_font_size: Math.max(10, (prev.engraving_font_size || 20) - 1) }))}
+                        >
+                          <Minus className="h-3 w-3" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          className="h-6 w-6 bg-zinc-800 border-zinc-700"
+                          onClick={() => setFormData(prev => ({ ...prev, engraving_font_size: Math.min(40, (prev.engraving_font_size || 20) + 1) }))}
+                        >
+                          <Plus className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                    <Slider 
+                      value={[formData.engraving_font_size || 20]} 
+                      min={10} 
+                      max={40} 
+                      step={1} 
+                      onValueChange={(vals) => setFormData({ ...formData, engraving_font_size: vals[0] })}
+                      className="py-2"
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">

@@ -164,8 +164,8 @@ export default function Produto() {
       // Rotation in degrees
       const rot = Math.atan2(dy, dx) * (180 / Math.PI);
       
-      // Standard height for the text area
-      const h = 8; 
+      // Height for the text area - adjusted by product font size
+      const h = (product.engraving_font_size || 20) / 2.5; 
 
       return {
         position: 'absolute' as const,
@@ -284,8 +284,10 @@ export default function Produto() {
                         y="20" 
                         textAnchor="middle" 
                         dominantBaseline="middle"
+                        textLength="190"
+                        lengthAdjust="spacing"
                         style={{ 
-                          fontSize: '24px', 
+                          fontSize: `${(product?.engraving_font_size || 24) * 1.5}px`, 
                           fontWeight: '600',
                           fill: product?.engraving_color || '#2b2b2b',
                           fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 

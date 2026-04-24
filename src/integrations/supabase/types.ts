@@ -40,6 +40,7 @@ export type Database = {
           material: string | null
           name: string
           old_price: number | null
+          preview_text: string | null
           price: number
           size_cm: string | null
           slug: string | null
@@ -69,6 +70,7 @@ export type Database = {
           material?: string | null
           name: string
           old_price?: number | null
+          preview_text?: string | null
           price?: number
           size_cm?: string | null
           slug?: string | null
@@ -98,6 +100,7 @@ export type Database = {
           material?: string | null
           name?: string
           old_price?: number | null
+          preview_text?: string | null
           price?: number
           size_cm?: string | null
           slug?: string | null
