@@ -92,7 +92,7 @@ export default function Index() {
       <UrgencyBanner className="z-[90] relative" />
       
       {/* Cinematic Header */}
-      <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-8 mt-10 md:mt-12'}`}>
+      <nav className={`w-full z-[100] transition-all duration-300 ${scrolled ? 'fixed top-0 bg-black py-4 border-b border-zinc-900 shadow-2xl' : 'absolute top-0 bg-transparent py-8 mt-0'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <Sword className="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform" />
