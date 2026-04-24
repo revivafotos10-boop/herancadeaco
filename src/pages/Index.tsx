@@ -49,22 +49,22 @@ const products = [
 const testimonials = [
   {
     name: "Carlos Alberto",
-    role: "Churrasqueiro Profissional",
-    content: "A qualidade do corte e o equilíbrio da faca são impressionantes. Superou todas as minhas expectativas.",
+    role: "Mestre Cuteleiro",
+    content: "A qualidade do aço e o equilíbrio do centro de massa são impressionantes. Uma obra de engenharia real.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&q=80&w=150"
   },
   {
     name: "Mariana Silva",
-    role: "Chef de Cozinha",
-    content: "Presenteei meu pai com um cutelo personalizado e ele ficou sem palavras. A gravação é impecável.",
+    role: "Entusiasta de Cutelaria",
+    content: "Presenteei meu pai com uma lâmina personalizada e ele ficou sem palavras. A gravação é impecável e definitiva.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150"
   },
   {
     name: "Ricardo Mendes",
     role: "Colecionador",
-    content: "Uma verdadeira obra de arte. O acabamento em madeira nobre dá um toque de sofisticação único.",
+    content: "Uma verdadeira peça de museu. O acabamento em madeira de lei e a têmpera do aço são de outro nível.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150"
   }
