@@ -32,6 +32,7 @@ interface Product {
   price: number;
   old_price: number | null;
   image_url: string;
+  gallery_images: string[];
   features: string[];
   active: boolean;
 }
@@ -81,6 +82,7 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
   const [selectedFont, setSelectedFont] = useState(() => localStorage.getItem(`selectedFont_${product.id}`) || getProductDefault('font'));
   const [selectedSymbol, setSelectedSymbol] = useState(() => localStorage.getItem(`selectedSymbol_${product.id}`) || getProductDefault('symbol'));
   const [selectedSize, setSelectedSize] = useState(() => localStorage.getItem(`selectedSize_${product.id}`) || getProductDefault('size'));
+  const [previewImage, setPreviewImage] = useState(product.image_url);
 
   useEffect(() => {
     localStorage.setItem(`engravedName_${product.id}`, engravedName);
@@ -121,8 +123,8 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="w-full h-full flex items-center justify-center bg-zinc-900/50 rounded-xl"
             >
-              {product.image_url ? (
-                <img src={product.image_url} alt={product.name} className="w-full h-auto object-contain rounded-xl p-8" />
+              {previewImage ? (
+                <img src={previewImage} alt={product.name} className="w-full h-auto object-contain rounded-xl p-8" />
               ) : (
                 <div className="w-full h-full bg-zinc-900/50 rounded-xl flex items-center justify-center border border-dashed border-zinc-800">
                   <span className="text-zinc-700 font-serif italic text-sm">Imagem não cadastrada</span>
@@ -152,6 +154,19 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
               </motion.div>
             </div>
           </div>
+          {product.gallery_images && product.gallery_images.length > 0 && (
+            <div className="flex gap-2 mt-4 overflow-x-auto pb-2 custom-scrollbar max-w-full">
+              {[product.image_url, ...product.gallery_images].filter(Boolean).map((img, idx) => (
+                <button 
+                  key={idx}
+                  onClick={() => setPreviewImage(img)}
+                  className={`w-16 h-16 rounded-lg border-2 overflow-hidden flex-shrink-0 transition-all ${previewImage === img ? 'border-amber-500 scale-110 shadow-[0_0_15px_rgba(217,119,6,0.3)]' : 'border-zinc-800 opacity-60 hover:opacity-100'}`}
+                >
+                  <img src={img} alt="Gallery" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
           <p className="mt-8 text-[11px] text-zinc-500 uppercase tracking-[0.2em] font-medium flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
             Simulador de Gravação Laser
