@@ -45,6 +45,8 @@ interface Product {
   engraving_start_y?: number;
   engraving_end_x?: number;
   engraving_end_y?: number;
+  engraving_opacity?: number;
+  engraving_blend_mode?: string;
 }
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
@@ -179,7 +181,8 @@ export default function Produto() {
         alignItems: 'center',
         justifyContent: 'center',
         pointerEvents: 'none' as const,
-        mixBlendMode: 'multiply' as const,
+        mixBlendMode: (product.engraving_blend_mode as any) || 'normal',
+        opacity: product.engraving_opacity ?? 1.0,
       };
     }
 
@@ -202,7 +205,8 @@ export default function Produto() {
       alignItems: 'center',
       justifyContent: 'center',
       pointerEvents: 'none' as const,
-      mixBlendMode: 'multiply' as const,
+      mixBlendMode: (product?.engraving_blend_mode as any) || 'normal',
+      opacity: product?.engraving_opacity ?? 1.0,
     };
   };
 
@@ -270,7 +274,7 @@ export default function Produto() {
                 <div className="absolute inset-0 pointer-events-none z-20">
                   <motion.div 
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.75 }}
+                    animate={{ opacity: 1 }}
                     style={boxStyle}
                   >
                     <svg 
