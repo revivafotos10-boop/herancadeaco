@@ -23,10 +23,12 @@ export type Database = {
           engraving_area_width: number | null
           engraving_area_x: number | null
           engraving_area_y: number | null
+          engraving_blend_mode: string | null
           engraving_color: string | null
           engraving_end_x: number | null
           engraving_end_y: number | null
           engraving_font_size: number | null
+          engraving_opacity: number | null
           engraving_rotation: number | null
           engraving_start_x: number | null
           engraving_start_y: number | null
@@ -53,10 +55,12 @@ export type Database = {
           engraving_area_width?: number | null
           engraving_area_x?: number | null
           engraving_area_y?: number | null
+          engraving_blend_mode?: string | null
           engraving_color?: string | null
           engraving_end_x?: number | null
           engraving_end_y?: number | null
           engraving_font_size?: number | null
+          engraving_opacity?: number | null
           engraving_rotation?: number | null
           engraving_start_x?: number | null
           engraving_start_y?: number | null
@@ -83,10 +87,12 @@ export type Database = {
           engraving_area_width?: number | null
           engraving_area_x?: number | null
           engraving_area_y?: number | null
+          engraving_blend_mode?: string | null
           engraving_color?: string | null
           engraving_end_x?: number | null
           engraving_end_y?: number | null
           engraving_font_size?: number | null
+          engraving_opacity?: number | null
           engraving_rotation?: number | null
           engraving_start_x?: number | null
           engraving_start_y?: number | null
