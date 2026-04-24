@@ -132,7 +132,9 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
               {product.image ? (
                 <img src={product.image} alt={product.name} className="w-full h-auto object-contain rounded-xl" />
               ) : (
-                <span className="text-zinc-600 font-serif italic">Imagem da faca aqui</span>
+                <div className="w-full h-full bg-zinc-900/50 rounded-xl flex items-center justify-center border border-dashed border-zinc-800">
+                  <span className="text-zinc-700 font-serif italic">Carregando visualização...</span>
+                </div>
               )}
             </motion.div>
             
