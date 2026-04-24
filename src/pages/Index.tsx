@@ -733,10 +733,10 @@ export default function Index() {
           </div>
           
           <div className="flex flex-wrap justify-center gap-16 text-zinc-700 uppercase text-[9px] font-black tracking-[0.4em]">
-            <a href="#" className="hover:text-amber-500 transition-colors">Suporte</a>
-            <a href="#" className="hover:text-amber-500 transition-colors">Políticas</a>
-            <a href="#" className="hover:text-amber-500 transition-colors">Onde Estamos</a>
-            <a href="#" className="hover:text-amber-500 transition-colors">B2B/Corporativo</a>
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500 transition-colors">Suporte</a>
+            <a href="#produtos" className="hover:text-amber-500 transition-colors">Coleção</a>
+            <a href="#historia" className="hover:text-amber-500 transition-colors">Nossa História</a>
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500 transition-colors">B2B/Corporativo</a>
           </div>
           
           <div className="mt-20 pt-10 border-t border-zinc-900/30">
