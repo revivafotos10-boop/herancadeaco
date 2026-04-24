@@ -413,7 +413,7 @@ export default function Index() {
                 transition={{ duration: 1.5, delay: 0.4 }}
                 className="absolute w-[450px] h-[550px] bg-[#111] rounded-2xl shadow-[0_50px_100px_rgba(0,0,0,0.9)] border border-zinc-800/30 overflow-hidden"
               >
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614364650220-33230a10c9c3?auto=format&fit=crop&q=80&w=800')] bg-cover opacity-20" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1594913366159-1832005474d8?auto=format&fit=crop&q=80&w=800')] bg-cover opacity-20" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-white/5" />
               </motion.div>
 
