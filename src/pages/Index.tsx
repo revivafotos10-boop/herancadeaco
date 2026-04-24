@@ -27,21 +27,21 @@ const products = [
     id: 1, 
     name: 'Cutelo Artesanal Brut', 
     price: 'R$ 349,00', 
-    image: '/lovable-uploads/faca1.png',
+    image: 'https://images.unsplash.com/photo-1614362984185-3b107077e682?auto=format&fit=crop&q=80&w=800',
     description: 'Forjado em aço carbono, ideal para cortes robustos e precisos.'
   },
   { 
     id: 2, 
     name: 'Faca Chef Premium Gold', 
     price: 'R$ 299,00', 
-    image: '/lovable-uploads/faca2.png',
+    image: 'https://images.unsplash.com/photo-1593618998160-e34014e67546?auto=format&fit=crop&q=80&w=800',
     description: 'Equilíbrio perfeito e fio de navalha para alta gastronomia.'
   },
   { 
     id: 3, 
     name: 'Faca Picanheira Raiz', 
     price: 'R$ 389,00', 
-    image: '/lovable-uploads/faca3.png',
+    image: 'https://images.unsplash.com/photo-1580915411954-282cb1b0d780?auto=format&fit=crop&q=80&w=800',
     description: 'O clássico do churrasco brasileiro, com cabo em madeira nobre.'
   },
 ];
@@ -128,7 +128,7 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
               }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <img src={product.image} alt={product.name} className="w-full h-auto object-contain mix-blend-screen" />
+              <img src={product.image} alt={product.name} className="w-full h-auto object-contain rounded-xl" />
             </motion.div>
             
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -427,8 +427,8 @@ export default function Index() {
                 <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700">
                   <div className="relative overflow-hidden rounded-[32px]">
                     <img 
-                      src="/lovable-uploads/faca1.png" 
-                      className="w-full h-auto relative z-50 transition-transform duration-1000 group-hover:scale-110 object-contain mix-blend-screen"
+                      src="https://images.unsplash.com/photo-1594133900913-c8ec23602953?auto=format&fit=crop&q=80&w=800" 
+                      className="w-full h-auto relative z-50 transition-transform duration-1000 group-hover:scale-110 object-cover rounded-[32px]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-[55] flex flex-col justify-end p-8">
                       <div className="space-y-2">
@@ -543,7 +543,7 @@ export default function Index() {
                   <img 
                     src={product.image} 
                     alt={product.name} 
-                    className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-110 brightness-[0.85] group-hover:brightness-100 mix-blend-screen" 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-[0.85] group-hover:brightness-100" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent opacity-90" />
                   
@@ -620,7 +620,7 @@ export default function Index() {
                   cart.map((item) => (
                     <div key={item.cartId} className="group relative flex gap-6 bg-[#0d0d0d] p-6 rounded-3xl border border-zinc-900 transition-all">
                       <div className="w-24 h-24 shrink-0 overflow-hidden rounded-2xl border border-zinc-800">
-                        <img src={item.product.image} className="w-full h-full object-contain mix-blend-screen" alt={item.product.name} />
+                        <img src={item.product.image} className="w-full h-full object-cover" alt={item.product.name} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start mb-2">
