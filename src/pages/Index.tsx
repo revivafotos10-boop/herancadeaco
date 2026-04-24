@@ -27,44 +27,44 @@ const products = [
     id: 1, 
     name: 'Cutelo Artesanal Brut', 
     price: 'R$ 349,00', 
-    image: '', // Placeholder: Imagem da faca aqui
-    description: 'Forjado em aço carbono, ideal para cortes robustos e precisos.'
+    image: '', 
+    description: 'Forjado em aço carbono de alta densidade, com acabamento bruto e resistência extrema.'
   },
   { 
     id: 2, 
-    name: 'Faca Chef Premium Gold', 
+    name: 'Lâmina de Elite Gold', 
     price: 'R$ 299,00', 
-    image: '', // Placeholder: Imagem da faca aqui
-    description: 'Equilíbrio perfeito e fio de navalha para alta gastronomia.'
+    image: '', 
+    description: 'Equilíbrio milimétrico e fio de navalha, desenvolvida para precisão absoluta em cada movimento.'
   },
   { 
     id: 3, 
-    name: 'Faca Picanheira Raiz', 
+    name: 'Herança Silvestre', 
     price: 'R$ 389,00', 
-    image: '', // Placeholder: Imagem da faca aqui
-    description: 'O clássico do churrasco brasileiro, com cabo em madeira nobre.'
+    image: '', 
+    description: 'Design clássico atemporal com cabo em madeira nobre e empunhadura ergonômica superior.'
   },
 ];
 
 const testimonials = [
   {
     name: "Carlos Alberto",
-    role: "Churrasqueiro Profissional",
-    content: "A qualidade do corte e o equilíbrio da faca são impressionantes. Superou todas as minhas expectativas.",
+    role: "Mestre Cuteleiro",
+    content: "A qualidade do aço e o equilíbrio do centro de massa são impressionantes. Uma obra de engenharia real.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&q=80&w=150"
   },
   {
     name: "Mariana Silva",
-    role: "Chef de Cozinha",
-    content: "Presenteei meu pai com um cutelo personalizado e ele ficou sem palavras. A gravação é impecável.",
+    role: "Entusiasta de Cutelaria",
+    content: "Presenteei meu pai com uma lâmina personalizada e ele ficou sem palavras. A gravação é impecável e definitiva.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150"
   },
   {
     name: "Ricardo Mendes",
     role: "Colecionador",
-    content: "Uma verdadeira obra de arte. O acabamento em madeira nobre dá um toque de sofisticação único.",
+    content: "Uma verdadeira peça de museu. O acabamento em madeira de lei e a têmpera do aço são de outro nível.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150"
   }
@@ -76,8 +76,8 @@ const sizes = ['8"', '10"', '12"'];
 
 const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: string }> = {
   'Cutelo Artesanal Brut': { size: '8"', font: 'Bold', symbol: '⚔️' },
-  'Faca Chef Premium Gold': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
-  'Faca Picanheira Raiz': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
+  'Lâmina de Elite Gold': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
+  'Herança Silvestre': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
 };
 
 const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
@@ -538,50 +538,57 @@ export default function Index() {
             {products.map((product) => (
               <motion.div 
                 key={product.id}
-                whileHover={{ y: -15 }}
-                className="group relative bg-gradient-to-b from-[#111] to-black rounded-[40px] overflow-hidden border border-zinc-900/50 hover:border-amber-500/30 transition-all duration-700 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)]"
+                whileHover={{ y: -10 }}
+                className="group relative bg-[#0a0a0a] rounded-3xl overflow-hidden border border-zinc-800/50 hover:border-amber-500/30 transition-all duration-500 shadow-2xl"
               >
-                <div className="relative h-96 overflow-hidden flex items-center justify-center bg-zinc-900/30">
+                {/* Image Section */}
+                <div className="relative h-80 overflow-hidden flex items-center justify-center bg-zinc-900/20">
                   {product.image ? (
                     <img 
                       src={product.image} 
                       alt={product.name} 
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-[0.85] group-hover:brightness-100" 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-gradient-to-b from-zinc-900 to-black p-12 text-center">
-                      <div className="w-16 h-[1px] bg-amber-500/30" />
-                      <span className="text-zinc-500 font-serif italic tracking-wide">Imagem da faca aqui</span>
-                      <div className="w-16 h-[1px] bg-amber-500/30" />
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-zinc-900/50 to-black/50 p-12">
+                      <div className="w-20 h-[1px] bg-amber-500/20 mb-4" />
+                      <span className="text-zinc-600 font-serif italic tracking-widest text-sm uppercase">Acervo Herança</span>
+                      <div className="w-20 h-[1px] bg-amber-500/20 mt-4" />
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent opacity-90" />
-                  
-                  {/* Hover Quick Action */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/40 backdrop-blur-[2px]">
-                    <button 
-                      onClick={() => setSelectedProduct(product)}
-                      className="px-8 py-4 bg-white text-black font-black text-[10px] uppercase tracking-[0.3em] rounded-full hover:bg-amber-500 hover:text-white transition-all"
-                    >
-                      Personalizar Agora
-                    </button>
-                  </div>
+                  {/* Subtle overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60" />
                 </div>
                 
-                <div className="p-10 space-y-6">
-                  <div className="space-y-2">
-                    <h3 className="text-2xl font-bold font-serif group-hover:text-amber-500 transition-colors tracking-tight">{product.name}</h3>
-                    <p className="text-zinc-500 text-sm leading-relaxed font-light">{product.description}</p>
+                {/* Content Section */}
+                <div className="p-8 space-y-6">
+                  <div className="space-y-3">
+                    <h3 className="text-2xl font-bold font-serif text-white tracking-tight group-hover:text-amber-500 transition-colors">
+                      {product.name}
+                    </h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed font-light min-h-[3rem]">
+                      {product.description}
+                    </p>
                   </div>
                   
-                  <div className="pt-6 border-t border-zinc-900 flex items-center justify-between">
-                    <div className="space-y-1">
-                      <span className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">Valor Investido</span>
-                      <p className="text-2xl font-black text-white tracking-tighter">{product.price}</p>
+                  <div className="flex flex-col space-y-6">
+                    <div className="flex items-end justify-between">
+                      <div className="space-y-1">
+                        <span className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">Investimento</span>
+                        <p className="text-3xl font-black text-white tracking-tighter">{product.price}</p>
+                      </div>
+                      <div className="px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full">
+                        <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest">Aço Premium</span>
+                      </div>
                     </div>
-                    <div className="w-12 h-12 rounded-full border border-zinc-800 flex items-center justify-center group-hover:border-amber-500/50 transition-colors">
-                      <ChevronRight className="w-5 h-5 text-zinc-600 group-hover:text-amber-500" />
-                    </div>
+
+                    <button 
+                      onClick={() => setSelectedProduct(product)}
+                      className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-4 rounded-xl font-black text-xs uppercase tracking-[0.3em] hover:from-amber-600 hover:to-amber-500 transition-all shadow-[0_10px_30px_rgba(217,119,6,0.2)] flex items-center justify-center gap-3"
+                    >
+                      Personalizar Agora
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </motion.div>
