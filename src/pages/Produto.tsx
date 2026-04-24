@@ -137,30 +137,20 @@ export default function Produto() {
   }, 0);
 
   const getEngravingStyle = () => {
-    const nameLength = engravedName.length;
-    
-    // Use values from product if they exist, otherwise use defaults
-    const x = product?.engraving_x ?? (product?.name?.includes('Amiro') ? 33 : 55);
-    const y = product?.engraving_y ?? (product?.name?.includes('Amiro') ? 44 : 45);
-    const rotation = product?.engraving_rotation ?? (product?.name?.includes('Amiro') ? -18 : -5);
-    const baseSize = product?.engraving_font_size ?? (selectedSize === '8"' ? 16 : selectedSize === '12"' ? 24 : 20);
-    const color = product?.engraving_color ?? '#111111';
-
-    // Scaling for long names
-    const adjustedSize = nameLength > 20 ? baseSize * 0.5 : 
-                         nameLength > 12 ? baseSize * 0.75 : baseSize;
-
     return {
-      left: `${x}%`,
-      top: `${y}%`,
-      transform: `translate(-50%, -50%) rotate(${rotation}deg) ${nameLength > 20 && product?.name?.includes('Amiro') ? 'scaleX(0.9)' : ''}`,
-      fontSize: `${adjustedSize}px`,
-      color: color,
-      opacity: 0.8,
-      mixBlendMode: 'multiply' as const,
+      position: 'absolute' as const,
+      left: '43%',
+      top: '34%',
+      transform: 'rotate(-25deg)',
+      fontSize: '18px',
+      fontWeight: '600',
+      color: '#1a1a1a',
+      opacity: 0.85,
+      zIndex: 20,
       maxWidth: '40%',
       overflow: 'hidden',
-      textOverflow: 'ellipsis'
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap' as const
     };
   };
 
