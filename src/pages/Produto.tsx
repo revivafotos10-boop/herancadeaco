@@ -32,6 +32,11 @@ interface Product {
   features: string[];
   active: boolean;
   slug: string;
+  engraving_x?: number;
+  engraving_y?: number;
+  engraving_rotation?: number;
+  engraving_font_size?: number;
+  engraving_color?: string;
 }
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
@@ -132,41 +137,30 @@ export default function Produto() {
   }, 0);
 
   const getEngravingStyle = () => {
-    const isAmiro = product?.name?.includes('Amiro');
     const nameLength = engravedName.length;
     
-    if (isAmiro) {
-      const baseSize = 22;
-      // Aggressive scaling for long names to keep them on the blade
-      const adjustedSize = nameLength > 20 ? baseSize * 0.5 : 
-                           nameLength > 12 ? baseSize * 0.75 : baseSize;
-      
-      return {
-        left: '33%',
-        top: '44%',
-        transform: `translate(-50%, -50%) rotate(-18deg) ${nameLength > 20 ? 'scaleX(0.9)' : ''}`,
-        fontSize: `${adjustedSize}px`,
-        color: '#111111',
-        opacity: 0.8,
-        mixBlendMode: 'multiply' as const,
-        maxWidth: '40%',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis'
-      };
-    }
+    // Use values from product if they exist, otherwise use defaults
+    const x = product?.engraving_x ?? (product?.name?.includes('Amiro') ? 33 : 55);
+    const y = product?.engraving_y ?? (product?.name?.includes('Amiro') ? 44 : 45);
+    const rotation = product?.engraving_rotation ?? (product?.name?.includes('Amiro') ? -18 : -5);
+    const baseSize = product?.engraving_font_size ?? (selectedSize === '8"' ? 16 : selectedSize === '12"' ? 24 : 20);
+    const color = product?.engraving_color ?? '#111111';
 
-    // Default for other products
-    const baseSize = selectedSize === '8"' ? 16 : selectedSize === '12"' ? 24 : 20;
-    const adjustedSize = nameLength > 15 ? baseSize * 0.7 : baseSize;
+    // Scaling for long names
+    const adjustedSize = nameLength > 20 ? baseSize * 0.5 : 
+                         nameLength > 12 ? baseSize * 0.75 : baseSize;
 
     return {
-      left: '55%',
-      top: '45%',
-      transform: 'translate(-50%, -50%) rotate(-5deg)',
+      left: `${x}%`,
+      top: `${y}%`,
+      transform: `translate(-50%, -50%) rotate(${rotation}deg) ${nameLength > 20 && product?.name?.includes('Amiro') ? 'scaleX(0.9)' : ''}`,
       fontSize: `${adjustedSize}px`,
-      color: '#111111',
+      color: color,
       opacity: 0.8,
       mixBlendMode: 'multiply' as const,
+      maxWidth: '40%',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
     };
   };
 

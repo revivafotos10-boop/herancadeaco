@@ -19,6 +19,11 @@ export type Database = {
           active: boolean | null
           created_at: string | null
           description: string | null
+          engraving_color: string | null
+          engraving_font_size: number | null
+          engraving_rotation: number | null
+          engraving_x: number | null
+          engraving_y: number | null
           features: string[] | null
           gallery_images: string[] | null
           handle_material: string | null
@@ -35,6 +40,11 @@ export type Database = {
           active?: boolean | null
           created_at?: string | null
           description?: string | null
+          engraving_color?: string | null
+          engraving_font_size?: number | null
+          engraving_rotation?: number | null
+          engraving_x?: number | null
+          engraving_y?: number | null
           features?: string[] | null
           gallery_images?: string[] | null
           handle_material?: string | null
@@ -51,6 +61,11 @@ export type Database = {
           active?: boolean | null
           created_at?: string | null
           description?: string | null
+          engraving_color?: string | null
+          engraving_font_size?: number | null
+          engraving_rotation?: number | null
+          engraving_x?: number | null
+          engraving_y?: number | null
           features?: string[] | null
           gallery_images?: string[] | null
           handle_material?: string | null

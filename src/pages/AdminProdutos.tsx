@@ -39,6 +39,11 @@ interface Product {
   image_url: string;
   gallery_images: string[];
   active: boolean;
+  engraving_x: number;
+  engraving_y: number;
+  engraving_rotation: number;
+  engraving_font_size: number;
+  engraving_color: string;
   created_at?: string;
 }
 
@@ -55,6 +60,11 @@ const INITIAL_PRODUCT: Product = {
   image_url: '',
   gallery_images: [],
   active: true,
+  engraving_x: 55,
+  engraving_y: 45,
+  engraving_rotation: -5,
+  engraving_font_size: 20,
+  engraving_color: '#111111',
 };
 
 export default function AdminProdutos() {
@@ -257,7 +267,12 @@ export default function AdminProdutos() {
           size_cm: '',
           material: '',
           handle_material: '',
-          old_price: null
+          old_price: null,
+          engraving_x: 55,
+          engraving_y: 45,
+          engraving_rotation: -5,
+          engraving_font_size: 20,
+          engraving_color: '#111111'
         };
 
         const { data, error: insertError } = await supabase
@@ -530,6 +545,32 @@ export default function AdminProdutos() {
                     </div>
                   )}
                   {uploading && <Loader2 className="mt-2 h-4 w-4 animate-spin text-amber-500" />}
+                </div>
+              </div>
+
+              <div className="space-y-4 p-4 border border-zinc-800 rounded-xl bg-zinc-900/30">
+                <Label className="text-amber-500 font-bold uppercase tracking-widest text-[10px]">Simulador de Gravação</Label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="eng_x">Posição X (%)</Label>
+                    <Input id="eng_x" type="number" value={formData.engraving_x} onChange={(e) => setFormData({...formData, engraving_x: Number(e.target.value)})} className="bg-zinc-900 border-zinc-800" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="eng_y">Posição Y (%)</Label>
+                    <Input id="eng_y" type="number" value={formData.engraving_y} onChange={(e) => setFormData({...formData, engraving_y: Number(e.target.value)})} className="bg-zinc-900 border-zinc-800" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="eng_rot">Rotação (graus)</Label>
+                    <Input id="eng_rot" type="number" value={formData.engraving_rotation} onChange={(e) => setFormData({...formData, engraving_rotation: Number(e.target.value)})} className="bg-zinc-900 border-zinc-800" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="eng_size">Tamanho Fonte (px)</Label>
+                    <Input id="eng_size" type="number" value={formData.engraving_font_size} onChange={(e) => setFormData({...formData, engraving_font_size: Number(e.target.value)})} className="bg-zinc-900 border-zinc-800" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="eng_color">Cor da Gravação</Label>
+                  <Input id="eng_color" type="text" value={formData.engraving_color} onChange={(e) => setFormData({...formData, engraving_color: e.target.value})} className="bg-zinc-900 border-zinc-800" placeholder="#111111" />
                 </div>
               </div>
 
