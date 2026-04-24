@@ -427,8 +427,8 @@ export default function Index() {
                 <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700">
                   <div className="relative overflow-hidden rounded-[32px]">
                     <img 
-                      src="https://images.unsplash.com/photo-1593618998160-e34014e67546?auto=format&fit=crop&q=80&w=800" 
-                      className="w-full h-auto relative z-50 transition-transform duration-1000 group-hover:scale-110 object-contain mix-blend-screen"
+                      src="https://images.unsplash.com/photo-1594133900913-c8ec23602953?auto=format&fit=crop&q=80&w=800" 
+                      className="w-full h-auto relative z-50 transition-transform duration-1000 group-hover:scale-110 object-cover rounded-[32px]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-[55] flex flex-col justify-end p-8">
                       <div className="space-y-2">
