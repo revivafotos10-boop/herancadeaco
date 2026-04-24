@@ -66,13 +66,13 @@ const INITIAL_PRODUCT: Product = {
   active: true,
   engraving_x: 55,
   engraving_y: 45,
-  engraving_rotation: -25,
+  engraving_rotation: -55,
   engraving_font_size: 20,
   engraving_color: '#2b2b2b',
-  engraving_area_x: 43,
-  engraving_area_y: 34,
-  engraving_area_width: 25,
-  engraving_area_height: 8,
+  engraving_area_x: 35,
+  engraving_area_y: 40,
+  engraving_area_width: 30,
+  engraving_area_height: 10,
 };
 
 export default function AdminProdutos() {
@@ -278,13 +278,13 @@ export default function AdminProdutos() {
           old_price: null,
           engraving_x: 55,
           engraving_y: 45,
-          engraving_rotation: -25,
+          engraving_rotation: -55,
           engraving_font_size: 20,
-          engraving_color: '#111111',
-          engraving_area_x: 43,
-          engraving_area_y: 34,
-          engraving_area_width: 25,
-          engraving_area_height: 8,
+          engraving_color: '#2b2b2b',
+          engraving_area_x: 35,
+          engraving_area_y: 40,
+          engraving_area_width: 30,
+          engraving_area_height: 10,
         };
 
         const { data, error: insertError } = await supabase
