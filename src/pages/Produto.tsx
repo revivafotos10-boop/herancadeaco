@@ -229,17 +229,11 @@ export default function Produto() {
                     }}
                     className="text-center whitespace-nowrap"
                     style={{ 
-                      position: 'absolute',
-                      left: product?.name?.includes('Amiro') ? '33%' : '50%',
-                      top: product?.name?.includes('Amiro') ? '44%' : '50%',
-                      transform: product?.name?.includes('Amiro') ? 'translate(-50%, -50%) rotate(-18deg)' : 'translate(-50%, -50%)',
-                      color: '#111111',
-                      mixBlendMode: 'multiply',
+                      ...engravingStyle,
                       fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
                                  selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
                                  selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
                       fontWeight: selectedFont === 'Bold' ? '700' : '400',
-                      fontSize: product?.name?.includes('Amiro') ? '22px' : (engravedName.length > 15 ? `calc(${scale.fontSize} * 0.7)` : scale.fontSize),
                       letterSpacing: '0.01em',
                     }}
                   >
