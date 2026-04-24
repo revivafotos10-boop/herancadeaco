@@ -77,10 +77,10 @@ const INITIAL_PRODUCT: Product = {
   engraving_area_y: 40,
   engraving_area_width: 30,
   engraving_area_height: 10,
-  engraving_start_x: 30,
-  engraving_start_y: 45,
+  engraving_start_x: 33,
+  engraving_start_y: 44,
   engraving_end_x: 60,
-  engraving_end_y: 40,
+  engraving_end_y: 35,
 };
 
 export default function AdminProdutos() {
@@ -293,10 +293,10 @@ export default function AdminProdutos() {
           engraving_area_y: 40,
           engraving_area_width: 30,
           engraving_area_height: 10,
-          engraving_start_x: 30,
-          engraving_start_y: 45,
+          engraving_start_x: 33,
+          engraving_start_y: 44,
           engraving_end_x: 60,
-          engraving_end_y: 40,
+          engraving_end_y: 35,
         };
 
         const { data, error: insertError } = await supabase
