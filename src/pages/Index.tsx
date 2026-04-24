@@ -32,6 +32,7 @@ interface Product {
   price: number;
   old_price: number | null;
   image_url: string;
+  gallery_images: string[];
   features: string[];
   active: boolean;
 }
