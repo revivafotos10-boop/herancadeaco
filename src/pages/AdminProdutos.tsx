@@ -44,6 +44,10 @@ interface Product {
   engraving_rotation: number;
   engraving_font_size: number;
   engraving_color: string;
+  engraving_area_x: number;
+  engraving_area_y: number;
+  engraving_area_width: number;
+  engraving_area_height: number;
   created_at?: string;
 }
 
@@ -62,9 +66,13 @@ const INITIAL_PRODUCT: Product = {
   active: true,
   engraving_x: 55,
   engraving_y: 45,
-  engraving_rotation: -5,
+  engraving_rotation: -25,
   engraving_font_size: 20,
-  engraving_color: '#111111',
+  engraving_color: '#2b2b2b',
+  engraving_area_x: 43,
+  engraving_area_y: 34,
+  engraving_area_width: 25,
+  engraving_area_height: 8,
 };
 
 export default function AdminProdutos() {
