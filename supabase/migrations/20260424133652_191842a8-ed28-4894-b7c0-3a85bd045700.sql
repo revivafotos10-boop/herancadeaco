@@ -1,0 +1,6 @@
+ALTER TABLE public.products 
+ADD COLUMN engraving_x NUMERIC DEFAULT 0,
+ADD COLUMN engraving_y NUMERIC DEFAULT 0,
+ADD COLUMN engraving_rotation NUMERIC DEFAULT 0,
+ADD COLUMN engraving_font_size NUMERIC DEFAULT 16,
+ADD COLUMN engraving_color TEXT DEFAULT '#000000';
