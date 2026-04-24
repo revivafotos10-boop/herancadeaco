@@ -27,22 +27,22 @@ const products = [
     id: 1, 
     name: 'Cutelo Artesanal Brut', 
     price: 'R$ 349,00', 
-    image: '', // Placeholder: Imagem da faca aqui
-    description: 'Forjado em aço carbono, ideal para cortes robustos e precisos.'
+    image: '', 
+    description: 'Forjado em aço carbono de alta densidade, com acabamento bruto e resistência extrema.'
   },
   { 
     id: 2, 
-    name: 'Faca Chef Premium Gold', 
+    name: 'Lâmina de Elite Gold', 
     price: 'R$ 299,00', 
-    image: '', // Placeholder: Imagem da faca aqui
-    description: 'Equilíbrio perfeito e fio de navalha para alta gastronomia.'
+    image: '', 
+    description: 'Equilíbrio milimétrico e fio de navalha, desenvolvida para precisão absoluta em cada movimento.'
   },
   { 
     id: 3, 
-    name: 'Faca Picanheira Raiz', 
+    name: 'Herança Silvestre', 
     price: 'R$ 389,00', 
-    image: '', // Placeholder: Imagem da faca aqui
-    description: 'O clássico do churrasco brasileiro, com cabo em madeira nobre.'
+    image: '', 
+    description: 'Design clássico atemporal com cabo em madeira nobre e empunhadura ergonômica superior.'
   },
 ];
 
