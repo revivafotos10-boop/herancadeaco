@@ -267,7 +267,12 @@ export default function AdminProdutos() {
           size_cm: '',
           material: '',
           handle_material: '',
-          old_price: null
+          old_price: null,
+          engraving_x: 55,
+          engraving_y: 45,
+          engraving_rotation: -5,
+          engraving_font_size: 20,
+          engraving_color: '#111111'
         };
 
         const { data, error: insertError } = await supabase
