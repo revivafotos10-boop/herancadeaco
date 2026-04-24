@@ -431,7 +431,11 @@ export default function Index() {
               >
                 <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700 aspect-video flex items-center justify-center">
                   <div className="relative overflow-hidden rounded-[32px] w-full h-full bg-zinc-900/50 flex items-center justify-center">
-                    <span className="text-zinc-500 font-serif italic text-xl">Imagem da faca aqui</span>
+                    <img 
+                      src="https://images.unsplash.com/photo-1593612803893-7a9151244192?auto=format&fit=crop&q=80&w=1200" 
+                      alt="Faca Premium Herança" 
+                      className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] group-hover:scale-105 transition-transform duration-700"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-[55] flex flex-col justify-end p-8">
                       <div className="space-y-2">
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500">Edição Especial</span>
