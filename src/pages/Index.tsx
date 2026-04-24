@@ -238,7 +238,9 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
 };
 
 export default function Index() {
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cart, setCart] = useState(() => {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
@@ -246,6 +248,27 @@ export default function Index() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setProducts(data || []);
+    } catch (error: any) {
+      console.error('Erro ao buscar produtos:', error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -268,7 +291,9 @@ export default function Index() {
   };
 
   const cartTotal = cart.reduce((acc, item) => {
-    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
+    const price = typeof item.product.price === 'number' 
+      ? item.product.price 
+      : parseFloat(item.product.price.replace('R$ ', '').replace('.', '').replace(',', '.'));
     return acc + price;
   }, 0);
 
