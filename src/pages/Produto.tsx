@@ -284,6 +284,8 @@ export default function Produto() {
                         y="20" 
                         textAnchor="middle" 
                         dominantBaseline="middle"
+                        textLength="190"
+                        lengthAdjust="spacing"
                         style={{ 
                           fontSize: `${(product?.engraving_font_size || 24) * 1.5}px`, 
                           fontWeight: '600',

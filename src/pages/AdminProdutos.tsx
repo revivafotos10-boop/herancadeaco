@@ -582,6 +582,8 @@ export default function AdminProdutos() {
                                 y="20" 
                                 textAnchor="middle" 
                                 dominantBaseline="middle"
+                                textLength="190"
+                                lengthAdjust="spacing"
                                 style={{ 
                                   fontSize: `${formData.engraving_font_size * 1.5}px`, 
                                   fontWeight: '600',
