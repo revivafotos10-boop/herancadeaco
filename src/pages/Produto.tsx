@@ -217,20 +217,18 @@ export default function Produto() {
                 {/* Simulation Overlay */}
                 <div className="absolute inset-0 pointer-events-none z-20">
                   <motion.div 
-                    animate={{ 
-                      opacity: engravedName ? 0.8 : 0.2 
-                    }}
-                    className="text-center whitespace-nowrap"
+                    initial={{ opacity: 0.85 }}
+                    animate={{ opacity: 0.85 }}
+                    className="whitespace-nowrap"
                     style={{ 
                       ...engravingStyle,
                       fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
                                  selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
                                  selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
-                      fontWeight: selectedFont === 'Bold' ? '700' : '400',
                       letterSpacing: '0.01em',
                     }}
                   >
-                    {engravedName || "GRAVAÇÃO"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
+                    {engravedName || "MARCELO"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
                   </motion.div>
                 </div>
 
