@@ -27,21 +27,21 @@ const products = [
     id: 1, 
     name: 'Cutelo Artesanal Brut', 
     price: 'R$ 349,00', 
-    image: 'https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?auto=format&fit=crop&q=80&w=800',
+    image: '/lovable-uploads/faca1.png',
     description: 'Forjado em aço carbono, ideal para cortes robustos e precisos.'
   },
   { 
     id: 2, 
     name: 'Faca Chef Premium Gold', 
     price: 'R$ 299,00', 
-    image: 'https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?auto=format&fit=crop&q=80&w=800',
+    image: '/lovable-uploads/faca2.png',
     description: 'Equilíbrio perfeito e fio de navalha para alta gastronomia.'
   },
   { 
     id: 3, 
     name: 'Faca Picanheira Raiz', 
     price: 'R$ 389,00', 
-    image: 'https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?auto=format&fit=crop&q=80&w=800',
+    image: '/lovable-uploads/faca3.png',
     description: 'O clássico do churrasco brasileiro, com cabo em madeira nobre.'
   },
 ];
