@@ -92,7 +92,7 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-[#0f0f0f] w-full max-w-5xl rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col md:flex-row border border-zinc-800 relative"
+        className="bg-[#0a0a0a] w-full max-w-5xl rounded-[32px] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] flex flex-col md:flex-row border border-zinc-800/50 relative"
       >
         <button onClick={onClose} className="absolute top-4 right-4 text-zinc-500 hover:text-white z-20 p-2 transition-colors"><X /></button>
         
@@ -325,10 +325,10 @@ export default function Index() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="space-y-4"
               >
-                <h1 className="text-5xl md:text-8xl font-bold font-serif leading-[1.05] tracking-tight">
+                <h1 className="text-6xl md:text-[100px] font-black font-serif leading-[0.9] tracking-tighter">
                   Um Presente <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-500 to-amber-200 bg-[length:200%_auto] animate-gradient-x italic">
-                    Memorável
+                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-200 via-amber-600 to-amber-900 bg-[length:200%_auto] animate-gradient-x italic font-medium">
+                    Inesquecível
                   </span>
                 </h1>
                 <p className="text-lg md:text-xl text-zinc-400 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
@@ -503,7 +503,7 @@ export default function Index() {
               <motion.div 
                 key={product.id}
                 whileHover={{ y: -15 }}
-                className="group relative bg-[#0d0d0d] rounded-3xl overflow-hidden border border-zinc-900 hover:border-amber-500/20 transition-all duration-700 shadow-2xl"
+                className="group relative bg-gradient-to-b from-[#111] to-black rounded-[40px] overflow-hidden border border-zinc-900/50 hover:border-amber-500/30 transition-all duration-700 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)]"
               >
                 <div className="relative h-96 overflow-hidden">
                   <img 
