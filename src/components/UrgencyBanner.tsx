@@ -39,10 +39,10 @@ const UrgencyBanner = ({ className = "" }: UrgencyBannerProps) => {
   }, []);
 
   return (
-    <div className={`bg-destructive text-destructive-foreground py-2 px-4 text-center text-sm font-bold flex flex-wrap items-center justify-center gap-2 md:gap-4 overflow-hidden animate-in fade-in slide-in-from-top duration-500 ${className}`}>
+    <div className={`bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 text-white py-3 px-4 text-center text-[10px] md:text-xs font-black flex flex-wrap items-center justify-center gap-2 md:gap-6 overflow-hidden animate-in fade-in slide-in-from-top duration-700 shadow-lg ${className}`}>
       <div className="flex items-center gap-2">
-        <Flame className="w-4 h-4 animate-pulse text-yellow-400" />
-        <span className="uppercase tracking-tight md:tracking-wider">Entrega garantida para o Dia dos Pais</span>
+        <Flame className="w-3.5 h-3.5 animate-pulse text-amber-200" />
+        <span className="uppercase tracking-[0.2em]">Entrega prioritária garantida para o Dia dos Pais</span>
       </div>
       <div className="flex gap-2 items-center bg-black/20 px-3 py-1 rounded-full border border-white/10">
         <Timer className="w-4 h-4 text-yellow-400" />
