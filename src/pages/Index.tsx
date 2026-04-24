@@ -52,21 +52,21 @@ const testimonials = [
     role: "Churrasqueiro Profissional",
     content: "A qualidade do corte e o equilíbrio da faca são impressionantes. Superou todas as minhas expectativas.",
     rating: 5,
-    image: "https://i.pravatar.cc/150?u=carlos"
+    image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&q=80&w=150"
   },
   {
     name: "Mariana Silva",
     role: "Chef de Cozinha",
     content: "Presenteei meu pai com um cutelo personalizado e ele ficou sem palavras. A gravação é impecável.",
     rating: 5,
-    image: "https://i.pravatar.cc/150?u=mariana"
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150"
   },
   {
     name: "Ricardo Mendes",
     role: "Colecionador",
     content: "Uma verdadeira obra de arte. O acabamento em madeira nobre dá um toque de sofisticação único.",
     rating: 5,
-    image: "https://i.pravatar.cc/150?u=ricardo"
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150"
   }
 ];
 
