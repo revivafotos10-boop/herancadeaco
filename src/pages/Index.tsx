@@ -25,23 +25,23 @@ import UrgencyBanner from '@/components/UrgencyBanner';
 const products = [
   { 
     id: 1, 
-    name: 'Aguardando Imagem...', 
+    name: 'Cutelo Artesanal Brut', 
     price: 'R$ 499,00', 
-    image: '', 
+    image: 'https://images.unsplash.com/photo-1593014168095-2dfb9f2913f0?auto=format&fit=crop&q=80&w=600', 
     description: 'Uma obra-prima em aço premium, personalizada com exclusividade para você.'
   },
   { 
     id: 2, 
-    name: 'Aguardando Imagem...', 
+    name: 'Lâmina de Elite Gold', 
     price: 'R$ 549,00', 
-    image: '', 
+    image: 'https://images.unsplash.com/photo-1594913533870-1378f84400a0?auto=format&fit=crop&q=80&w=600', 
     description: 'Design sofisticado e fio de navalha, o ápice da cutelaria artesanal.'
   },
   { 
     id: 3, 
-    name: 'Aguardando Imagem...', 
+    name: 'Herança Silvestre', 
     price: 'R$ 589,00', 
-    image: '', 
+    image: 'https://images.unsplash.com/photo-1592156328737-023a1a364be1?auto=format&fit=crop&q=80&w=600', 
     description: 'O legado que atravessa gerações, forjado com precisão e alma.'
   },
 ];
@@ -132,7 +132,9 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
               {product.image ? (
                 <img src={product.image} alt={product.name} className="w-full h-auto object-contain rounded-xl" />
               ) : (
-                <span className="text-zinc-600 font-serif italic">Imagem da faca aqui</span>
+                <div className="w-full h-full bg-zinc-900/50 rounded-xl flex items-center justify-center border border-dashed border-zinc-800">
+                  <span className="text-zinc-700 font-serif italic">Carregando visualização...</span>
+                </div>
               )}
             </motion.div>
             
@@ -282,8 +284,9 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans">
+      <UrgencyBanner className="z-[90] relative" />
       {/* Cinematic Header */}
-      <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-8'}`}>
+      <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-8 mt-10 md:mt-12'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2 group cursor-pointer">
             <Crown className="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform" />
@@ -431,7 +434,11 @@ export default function Index() {
               >
                 <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700 aspect-video flex items-center justify-center">
                   <div className="relative overflow-hidden rounded-[32px] w-full h-full bg-zinc-900/50 flex items-center justify-center">
-                    <span className="text-zinc-500 font-serif italic text-xl">Imagem da faca aqui</span>
+                    <img 
+                      src="https://images.unsplash.com/photo-1593612803893-7a9151244192?auto=format&fit=crop&q=80&w=1200" 
+                      alt="Faca Premium Herança" 
+                      className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] group-hover:scale-105 transition-transform duration-700"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-[55] flex flex-col justify-end p-8">
                       <div className="space-y-2">
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500">Edição Especial</span>
@@ -640,7 +647,9 @@ export default function Index() {
                         {item.product.image ? (
                           <img src={item.product.image} className="w-full h-full object-cover" alt={item.product.name} />
                         ) : (
-                          <span className="text-[8px] text-zinc-600 text-center px-1 font-serif italic">Imagem da faca</span>
+                          <div className="w-full h-full bg-zinc-800 flex items-center justify-center">
+                            <Crown className="w-6 h-6 text-zinc-700" />
+                          </div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
