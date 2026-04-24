@@ -154,6 +154,19 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
               </motion.div>
             </div>
           </div>
+          {product.gallery_images && product.gallery_images.length > 0 && (
+            <div className="flex gap-2 mt-4 overflow-x-auto pb-2 custom-scrollbar max-w-full">
+              {[product.image_url, ...product.gallery_images].filter(Boolean).map((img, idx) => (
+                <button 
+                  key={idx}
+                  onClick={() => setPreviewImage(img)}
+                  className={`w-16 h-16 rounded-lg border-2 overflow-hidden flex-shrink-0 transition-all ${previewImage === img ? 'border-amber-500 scale-110 shadow-[0_0_15px_rgba(217,119,6,0.3)]' : 'border-zinc-800 opacity-60 hover:opacity-100'}`}
+                >
+                  <img src={img} alt="Gallery" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
           <p className="mt-8 text-[11px] text-zinc-500 uppercase tracking-[0.2em] font-medium flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
             Simulador de Gravação Laser
