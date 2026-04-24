@@ -160,6 +160,7 @@ export default function Produto() {
       alignItems: 'center',
       justifyContent: 'center',
       pointerEvents: 'none' as const,
+      mixBlendMode: 'multiply' as const,
     };
   };
 
@@ -231,18 +232,18 @@ export default function Produto() {
                     style={boxStyle}
                   >
                     <svg 
-                      viewBox="0 0 200 50" 
+                      viewBox="0 0 200 40" 
                       width="100%" 
                       height="100%" 
                       preserveAspectRatio="xMidYMid meet"
-                      className="overflow-visible"
                     >
                       <text 
                         x="100" 
-                        y="30" 
+                        y="20" 
                         textAnchor="middle" 
+                        dominantBaseline="middle"
                         style={{ 
-                          fontSize: '32px', 
+                          fontSize: '24px', 
                           fontWeight: '600',
                           fill: product?.engraving_color || '#2b2b2b',
                           fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
