@@ -119,3 +119,27 @@ All colors MUST be HSL.
   background-size: 200% 200%;
   animation: gradient-x 3s ease infinite;
 }
+
+@layer base {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #333;
+  }
+  ::selection {
+    background: #b45309;
+    color: white;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}

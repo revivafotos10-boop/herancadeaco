@@ -258,7 +258,7 @@ export default function Index() {
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2 group cursor-pointer">
             <Crown className="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform" />
-            <h1 className="text-xl md:text-2xl font-bold font-serif tracking-[0.2em] text-white uppercase">Herança de Aço</h1>
+            <h1 className="text-xl md:text-2xl font-black font-serif tracking-[0.3em] text-white uppercase group-hover:text-amber-500 transition-colors">Herança de Aço</h1>
           </div>
           
           <div className="hidden md:flex items-center gap-12 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
@@ -490,7 +490,7 @@ export default function Index() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-24 space-y-6">
             <span className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-600">Catálogo de Edição Limitada</span>
-            <h2 className="text-4xl md:text-7xl font-bold font-serif tracking-tighter">Escolha o Legado</h2>
+            <h2 className="text-4xl md:text-8xl font-black font-serif tracking-tighter text-white">Escolha o Legado</h2>
             <div className="flex justify-center items-center gap-4">
               <div className="w-12 h-[1px] bg-zinc-800" />
               <Crown className="w-5 h-5 text-amber-900" />
