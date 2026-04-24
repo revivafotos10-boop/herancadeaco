@@ -48,6 +48,10 @@ interface Product {
   engraving_area_y: number;
   engraving_area_width: number;
   engraving_area_height: number;
+  engraving_start_x: number;
+  engraving_start_y: number;
+  engraving_end_x: number;
+  engraving_end_y: number;
   created_at?: string;
 }
 
@@ -73,6 +77,10 @@ const INITIAL_PRODUCT: Product = {
   engraving_area_y: 40,
   engraving_area_width: 30,
   engraving_area_height: 10,
+  engraving_start_x: 30,
+  engraving_start_y: 45,
+  engraving_end_x: 60,
+  engraving_end_y: 40,
 };
 
 export default function AdminProdutos() {
