@@ -19,7 +19,8 @@ import {
   User,
   Gift,
   ArrowRight,
-  Loader2
+  Loader2,
+  Sword
 } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
 import { supabase } from '@/lib/supabase';
