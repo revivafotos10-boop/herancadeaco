@@ -620,7 +620,7 @@ export default function Index() {
                   cart.map((item) => (
                     <div key={item.cartId} className="group relative flex gap-6 bg-[#0d0d0d] p-6 rounded-3xl border border-zinc-900 transition-all">
                       <div className="w-24 h-24 shrink-0 overflow-hidden rounded-2xl border border-zinc-800">
-                        <img src={item.product.image} className="w-full h-full object-cover" alt={item.product.name} />
+                        <img src={item.product.image} className="w-full h-full object-contain mix-blend-screen" alt={item.product.name} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start mb-2">
