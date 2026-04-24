@@ -8,9 +8,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
 
 const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: string }> = {
-  'Cutelo Artesanal': { size: '8"', font: 'Bold', symbol: '⚔️' },
-  'Faca Chef Premium': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
-  'Faca Picanheira': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
+  'Cutelo Artesanal Brut': { size: '8"', font: 'Bold', symbol: '⚔️' },
+  'Faca Chef Premium Gold': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
+  'Faca Picanheira Raiz': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
 };
 
 const PaymentStatus = () => {
