@@ -200,22 +200,25 @@ export default function Produto() {
                 />
                 
                 {/* Simulation Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                  <div 
-                    className="absolute border border-dashed border-amber-500/10"
-                    style={{ width: scale.width, height: scale.height }}
-                  />
+                <div className="absolute inset-0 pointer-events-none z-20">
                   <motion.div 
-                    animate={{ opacity: engravedName ? 1 : 0.2 }}
-                    className="text-amber-500/70 text-center px-4"
+                    animate={{ 
+                      opacity: engravedName ? 0.8 : 0.2 
+                    }}
+                    className="text-center whitespace-nowrap"
                     style={{ 
+                      position: 'absolute',
+                      left: product?.name?.includes('Amiro') ? '33%' : '50%',
+                      top: product?.name?.includes('Amiro') ? '44%' : '50%',
+                      transform: product?.name?.includes('Amiro') ? 'translate(-50%, -50%) rotate(-18deg)' : 'translate(-50%, -50%)',
+                      color: '#111111',
+                      mixBlendMode: 'multiply',
                       fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
                                  selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
                                  selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
                       fontWeight: selectedFont === 'Bold' ? '700' : '400',
-                      fontSize: engravedName.length > 15 ? `calc(${scale.fontSize} * 0.7)` : scale.fontSize,
-                      letterSpacing: '0.05em',
-                      textShadow: '0 0 12px rgba(217,119,6,0.3)'
+                      fontSize: product?.name?.includes('Amiro') ? '22px' : (engravedName.length > 15 ? `calc(${scale.fontSize} * 0.7)` : scale.fontSize),
+                      letterSpacing: '0.01em',
                     }}
                   >
                     {engravedName || "GRAVAÇÃO"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
