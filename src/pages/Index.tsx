@@ -123,8 +123,8 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="w-full h-full flex items-center justify-center bg-zinc-900/50 rounded-xl"
             >
-              {product.image_url ? (
-                <img src={product.image_url} alt={product.name} className="w-full h-auto object-contain rounded-xl p-8" />
+              {previewImage ? (
+                <img src={previewImage} alt={product.name} className="w-full h-auto object-contain rounded-xl p-8" />
               ) : (
                 <div className="w-full h-full bg-zinc-900/50 rounded-xl flex items-center justify-center border border-dashed border-zinc-800">
                   <span className="text-zinc-700 font-serif italic text-sm">Imagem não cadastrada</span>
