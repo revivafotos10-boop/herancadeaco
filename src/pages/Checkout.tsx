@@ -91,11 +91,13 @@ const Checkout = () => {
   };
 
   const cartTotal = cart.reduce((acc, item) => {
-    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
+    const price = typeof item.product.price === 'number' 
+      ? item.product.price 
+      : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
     return acc + price;
   }, 0);
 
-  const formattedTotal = `R$ ${cartTotal.toFixed(2).replace('.', ',')}`;
+  const formattedTotal = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartTotal);
 
 
 
@@ -331,8 +333,8 @@ const Checkout = () => {
               <CardContent className="space-y-4">
                 {cart.map((item) => (
                   <div key={item.cartId} className="flex gap-4 mb-4">
-                    <div className="w-20 h-20 bg-zinc-950 rounded overflow-hidden flex-shrink-0">
-                      <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+                    <div className="w-20 h-20 bg-zinc-950 rounded overflow-hidden flex-shrink-0 flex items-center justify-center">
+                      <img src={item.product.image_url} alt={item.product.name} className="w-full h-full object-contain p-2" />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-sm">{item.product.name}</h3>
@@ -342,11 +344,13 @@ const Checkout = () => {
                         )}
                         <p className="text-[10px] text-zinc-500">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
                       </div>
-                      <p className="text-sm text-zinc-400 mt-1">{item.product.price}</p>
+                      <p className="text-sm text-zinc-400 mt-1">
+                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
+                      </p>
                     </div>
                   </div>
                 ))}
-                
+
                 <Separator className="bg-zinc-800" />
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">

@@ -18,61 +18,22 @@ import {
   Menu,
   User,
   Gift,
-  ArrowRight
+  ArrowRight,
+  Loader2
 } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
+import { supabase } from '@/lib/supabase';
 
-const products = [
-  { 
-    id: 1, 
-    name: 'Cutelo Artesanal Brut', 
-    price: 'R$ 499,00', 
-    image: 'https://images.unsplash.com/photo-1593014168095-2dfb9f2913f0?auto=format&fit=crop&q=80&w=600', 
-    description: 'Uma obra-prima em aço premium, personalizada com exclusividade para você.'
-  },
-  { 
-    id: 2, 
-    name: 'Lâmina de Elite Gold', 
-    price: 'R$ 549,00', 
-    image: 'https://images.unsplash.com/photo-1594913533870-1378f84400a0?auto=format&fit=crop&q=80&w=600', 
-    description: 'Design sofisticado e fio de navalha, o ápice da cutelaria artesanal.'
-  },
-  { 
-    id: 3, 
-    name: 'Herança Silvestre', 
-    price: 'R$ 589,00', 
-    image: 'https://images.unsplash.com/photo-1592156328737-023a1a364be1?auto=format&fit=crop&q=80&w=600', 
-    description: 'O legado que atravessa gerações, forjado com precisão e alma.'
-  },
-  { 
-    id: 4, 
-    name: 'Faca Guardião 20cm Inox', 
-    price: 'R$ 99,90', 
-    oldPrice: 'R$ 129,90',
-    image: '/faca-guardiao.png', 
-    description: 'Compacta, afiada e extremamente resistente. Feita em aço inox com cabo em madeira premium e design exclusivo com detalhe em cruz.',
-    features: [
-      'Aço inox resistente',
-      'Cabo em madeira nobre',
-      'Tamanho ideal 20cm',
-      'Acompanha bainha'
-    ]
-  },
-  { 
-    id: 5, 
-    name: 'Faca Imperador 31cm – Cabo em Osso', 
-    price: 'R$ 149,90', 
-    oldPrice: 'R$ 199,90',
-    image: '/faca-imperador.png', 
-    description: 'Faca imponente com lâmina longa de 31cm e cabo em osso com acabamento premium. Ideal para quem busca desempenho, presença e estilo.',
-    features: [
-      'Lâmina longa e precisa',
-      'Cabo em osso premium',
-      'Design sofisticado',
-      'Pegada firme'
-    ]
-  },
-];
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  old_price: number | null;
+  image_url: string;
+  features: string[];
+  active: boolean;
+}
 
 const testimonials = [
   {
@@ -159,11 +120,11 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="w-full h-full flex items-center justify-center bg-zinc-900/50 rounded-xl"
             >
-              {product.image ? (
-                <img src={product.image} alt={product.name} className="w-full h-auto object-contain rounded-xl" />
+              {product.image_url ? (
+                <img src={product.image_url} alt={product.name} className="w-full h-auto object-contain rounded-xl p-8" />
               ) : (
                 <div className="w-full h-full bg-zinc-900/50 rounded-xl flex items-center justify-center border border-dashed border-zinc-800">
-                  <span className="text-zinc-700 font-serif italic">Carregando visualização...</span>
+                  <span className="text-zinc-700 font-serif italic text-sm">Imagem não cadastrada</span>
                 </div>
               )}
             </motion.div>
@@ -278,7 +239,9 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
 };
 
 export default function Index() {
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cart, setCart] = useState(() => {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
@@ -286,6 +249,27 @@ export default function Index() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setProducts(data || []);
+    } catch (error: any) {
+      console.error('Erro ao buscar produtos:', error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -308,7 +292,9 @@ export default function Index() {
   };
 
   const cartTotal = cart.reduce((acc, item) => {
-    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
+    const price = typeof item.product.price === 'number' 
+      ? item.product.price 
+      : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
     return acc + price;
   }, 0);
 
@@ -351,25 +337,19 @@ export default function Index() {
         </div>
       </nav>
 
-      {/* Hero Section - Redesigned for Maximum Impact */}
+      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-black">
-        {/* Multi-layered Cinematic Background */}
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-[#050505] opacity-90" />
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent z-10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 z-10" />
-          
-          {/* Heat/Fire Glows */}
           <div className="absolute top-1/2 right-[-10%] w-[600px] h-[600px] bg-amber-900/20 blur-[150px] rounded-full -translate-y-1/2" />
           <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-amber-950/20 blur-[120px] rounded-full" />
-          
-          {/* Texture Overlay */}
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
         </div>
 
         <div className="container mx-auto px-6 relative z-20">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
-            {/* Hero Text */}
             <div className="w-full lg:w-1/2 space-y-10 text-center lg:text-left">
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
@@ -403,125 +383,51 @@ export default function Index() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="flex flex-wrap justify-center lg:justify-start gap-8"
-              >
-                {[
-                  { icon: ShieldCheck, label: "Aço Inox Premium" },
-                  { icon: Pencil, label: "Gravação Exclusiva" },
-                  { icon: Crown, label: "Caixa de Luxo" }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-amber-500" />
-                    </div>
-                    <span className="text-xs font-bold tracking-widest uppercase text-zinc-300">{item.label}</span>
-                  </div>
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="pt-6"
+                className="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start"
               >
                 <button 
                   onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="group relative px-12 py-6 bg-gradient-to-r from-amber-800 to-amber-600 rounded-full font-black text-sm uppercase tracking-[0.4em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_50px_rgba(217,119,6,0.4)] hover:shadow-[0_0_80px_rgba(217,119,6,0.6)]"
+                  className="px-10 py-5 bg-gradient-to-r from-amber-700 to-amber-600 text-white rounded-xl font-black text-xs uppercase tracking-[0.4em] hover:scale-105 hover:shadow-[0_0_40px_rgba(217,119,6,0.3)] transition-all flex items-center gap-4"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                  <span className="relative flex items-center gap-4">
-                    Personalizar Agora
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                  </span>
+                  Ver Coleção
+                  <ChevronRight className="w-4 h-4" />
                 </button>
-                <p className="mt-6 text-[10px] text-zinc-600 uppercase tracking-[0.2em] font-bold">
-                  <Flame className="inline w-3 h-3 text-amber-500 mr-2" />
-                  Estoque limitado para o Dia dos Pais
-                </p>
-              </motion.div>
-            </div>
-
-            {/* Hero Visual Composed of multiple elements */}
-            <div className="w-full lg:w-1/2 relative flex items-center justify-center py-20 lg:py-0">
-              {/* Background Luxury Box */}
-              <motion.div 
-                initial={{ opacity: 0, x: 60, rotate: 12, scale: 0.9 }}
-                animate={{ opacity: 0.4, x: 40, rotate: 8, scale: 1 }}
-                transition={{ duration: 1.5, delay: 0.4 }}
-                className="absolute w-[450px] h-[550px] bg-[#111] rounded-2xl shadow-[0_50px_100px_rgba(0,0,0,0.9)] border border-zinc-800/30 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black opacity-40" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-white/5" />
-              </motion.div>
-
-              {/* Main Knife Image */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.7, rotate: -25, x: 150 }}
-                animate={{ opacity: 1, scale: 1, rotate: -15, x: 0 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                className="relative z-30 group cursor-pointer"
-              >
-                <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700 aspect-video flex items-center justify-center">
-                  <div className="relative overflow-hidden rounded-[32px] w-full h-full bg-zinc-900/50 flex items-center justify-center">
-                    <img 
-                      src="https://images.unsplash.com/photo-1593612803893-7a9151244192?auto=format&fit=crop&q=80&w=1200" 
-                      alt="Faca Premium Herança" 
-                      className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-[55] flex flex-col justify-end p-8">
-                      <div className="space-y-2">
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500">Edição Especial</span>
-                        <h3 className="text-3xl font-bold font-serif">Faca Premium Herança</h3>
-                        <p className="text-2xl font-black text-white">R$ 499,00</p>
-                      </div>
+                <div className="flex -space-x-4">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="w-12 h-12 rounded-full border-2 border-black bg-zinc-800 overflow-hidden">
+                      <img src={`https://i.pravatar.cc/100?u=${i}`} alt="Client" />
                     </div>
-                  </div>
-                </div>
-                
-                {/* Dynamic Blade Shine */}
-                <motion.div 
-                  animate={{ 
-                    left: ['-20%', '120%'],
-                    opacity: [0, 0.6, 0]
-                  }}
-                  transition={{ 
-                    duration: 3, 
-                    repeat: Infinity, 
-                    repeatDelay: 2,
-                    ease: "easeInOut"
-                  }}
-                  className="absolute top-[20%] left-0 w-16 h-[60%] bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[45deg] pointer-events-none z-40 blur-[2px]"
-                />
-              </motion.div>
-
-              {/* Seal of Authenticity */}
-              <motion.div 
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.8, type: 'spring', damping: 15 }}
-                className="absolute top-0 right-[10%] z-40"
-              >
-                <div className="relative w-32 h-32 flex items-center justify-center">
-                  <motion.div 
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="absolute inset-0 border border-dashed border-amber-500/40 rounded-full"
-                  />
-                  <div className="w-28 h-28 rounded-full bg-black/60 backdrop-blur-xl border border-amber-500/20 flex flex-col items-center justify-center text-center p-4">
-                    <span className="text-[8px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-1">Entrega</span>
-                    <span className="text-[11px] font-black text-amber-500 uppercase leading-none tracking-tighter">Garantida</span>
-                    <div className="w-8 h-[1px] bg-amber-900 my-2" />
-                    <span className="text-[7px] font-bold text-zinc-400 uppercase">AGO 2024</span>
+                  ))}
+                  <div className="pl-6 flex flex-col justify-center">
+                    <div className="flex text-amber-500">
+                      {[1, 2, 3, 4, 5].map((s) => <Star key={s} className="w-3 h-3 fill-current" />)}
+                    </div>
+                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">+2.4k Avaliações</span>
                   </div>
                 </div>
               </motion.div>
             </div>
+
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1 }}
+              className="w-full lg:w-1/2 relative"
+            >
+              <div className="relative aspect-square">
+                <div className="absolute inset-0 bg-amber-600/10 blur-[120px] rounded-full animate-pulse" />
+                <img 
+                  src="https://images.unsplash.com/photo-1593014168095-2dfb9f2913f0?auto=format&fit=crop&q=80&w=800" 
+                  alt="Faca de Elite" 
+                  className="w-full h-full object-contain relative z-10 drop-shadow-[0_35px_35px_rgba(0,0,0,0.8)]"
+                />
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Trust & Quality Grid - Refined */}
+      {/* Trust & Quality Grid */}
       <section id="personalizacao" className="relative py-24 bg-[#080808] border-y border-zinc-900/50">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-10">
@@ -572,43 +478,54 @@ export default function Index() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-12">
-            {products.map((product) => (
+            {loading ? (
+              <div className="col-span-3 flex flex-col items-center justify-center py-20 gap-4">
+                <Loader2 className="w-12 h-12 text-amber-500 animate-spin" />
+                <p className="text-zinc-500 font-serif italic tracking-widest text-xs uppercase">Carregando Acervo...</p>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="col-span-3 text-center py-20 text-zinc-500 font-serif italic">
+                Nenhum exemplar disponível no momento.
+              </div>
+            ) : products.map((product) => (
               <motion.div 
                 key={product.id}
                 whileHover={{ y: -10 }}
-                className="group relative bg-[#0a0a0a] rounded-3xl overflow-hidden border border-zinc-800/50 hover:border-amber-500/30 transition-all duration-500 shadow-2xl"
+                className="group relative bg-[#0a0a0a] rounded-3xl overflow-hidden border border-zinc-800/50 hover:border-amber-500/30 transition-all duration-500 shadow-2xl flex flex-col h-full"
               >
-                {/* Image Section */}
                 <div className="relative h-80 overflow-hidden flex items-center justify-center bg-zinc-900/20">
-                  {product.image ? (
+                  {product.image_url ? (
                     <img 
-                      src={product.image} 
+                      src={product.image_url} 
                       alt={product.name} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 p-6" 
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-zinc-900/50 to-black/50 p-12">
                       <div className="w-20 h-[1px] bg-amber-500/20 mb-4" />
-                      <span className="text-zinc-600 font-serif italic tracking-widest text-sm uppercase">Acervo Herança</span>
+                      <span className="text-zinc-600 font-serif italic tracking-widest text-[10px] uppercase text-center">Imagem não cadastrada</span>
                       <div className="w-20 h-[1px] bg-amber-500/20 mt-4" />
                     </div>
                   )}
-                  {/* Subtle overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60 pointer-events-none" />
                 </div>
                 
-                {/* Content Section */}
-                <div className="p-8 space-y-6">
+                <div className="p-8 space-y-6 flex-grow flex flex-col justify-between">
                   <div className="space-y-3">
-                    <h3 className="text-2xl font-bold font-serif text-white tracking-tight group-hover:text-amber-500 transition-colors">
-                      {product.name}
-                    </h3>
+                    <div className="flex justify-between items-start gap-4">
+                      <h3 className="text-2xl font-bold font-serif text-white tracking-tight group-hover:text-amber-500 transition-colors">
+                        {product.name}
+                      </h3>
+                      <div className="px-2 py-1 bg-amber-500/10 border border-amber-500/20 rounded-md">
+                        <span className="text-[8px] font-bold text-amber-500 uppercase tracking-widest whitespace-nowrap">Aço Premium</span>
+                      </div>
+                    </div>
                     <p className="text-zinc-500 text-sm leading-relaxed font-light min-h-[3rem]">
                       {product.description}
                     </p>
-                    {product.features && (
+                    {product.features && product.features.length > 0 && (
                       <ul className="space-y-1 pt-2">
-                        {product.features.map((feature, idx) => (
+                        {product.features.slice(0, 4).map((feature, idx) => (
                           <li key={idx} className="text-[10px] text-zinc-400 uppercase tracking-widest flex items-center gap-2">
                             <div className="w-1 h-1 rounded-full bg-amber-500/50" />
                             {feature}
@@ -618,19 +535,20 @@ export default function Index() {
                     )}
                   </div>
                   
-                  <div className="flex flex-col space-y-6">
+                  <div className="flex flex-col space-y-6 pt-4">
                     <div className="flex items-end justify-between">
                       <div className="space-y-1">
                         <span className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">Investimento</span>
                         <div className="flex items-center gap-2">
-                          {product.oldPrice && (
-                            <span className="text-sm text-zinc-500 line-through decoration-amber-500/50">{product.oldPrice}</span>
+                          {product.old_price && (
+                            <span className="text-sm text-zinc-500 line-through decoration-amber-500/50">
+                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.old_price)}
+                            </span>
                           )}
-                          <p className="text-3xl font-black text-white tracking-tighter">{product.price}</p>
+                          <p className="text-3xl font-black text-white tracking-tighter">
+                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                          </p>
                         </div>
-                      </div>
-                      <div className="px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full">
-                        <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest">Aço Premium</span>
                       </div>
                     </div>
 
@@ -649,7 +567,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Cart & Customizer Logic (Maintained) */}
       <AnimatePresence>
         {isCartOpen && (
           <div className="fixed inset-0 z-[110] flex justify-end">
@@ -664,53 +581,58 @@ export default function Index() {
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-              className="relative w-full max-w-md bg-[#0a0a0a] h-full shadow-2xl flex flex-col border-l border-zinc-900"
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative w-full max-w-md bg-[#0a0a0a] h-full shadow-2xl border-l border-zinc-800 p-8 flex flex-col"
             >
-              <div className="p-10 border-b border-zinc-900 flex items-center justify-between bg-zinc-950">
-                <h2 className="text-xl font-bold flex items-center gap-4 font-serif uppercase tracking-widest">
-                  <ShoppingBag className="w-5 h-5 text-amber-600" />
-                  Carrinho
-                </h2>
-                <button onClick={() => setIsCartOpen(false)} className="p-2 text-zinc-600 hover:text-white transition-colors">
-                  <X />
+              <div className="flex justify-between items-center mb-10">
+                <div className="space-y-1">
+                  <h2 className="text-2xl font-black font-serif uppercase tracking-widest">Seu Pedido</h2>
+                  <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">Acervo Herança de Aço</p>
+                </div>
+                <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-zinc-900 rounded-full transition-colors">
+                  <X className="w-6 h-6" />
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-10 space-y-8">
+              <div className="flex-grow overflow-y-auto space-y-6 pr-2 custom-scrollbar">
                 {cart.length === 0 ? (
-                  <div className="text-center py-20 space-y-6">
-                    <div className="w-24 h-24 bg-zinc-900/50 rounded-full flex items-center justify-center mx-auto border border-zinc-800">
-                      <ShoppingBag className="w-10 h-10 text-zinc-800" />
+                  <div className="h-full flex flex-col items-center justify-center text-center space-y-6">
+                    <div className="w-20 h-20 rounded-full bg-zinc-900 flex items-center justify-center">
+                      <ShoppingBag className="w-8 h-8 text-zinc-700" />
                     </div>
-                    <p className="text-zinc-600 font-bold uppercase tracking-widest text-xs">Vazio por enquanto</p>
+                    <div className="space-y-2">
+                      <p className="text-zinc-500 font-serif italic">Seu acervo está vazio.</p>
+                      <button onClick={() => setIsCartOpen(false)} className="text-amber-500 text-[10px] font-black uppercase tracking-widest hover:underline">Continuar Explorando</button>
+                    </div>
                   </div>
                 ) : (
                   cart.map((item) => (
-                    <div key={item.cartId} className="group relative flex gap-6 bg-[#0d0d0d] p-6 rounded-3xl border border-zinc-900 transition-all">
-                      <div className="w-24 h-24 shrink-0 overflow-hidden rounded-2xl border border-zinc-800 flex items-center justify-center bg-zinc-900/50">
-                        {item.product.image ? (
-                          <img src={item.product.image} className="w-full h-full object-cover" alt={item.product.name} />
-                        ) : (
-                          <div className="w-full h-full bg-zinc-800 flex items-center justify-center">
-                            <Crown className="w-6 h-6 text-zinc-700" />
+                    <div key={item.cartId} className="group relative bg-zinc-900/30 p-4 rounded-2xl border border-zinc-800/50 hover:border-amber-500/20 transition-all">
+                      <div className="flex gap-4">
+                        <div className="w-20 h-20 bg-zinc-900 rounded-xl overflow-hidden flex items-center justify-center">
+                          <img src={item.product.image_url} alt={item.product.name} className="w-full h-full object-contain p-2" />
+                        </div>
+                        <div className="flex-grow space-y-2">
+                          <div className="flex justify-between items-start">
+                            <h3 className="text-xs font-black uppercase tracking-widest text-white">{item.product.name}</h3>
+                            <button onClick={() => removeFromCart(item.cartId)} className="text-zinc-600 hover:text-red-500 transition-colors">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-bold text-sm text-white truncate">{item.product.name}</h3>
-                          <button onClick={() => removeFromCart(item.cartId)} className="text-zinc-700 hover:text-red-500 transition-colors">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <div className="space-y-1">
+                            <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                              <Pencil className="w-3 h-3 text-amber-600" />
+                              Gravação: {item.engravedName || 'Sem nome'}
+                            </p>
+                            <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                              <Crown className="w-3 h-3 text-amber-600" />
+                              Tamanho: {item.selectedSize}
+                            </p>
+                          </div>
+                          <p className="text-sm font-black text-amber-500 mt-2">
+                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
+                          </p>
                         </div>
-                        <div className="space-y-1">
-                          {item.engravedName && (
-                            <p className="text-[10px] uppercase tracking-widest text-amber-500 font-black italic">"{item.engravedName}"</p>
-                          )}
-                          <p className="text-[10px] text-zinc-600 font-bold">Tam: {item.selectedSize} / {item.selectedFont}</p>
-                        </div>
-                        <p className="mt-4 text-amber-500 font-black text-sm">{item.product.price}</p>
                       </div>
                     </div>
                   ))
@@ -718,18 +640,24 @@ export default function Index() {
               </div>
 
               {cart.length > 0 && (
-                <div className="p-10 bg-zinc-950 border-t border-zinc-900 space-y-8">
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-500 font-bold uppercase tracking-[0.2em] text-[10px]">Total do Investimento</span>
-                    <span className="text-4xl font-black text-white tracking-tighter">R$ {cartTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                <div className="mt-8 space-y-6 pt-8 border-t border-zinc-800">
+                  <div className="flex justify-between items-end">
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500">Subtotal do Acervo</span>
+                    <span className="text-2xl font-black text-white tracking-tighter">
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartTotal)}
+                    </span>
                   </div>
                   <button 
                     onClick={() => navigate('/checkout')}
-                    className="w-full bg-amber-600 text-white py-6 rounded-2xl font-black hover:bg-amber-500 transition-all shadow-[0_15px_40px_rgba(217,119,6,0.3)] flex items-center justify-center gap-4 uppercase tracking-[0.3em] text-xs"
+                    className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-5 rounded-xl font-black text-xs uppercase tracking-[0.4em] hover:from-amber-600 hover:to-amber-500 transition-all shadow-[0_10px_30px_rgba(217,119,6,0.3)] flex items-center justify-center gap-3"
                   >
-                    <Lock className="w-4 h-4" />
-                    Finalizar Compra
+                    Finalizar Pedido
+                    <ArrowRight className="w-4 h-4" />
                   </button>
+                  <p className="text-[9px] text-zinc-600 text-center font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                    <ShieldCheck className="w-3 h-3" />
+                    Pagamento 100% Seguro & Criptografado
+                  </p>
                 </div>
               )}
             </motion.div>
@@ -747,74 +675,20 @@ export default function Index() {
         )}
       </AnimatePresence>
 
-      {/* Testimonials Section */}
-      <section id="historia" className="py-32 relative bg-[#050505] overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-900/5 blur-[120px] rounded-full pointer-events-none" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-20 space-y-4">
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-600">O que dizem nossos clientes</span>
-            <h2 className="text-4xl md:text-6xl font-black font-serif tracking-tighter text-white">Satisfação de Mestre</h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((item, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.2 }}
-                className="bg-[#0d0d0d] p-10 rounded-[32px] border border-zinc-900/50 relative group hover:border-amber-500/20 transition-all duration-500"
-              >
-                <div className="flex gap-1 mb-6">
-                  {[...Array(item.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-500 text-amber-500" />
-                  ))}
-                </div>
-                
-                <p className="text-zinc-400 text-lg leading-relaxed mb-10 font-light italic">
-                  "{item.content}"
-                </p>
-
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border border-zinc-800">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-white text-sm uppercase tracking-wider">{item.name}</h4>
-                    <p className="text-zinc-600 text-xs font-bold uppercase tracking-widest">{item.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-24 bg-black border-t border-zinc-900">
-        <div className="container mx-auto px-6 text-center">
-          <div className="flex flex-col items-center gap-8 mb-16">
+      <footer className="bg-[#050505] border-t border-zinc-900 py-20">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-10">
             <div className="flex items-center gap-3">
-              <Crown className="w-10 h-10 text-amber-500" />
-              <h2 className="text-3xl font-bold font-serif tracking-[0.3em] uppercase">Herança de Aço</h2>
+              <Crown className="w-6 h-6 text-amber-500" />
+              <h2 className="text-xl font-black font-serif tracking-[0.4em] uppercase">Herança de Aço</h2>
             </div>
-            <p className="text-zinc-600 text-sm max-w-2xl mx-auto leading-relaxed font-light">
-              Mestres da cutelaria artesanal, transformando o mais nobre aço em 
-              legados que atravessam gerações. Qualidade incontestável, personalização definitiva.
-            </p>
-          </div>
-          
-          <div className="flex flex-wrap justify-center gap-16 text-zinc-700 uppercase text-[9px] font-black tracking-[0.4em]">
-            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500 transition-colors">Suporte</a>
-            <a href="#produtos" className="hover:text-amber-500 transition-colors">Coleção</a>
-            <a href="#historia" className="hover:text-amber-500 transition-colors">Nossa História</a>
-            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500 transition-colors">B2B/Corporativo</a>
-          </div>
-          
-          <div className="mt-20 pt-10 border-t border-zinc-900/30">
-            <p className="text-[9px] text-zinc-800 tracking-[0.3em] uppercase">© 2024 Herança de Aço - Arte em Metal & Madeira. Todos os direitos reservados.</p>
+            <div className="flex gap-10 text-[10px] font-black tracking-[0.3em] text-zinc-500">
+              <a href="#" className="hover:text-amber-500 transition-colors">TERMOS</a>
+              <a href="#" className="hover:text-amber-500 transition-colors">PRIVACIDADE</a>
+              <a href="#" className="hover:text-amber-500 transition-colors">CONTATO</a>
+              <a href="/admin-produtos" className="hover:text-amber-500 transition-colors">ADMIN</a>
+            </div>
+            <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">© 2024 Herança de Aço. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>
