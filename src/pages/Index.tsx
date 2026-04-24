@@ -44,6 +44,20 @@ const products = [
     image: 'https://images.unsplash.com/photo-1592156328737-023a1a364be1?auto=format&fit=crop&q=80&w=600', 
     description: 'O legado que atravessa gerações, forjado com precisão e alma.'
   },
+  { 
+    id: 4, 
+    name: 'Faca Guardião 20cm Inox', 
+    price: 'R$ 99,90', 
+    oldPrice: 'R$ 129,90',
+    image: '/faca-guardiao.png', 
+    description: 'Compacta, afiada e extremamente resistente. Feita em aço inox com cabo em madeira premium e design exclusivo com detalhe em cruz.',
+    features: [
+      'Aço inox resistente',
+      'Cabo em madeira nobre',
+      'Tamanho ideal 20cm',
+      'Acompanha bainha'
+    ]
+  },
 ];
 
 const testimonials = [
@@ -78,6 +92,7 @@ const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: str
   'Cutelo Artesanal Brut': { size: '8"', font: 'Bold', symbol: '⚔️' },
   'Lâmina de Elite Gold': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
   'Herança Silvestre': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
+  'Faca Guardião 20cm Inox': { size: '8"', font: 'Serif', symbol: '🛡️' },
 };
 
 const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
@@ -576,13 +591,28 @@ export default function Index() {
                     <p className="text-zinc-500 text-sm leading-relaxed font-light min-h-[3rem]">
                       {product.description}
                     </p>
+                    {product.features && (
+                      <ul className="space-y-1 pt-2">
+                        {product.features.map((feature, idx) => (
+                          <li key={idx} className="text-[10px] text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                            <div className="w-1 h-1 rounded-full bg-amber-500/50" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                   
                   <div className="flex flex-col space-y-6">
                     <div className="flex items-end justify-between">
                       <div className="space-y-1">
                         <span className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">Investimento</span>
-                        <p className="text-3xl font-black text-white tracking-tighter">{product.price}</p>
+                        <div className="flex items-center gap-2">
+                          {product.oldPrice && (
+                            <span className="text-sm text-zinc-500 line-through decoration-amber-500/50">{product.oldPrice}</span>
+                          )}
+                          <p className="text-3xl font-black text-white tracking-tighter">{product.price}</p>
+                        </div>
                       </div>
                       <div className="px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full">
                         <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest">Aço Premium</span>
