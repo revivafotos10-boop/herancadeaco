@@ -37,6 +37,10 @@ interface Product {
   engraving_rotation?: number;
   engraving_font_size?: number;
   engraving_color?: string;
+  engraving_area_x?: number;
+  engraving_area_y?: number;
+  engraving_area_width?: number;
+  engraving_area_height?: number;
 }
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
@@ -136,25 +140,31 @@ export default function Produto() {
     return acc + price;
   }, 0);
 
-  const getEngravingStyle = () => {
+  const getEngravingBoxStyle = () => {
+    // Fallback values centered in the middle
+    const x = product?.engraving_area_x ?? 50;
+    const y = product?.engraving_area_y ?? 50;
+    const w = product?.engraving_area_width ?? 30;
+    const h = product?.engraving_area_height ?? 10;
+    const rot = product?.engraving_rotation ?? 0;
+
     return {
       position: 'absolute' as const,
-      left: '43%',
-      top: '34%',
-      transform: 'rotate(-25deg)',
-      fontSize: '18px',
-      fontWeight: '600',
-      color: '#1a1a1a',
-      opacity: 0.85,
+      left: `${x - (w / 2)}%`,
+      top: `${y - (h / 2)}%`,
+      width: `${w}%`,
+      height: `${h}%`,
+      transform: `rotate(${rot}deg)`,
       zIndex: 20,
-      maxWidth: '40%',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap' as const
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      pointerEvents: 'none' as const,
+      mixBlendMode: 'multiply' as const,
     };
   };
 
-  const engravingStyle = getEngravingStyle();
+  const boxStyle = getEngravingBoxStyle();
 
   if (loading) {
     return (
@@ -217,18 +227,34 @@ export default function Produto() {
                 {/* Simulation Overlay */}
                 <div className="absolute inset-0 pointer-events-none z-20">
                   <motion.div 
-                    initial={{ opacity: 0.85 }}
-                    animate={{ opacity: 0.85 }}
-                    className="whitespace-nowrap"
-                    style={{ 
-                      ...engravingStyle,
-                      fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
-                                 selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
-                                 selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
-                      letterSpacing: '0.01em',
-                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.75 }}
+                    style={boxStyle}
                   >
-                    {engravedName || "MARCELO"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
+                    <svg 
+                      viewBox="0 0 200 40" 
+                      width="100%" 
+                      height="100%" 
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <text 
+                        x="100" 
+                        y="20" 
+                        textAnchor="middle" 
+                        dominantBaseline="middle"
+                        style={{ 
+                          fontSize: '24px', 
+                          fontWeight: '600',
+                          fill: product?.engraving_color || '#2b2b2b',
+                          fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
+                                     selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
+                                     selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
+                          letterSpacing: '0.01em',
+                        }}
+                      >
+                        {engravedName || "MARCELO"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
+                      </text>
+                    </svg>
                   </motion.div>
                 </div>
 
