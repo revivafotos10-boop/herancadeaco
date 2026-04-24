@@ -282,8 +282,9 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans">
+      <UrgencyBanner className="z-[90] relative" />
       {/* Cinematic Header */}
-      <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-8'}`}>
+      <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-8 mt-10 md:mt-12'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2 group cursor-pointer">
             <Crown className="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform" />
