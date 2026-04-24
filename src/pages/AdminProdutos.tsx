@@ -39,6 +39,11 @@ interface Product {
   image_url: string;
   gallery_images: string[];
   active: boolean;
+  engraving_x: number;
+  engraving_y: number;
+  engraving_rotation: number;
+  engraving_font_size: number;
+  engraving_color: string;
   created_at?: string;
 }
 
@@ -55,6 +60,11 @@ const INITIAL_PRODUCT: Product = {
   image_url: '',
   gallery_images: [],
   active: true,
+  engraving_x: 55,
+  engraving_y: 45,
+  engraving_rotation: -5,
+  engraving_font_size: 20,
+  engraving_color: '#111111',
 };
 
 export default function AdminProdutos() {
