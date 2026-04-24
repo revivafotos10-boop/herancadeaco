@@ -128,49 +128,62 @@ export default function Index() {
       </nav>
 
       {/* 1. New Hero Banner */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1555243896-c7097f82393e?auto=format&fit=crop&q=80&w=1920" 
-            alt="Faca em uso" 
-            className="w-full h-full object-cover brightness-[0.4]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80" />
-        </div>
-
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="space-y-8"
-          >
-            <h1 className="text-5xl md:text-8xl lg:text-9xl font-black font-serif leading-[0.9] tracking-tighter">
-              Não é só uma faca.<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-200 via-amber-600 to-amber-900 bg-[length:200%_auto] animate-gradient-x italic">
-                É um legado.
-              </span>
-            </h1>
-            <p className="text-lg md:text-2xl text-zinc-300 max-w-3xl mx-auto font-light tracking-wide">
-              Facas premium personalizadas para quem exige presença.
-            </p>
-            <div className="pt-8">
-              <button 
-                onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-12 py-6 bg-gradient-to-r from-amber-700 to-amber-600 text-white rounded-full font-black text-sm uppercase tracking-[0.5em] hover:scale-105 hover:shadow-[0_0_50px_rgba(217,119,6,0.4)] transition-all flex items-center gap-4 mx-auto"
+      <section className="relative min-h-[500px] md:h-[450px] w-full flex items-center overflow-hidden bg-[#0b0b0b] pt-20 md:pt-0">
+        <div className="container mx-auto px-6 h-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center h-full">
+            {/* ESQUERDA: Conteúdo */}
+            <div className="flex flex-col justify-center text-center md:text-left order-2 md:order-1 pb-12 md:pb-0">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                className="space-y-4 md:space-y-6"
               >
-                PERSONALIZAR AGORA
-                <ArrowRight className="w-5 h-5" />
-              </button>
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-black font-serif leading-[1.1] tracking-tight text-white">
+                  Sua paixão,<br />
+                  sua marca.
+                </h1>
+                <p className="text-base md:text-lg text-zinc-400 max-w-md mx-auto md:mx-0 font-light leading-relaxed">
+                  Cutelaria premium e personalizada para quem valoriza tradição em cada detalhe.
+                </p>
+                <div className="pt-4 md:pt-6">
+                  <button 
+                    onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="px-8 md:px-10 py-4 bg-[#ff7a00] hover:bg-[#e66e00] text-white rounded-md font-bold text-xs md:text-sm uppercase tracking-[0.2em] transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-[#ff7a00]/20"
+                  >
+                    PERSONALIZE A SUA AGORA
+                  </button>
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
-        </div>
-        
-        {/* Animated background elements */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
-          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center pt-2">
-            <div className="w-1 h-2 bg-white rounded-full" />
+
+            {/* DIREITA: Imagem da Faca */}
+            <div className="relative flex items-center justify-center h-[300px] md:h-full order-1 md:order-2">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1 }}
+                className="relative w-full h-full flex items-center justify-center"
+              >
+                {/* Glow effect background */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-zinc-800/20 blur-[100px] rounded-full" />
+                
+                {products.length > 0 && products[0].image_url ? (
+                  <img 
+                    src={products[0].image_url} 
+                    alt="Faca em destaque" 
+                    className="relative z-10 w-[85%] md:w-[95%] h-auto max-h-[250px] md:max-h-[350px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] filter brightness-110 contrast-110"
+                  />
+                ) : (
+                  <div className="relative z-10 w-full h-full flex items-center justify-center">
+                     <Sword className="w-32 h-32 text-zinc-800 animate-pulse" />
+                  </div>
+                )}
+                
+                {/* Subtle highlight line on blade area (conceptual) */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
