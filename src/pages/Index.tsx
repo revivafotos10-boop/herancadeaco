@@ -76,8 +76,8 @@ const sizes = ['8"', '10"', '12"'];
 
 const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: string }> = {
   'Cutelo Artesanal Brut': { size: '8"', font: 'Bold', symbol: '⚔️' },
-  'Faca Chef Premium Gold': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
-  'Faca Picanheira Raiz': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
+  'Lâmina de Elite Gold': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
+  'Herança Silvestre': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
 };
 
 const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
