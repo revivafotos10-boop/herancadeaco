@@ -27,7 +27,7 @@ const products = [
     id: 1, 
     name: 'Cutelo Artesanal Brut', 
     price: 'R$ 349,00', 
-    image: 'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1550985543-f47f38aeee65?auto=format&fit=crop&q=80&w=800',
     description: 'Forjado em aço carbono, ideal para cortes robustos e precisos.'
   },
   { 
@@ -41,7 +41,7 @@ const products = [
     id: 3, 
     name: 'Faca Picanheira Raiz', 
     price: 'R$ 389,00', 
-    image: 'https://images.unsplash.com/photo-1550985543-f47f38aeee65?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?auto=format&fit=crop&q=80&w=800',
     description: 'O clássico do churrasco brasileiro, com cabo em madeira nobre.'
   },
 ];
@@ -413,7 +413,7 @@ export default function Index() {
                 transition={{ duration: 1.5, delay: 0.4 }}
                 className="absolute w-[450px] h-[550px] bg-[#111] rounded-2xl shadow-[0_50px_100px_rgba(0,0,0,0.9)] border border-zinc-800/30 overflow-hidden"
               >
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=800')] bg-cover opacity-20" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550985543-f47f38aeee65?auto=format&fit=crop&q=80&w=800')] bg-cover opacity-20" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-white/5" />
               </motion.div>
 
@@ -427,7 +427,7 @@ export default function Index() {
                 <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700">
                   <div className="relative overflow-hidden rounded-[32px]">
                     <img 
-                      src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=800" 
+                      src="https://images.unsplash.com/photo-1550985543-f47f38aeee65?auto=format&fit=crop&q=80&w=800" 
                       alt="Faca Premium Herança" 
                       className="w-full h-auto relative z-50 transition-transform duration-1000 group-hover:scale-110"
                     />
