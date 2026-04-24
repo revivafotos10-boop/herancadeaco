@@ -418,7 +418,7 @@ export default function Index() {
               <div className="relative aspect-square">
                 <div className="absolute inset-0 bg-amber-600/10 blur-[120px] rounded-full animate-pulse" />
                 <img 
-                  src="https://images.unsplash.com/photo-1593014168095-2dfb9f2913f0?auto=format&fit=crop&q=80&w=800" 
+                  src="https://images.unsplash.com/photo-1594470117722-da419337297b?auto=format&fit=crop&q=80&w=800" 
                   alt="Faca de Elite" 
                   className="w-full h-full object-contain relative z-10 drop-shadow-[0_35px_35px_rgba(0,0,0,0.8)]"
                 />
