@@ -543,7 +543,7 @@ export default function Index() {
                   <img 
                     src={product.image} 
                     alt={product.name} 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-[0.85] group-hover:brightness-100" 
+                    className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-110 brightness-[0.85] group-hover:brightness-100 mix-blend-screen" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent opacity-90" />
                   
