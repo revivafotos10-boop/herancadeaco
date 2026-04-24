@@ -19,6 +19,10 @@ export type Database = {
           active: boolean | null
           created_at: string | null
           description: string | null
+          engraving_area_height: number | null
+          engraving_area_width: number | null
+          engraving_area_x: number | null
+          engraving_area_y: number | null
           engraving_color: string | null
           engraving_font_size: number | null
           engraving_rotation: number | null
@@ -40,6 +44,10 @@ export type Database = {
           active?: boolean | null
           created_at?: string | null
           description?: string | null
+          engraving_area_height?: number | null
+          engraving_area_width?: number | null
+          engraving_area_x?: number | null
+          engraving_area_y?: number | null
           engraving_color?: string | null
           engraving_font_size?: number | null
           engraving_rotation?: number | null
@@ -61,6 +69,10 @@ export type Database = {
           active?: boolean | null
           created_at?: string | null
           description?: string | null
+          engraving_area_height?: number | null
+          engraving_area_width?: number | null
+          engraving_area_x?: number | null
+          engraving_area_y?: number | null
           engraving_color?: string | null
           engraving_font_size?: number | null
           engraving_rotation?: number | null
