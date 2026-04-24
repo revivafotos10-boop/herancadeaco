@@ -27,21 +27,21 @@ const products = [
     id: 1, 
     name: 'Cutelo Artesanal Brut', 
     price: 'R$ 349,00', 
-    image: 'https://images.unsplash.com/photo-1622591605333-85e7ed220f4c?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1594913366159-1832005474d8?auto=format&fit=crop&q=80&w=800',
     description: 'Forjado em aço carbono, ideal para cortes robustos e precisos.'
   },
   { 
     id: 2, 
     name: 'Faca Chef Premium Gold', 
     price: 'R$ 299,00', 
-    image: 'https://images.unsplash.com/photo-1614364650220-33230a10c9c3?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?auto=format&fit=crop&q=80&w=800',
     description: 'Equilíbrio perfeito e fio de navalha para alta gastronomia.'
   },
   { 
     id: 3, 
     name: 'Faca Picanheira Raiz', 
     price: 'R$ 389,00', 
-    image: 'https://images.unsplash.com/photo-1554941068-a252680d25d9?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1614364650220-33230a10c9c3?auto=format&fit=crop&q=80&w=800',
     description: 'O clássico do churrasco brasileiro, com cabo em madeira nobre.'
   },
 ];
@@ -52,21 +52,21 @@ const testimonials = [
     role: "Churrasqueiro Profissional",
     content: "A qualidade do corte e o equilíbrio da faca são impressionantes. Superou todas as minhas expectativas.",
     rating: 5,
-    image: "https://i.pravatar.cc/150?u=carlos"
+    image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&q=80&w=150"
   },
   {
     name: "Mariana Silva",
     role: "Chef de Cozinha",
     content: "Presenteei meu pai com um cutelo personalizado e ele ficou sem palavras. A gravação é impecável.",
     rating: 5,
-    image: "https://i.pravatar.cc/150?u=mariana"
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150"
   },
   {
     name: "Ricardo Mendes",
     role: "Colecionador",
     content: "Uma verdadeira obra de arte. O acabamento em madeira nobre dá um toque de sofisticação único.",
     rating: 5,
-    image: "https://i.pravatar.cc/150?u=ricardo"
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150"
   }
 ];
 
@@ -286,9 +286,9 @@ export default function Index() {
           </div>
           
           <div className="hidden md:flex items-center gap-12 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
-            <a href="#produtos" className="hover:text-amber-500 transition-colors">COLEÇÃO</a>
-            <a href="#" className="hover:text-amber-500 transition-colors">PERSONALIZAÇÃO</a>
-            <a href="#" className="hover:text-amber-500 transition-colors">HISTÓRIA</a>
+            <a href="#produtos" className="hover:text-white transition-colors">COLEÇÃO</a>
+            <a href="#personalizacao" className="hover:text-white transition-colors">PERSONALIZAÇÃO</a>
+            <a href="#historia" className="hover:text-white transition-colors">HISTÓRIA</a>
           </div>
 
           <div className="flex items-center gap-6">
@@ -317,7 +317,7 @@ export default function Index() {
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-black">
         {/* Multi-layered Cinematic Background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544965850-6f8a66788f9b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-40 mix-blend-luminosity" />
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent z-10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 z-10" />
           
@@ -427,7 +427,7 @@ export default function Index() {
                 <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700">
                   <div className="relative overflow-hidden rounded-[32px]">
                     <img 
-                      src="https://images.unsplash.com/photo-1614364650220-33230a10c9c3?q=80&w=800" 
+                      src="https://images.unsplash.com/photo-1582730147924-d92b4da00252?q=80&w=800" 
                       alt="Faca Premium Herança" 
                       className="w-full h-auto relative z-50 transition-transform duration-1000 group-hover:scale-110"
                     />
@@ -484,7 +484,7 @@ export default function Index() {
       </section>
 
       {/* Trust & Quality Grid - Refined */}
-      <section className="relative py-24 bg-[#080808] border-y border-zinc-900/50">
+      <section id="personalizacao" className="relative py-24 bg-[#080808] border-y border-zinc-900/50">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-10">
             {[
@@ -674,7 +674,7 @@ export default function Index() {
       </AnimatePresence>
 
       {/* Testimonials Section */}
-      <section className="py-32 relative bg-[#050505] overflow-hidden">
+      <section id="historia" className="py-32 relative bg-[#050505] overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-900/5 blur-[120px] rounded-full pointer-events-none" />
         
         <div className="container mx-auto px-6 relative z-10">
@@ -733,10 +733,10 @@ export default function Index() {
           </div>
           
           <div className="flex flex-wrap justify-center gap-16 text-zinc-700 uppercase text-[9px] font-black tracking-[0.4em]">
-            <a href="#" className="hover:text-amber-500 transition-colors">Suporte</a>
-            <a href="#" className="hover:text-amber-500 transition-colors">Políticas</a>
-            <a href="#" className="hover:text-amber-500 transition-colors">Onde Estamos</a>
-            <a href="#" className="hover:text-amber-500 transition-colors">B2B/Corporativo</a>
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500 transition-colors">Suporte</a>
+            <a href="#produtos" className="hover:text-amber-500 transition-colors">Coleção</a>
+            <a href="#historia" className="hover:text-amber-500 transition-colors">Nossa História</a>
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500 transition-colors">B2B/Corporativo</a>
           </div>
           
           <div className="mt-20 pt-10 border-t border-zinc-900/30">
