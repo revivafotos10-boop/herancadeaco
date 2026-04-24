@@ -41,6 +41,10 @@ interface Product {
   engraving_area_y?: number;
   engraving_area_width?: number;
   engraving_area_height?: number;
+  engraving_start_x?: number;
+  engraving_start_y?: number;
+  engraving_end_x?: number;
+  engraving_end_y?: number;
 }
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
@@ -141,7 +145,45 @@ export default function Produto() {
   }, 0);
 
   const getEngravingBoxStyle = () => {
-    // Fallback values centered in the middle
+    // If start/end points exist, use them for automatic calculation
+    if (product?.engraving_start_x !== undefined && product?.engraving_end_x !== undefined) {
+      const x1 = product.engraving_start_x;
+      const y1 = product.engraving_start_y!;
+      const x2 = product.engraving_end_x;
+      const y2 = product.engraving_end_y!;
+
+      // Center point
+      const x = (x1 + x2) / 2;
+      const y = (y1 + y2) / 2;
+
+      // Distance (width of the area)
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const w = Math.sqrt(dx * dx + dy * dy);
+      
+      // Rotation in degrees
+      const rot = Math.atan2(dy, dx) * (180 / Math.PI);
+      
+      // Standard height for the text area
+      const h = 8; 
+
+      return {
+        position: 'absolute' as const,
+        left: `${x - (w / 2)}%`,
+        top: `${y - (h / 2)}%`,
+        width: `${w}%`,
+        height: `${h}%`,
+        transform: `rotate(${rot}deg)`,
+        zIndex: 20,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pointerEvents: 'none' as const,
+        mixBlendMode: 'multiply' as const,
+      };
+    }
+
+    // Fallback values
     const x = product?.engraving_area_x ?? 50;
     const y = product?.engraving_area_y ?? 50;
     const w = product?.engraving_area_width ?? 30;
@@ -252,7 +294,7 @@ export default function Produto() {
                           letterSpacing: '0.01em',
                         }}
                       >
-                        {engravedName || "MARCELO"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
+                        {engravedName || "NOME"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
                       </text>
                     </svg>
                   </motion.div>
