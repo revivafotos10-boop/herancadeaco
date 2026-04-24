@@ -32,6 +32,11 @@ interface Product {
   features: string[];
   active: boolean;
   slug: string;
+  engraving_x?: number;
+  engraving_y?: number;
+  engraving_rotation?: number;
+  engraving_font_size?: number;
+  engraving_color?: string;
 }
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
