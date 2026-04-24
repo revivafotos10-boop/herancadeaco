@@ -131,15 +131,37 @@ export default function Produto() {
     return acc + price;
   }, 0);
 
-  const getSizeScale = () => {
-    switch(selectedSize) {
-      case '8"': return { width: '50%', height: '35%', fontSize: '1.2rem' };
-      case '12"': return { width: '70%', height: '45%', fontSize: '1.8rem' };
-      default: return { width: '60%', height: '40%', fontSize: '1.5rem' };
+  const getEngravingStyle = () => {
+    const isAmiro = product?.name?.includes('Amiro');
+    
+    if (isAmiro) {
+      return {
+        left: '33%',
+        top: '44%',
+        transform: 'translate(-50%, -50%) rotate(-18deg)',
+        fontSize: '22px',
+        color: '#111111',
+        opacity: 0.8,
+        mixBlendMode: 'multiply' as const,
+      };
     }
+
+    // Default for other products
+    const baseSize = selectedSize === '8"' ? 16 : selectedSize === '12"' ? 24 : 20;
+    const adjustedSize = engravedName.length > 15 ? baseSize * 0.7 : baseSize;
+
+    return {
+      left: '55%',
+      top: '45%',
+      transform: 'translate(-50%, -50%) rotate(-5deg)',
+      fontSize: `${adjustedSize}px`,
+      color: '#111111',
+      opacity: 0.8,
+      mixBlendMode: 'multiply' as const,
+    };
   };
 
-  const scale = getSizeScale();
+  const engravingStyle = getEngravingStyle();
 
   if (loading) {
     return (
