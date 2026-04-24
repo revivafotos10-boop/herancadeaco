@@ -46,6 +46,30 @@ const products = [
   },
 ];
 
+const testimonials = [
+  {
+    name: "Carlos Alberto",
+    role: "Churrasqueiro Profissional",
+    content: "A qualidade do corte e o equilíbrio da faca são impressionantes. Superou todas as minhas expectativas.",
+    rating: 5,
+    image: "https://i.pravatar.cc/150?u=carlos"
+  },
+  {
+    name: "Mariana Silva",
+    role: "Chef de Cozinha",
+    content: "Presenteei meu pai com um cutelo personalizado e ele ficou sem palavras. A gravação é impecável.",
+    rating: 5,
+    image: "https://i.pravatar.cc/150?u=mariana"
+  },
+  {
+    name: "Ricardo Mendes",
+    role: "Colecionador",
+    content: "Uma verdadeira obra de arte. O acabamento em madeira nobre dá um toque de sofisticação único.",
+    rating: 5,
+    image: "https://i.pravatar.cc/150?u=ricardo"
+  }
+];
+
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
 const symbols = ['Nenhum', '⚓', '⚔️', '🔥', '🛡️', '🐎', '🤠'];
 const sizes = ['8"', '10"', '12"'];
@@ -637,6 +661,51 @@ export default function Index() {
           />
         )}
       </AnimatePresence>
+
+      {/* Testimonials Section */}
+      <section className="py-32 relative bg-[#050505] overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-900/5 blur-[120px] rounded-full pointer-events-none" />
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-20 space-y-4">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-600">O que dizem nossos clientes</span>
+            <h2 className="text-4xl md:text-6xl font-black font-serif tracking-tighter text-white">Satisfação de Mestre</h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((item, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.2 }}
+                className="bg-[#0d0d0d] p-10 rounded-[32px] border border-zinc-900/50 relative group hover:border-amber-500/20 transition-all duration-500"
+              >
+                <div className="flex gap-1 mb-6">
+                  {[...Array(item.rating)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  ))}
+                </div>
+                
+                <p className="text-zinc-400 text-lg leading-relaxed mb-10 font-light italic">
+                  "{item.content}"
+                </p>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-zinc-800">
+                    <img src={item.image} alt={item.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white text-sm uppercase tracking-wider">{item.name}</h4>
+                    <p className="text-zinc-600 text-xs font-bold uppercase tracking-widest">{item.role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="py-24 bg-black border-t border-zinc-900">
