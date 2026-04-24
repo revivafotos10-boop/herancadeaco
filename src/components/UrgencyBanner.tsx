@@ -10,7 +10,6 @@ const UrgencyBanner = ({ className = "" }: UrgencyBannerProps) => {
 
   useEffect(() => {
     // Target date for Father's Day (Dia dos Pais) - 2nd Sunday of August
-    // For 2025, it's August 10th. For now, we use a fallback if passed.
     const currentYear = new Date().getFullYear();
     let target = new Date(`${currentYear}-08-10T00:00:00`).getTime();
     
@@ -39,7 +38,9 @@ const UrgencyBanner = ({ className = "" }: UrgencyBannerProps) => {
   }, []);
 
   return (
-    <div className={`bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 text-white py-3 px-4 text-center text-[10px] md:text-xs font-black flex flex-wrap items-center justify-center gap-2 md:gap-6 overflow-hidden animate-in fade-in slide-in-from-top duration-700 shadow-lg ${className}`}>
+    <div 
+      onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
+      className={`cursor-pointer hover:brightness-110 transition-all bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 text-white py-3 px-4 text-center text-[10px] md:text-xs font-black flex flex-wrap items-center justify-center gap-2 md:gap-6 overflow-hidden animate-in fade-in slide-in-from-top duration-700 shadow-lg ${className}`}>
       <div className="flex items-center gap-2">
         <Flame className="w-3.5 h-3.5 animate-pulse text-amber-200" />
         <span className="uppercase tracking-[0.2em]">Entrega prioritária garantida para o Dia dos Pais</span>
