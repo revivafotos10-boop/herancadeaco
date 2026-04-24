@@ -21,7 +21,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Loader2, Upload, X, Save } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Plus, Pencil, Trash2, Loader2, Upload, X, Save, ImagePlus } from 'lucide-react';
 import { toast } from "sonner";
 
 interface Product {
@@ -63,6 +64,8 @@ export default function AdminProdutos() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState<Product>(INITIAL_PRODUCT);
   const [uploading, setUploading] = useState(false);
+  const [bulkUploading, setBulkUploading] = useState(false);
+  const [previews, setPreviews] = useState<{file: File, url: string}[]>([]);
   const [featureInput, setFeatureInput] = useState('');
 
   useEffect(() => {
@@ -195,18 +198,164 @@ export default function AdminProdutos() {
       features: formData.features.filter((_, i) => i !== index)
     });
   };
+  const handleBulkFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files) return;
+
+    const newPreviews = Array.from(files).map(file => ({
+      file,
+      url: URL.createObjectURL(file)
+    }));
+
+    setPreviews(prev => [...prev, ...newPreviews]);
+  };
+
+  const removePreview = (index: number) => {
+    setPreviews(prev => {
+      const newPreviews = [...prev];
+      URL.revokeObjectURL(newPreviews[index].url);
+      newPreviews.splice(index, 1);
+      return newPreviews;
+    });
+  };
+
+  const processBulkUpload = async () => {
+    if (previews.length === 0) return;
+    setBulkUploading(true);
+    try {
+      const createdProducts: Product[] = [];
+      
+      for (const item of previews) {
+        const file = item.file;
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const filePath = `products/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(filePath);
+
+        const productName = "Produto novo";
+        const baseSlug = productName.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+        const slug = `${baseSlug}-${Math.random().toString(36).substring(2, 7)}`;
+
+        const newProduct = {
+          name: productName,
+          slug: slug,
+          description: "Editar descrição",
+          price: 0,
+          image_url: publicUrl,
+          active: true,
+          features: [],
+          gallery_images: [],
+          size_cm: '',
+          material: '',
+          handle_material: '',
+          old_price: null
+        };
+
+        const { data, error: insertError } = await supabase
+          .from('products')
+          .insert([newProduct])
+          .select()
+          .single();
+
+        if (insertError) throw insertError;
+        if (data) createdProducts.push(data);
+      }
+
+      toast.success(`${createdProducts.length} produtos criados com sucesso!`);
+      setPreviews([]);
+      await fetchProducts();
+
+      if (createdProducts.length > 0) {
+        handleOpenDialog(createdProducts[0]);
+      }
+    } catch (error: any) {
+      toast.error('Erro ao processar produtos: ' + error.message);
+    } finally {
+      setBulkUploading(false);
+    }
+  };
 
   return (
     <div className="container mx-auto py-10 px-4 min-h-screen bg-black text-white">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <h1 className="text-3xl font-serif font-bold text-amber-500">Gestão de Produtos</h1>
-        <Button 
-          onClick={() => handleOpenDialog()}
-          className="bg-amber-600 hover:bg-amber-700 text-black font-bold"
-        >
-          <Plus className="mr-2 h-4 w-4" /> Novo Produto
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={() => handleOpenDialog()}
+            className="bg-amber-600 hover:bg-amber-700 text-black font-bold"
+          >
+            <Plus className="mr-2 h-4 w-4" /> Novo Produto
+          </Button>
+        </div>
       </div>
+
+      <Card className="mb-8 bg-zinc-900 border-zinc-800 text-white">
+        <CardHeader>
+          <CardTitle className="text-xl font-serif text-amber-500 flex items-center gap-2">
+            <ImagePlus className="h-5 w-5" />
+            Adicionar produto por imagem
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-800 rounded-xl p-8 bg-zinc-950/50 transition-colors hover:border-amber-500/50">
+              <Upload className="h-12 w-12 text-zinc-600 mb-4" />
+              <p className="text-zinc-400 mb-4 text-center">Arraste suas imagens aqui ou clique para selecionar</p>
+              <label className="cursor-pointer bg-zinc-800 hover:bg-zinc-700 text-white px-6 py-2 rounded-lg font-bold transition-colors">
+                Selecionar Imagens
+                <input 
+                  type="file" 
+                  className="hidden" 
+                  accept="image/*" 
+                  multiple 
+                  onChange={handleBulkFileUpload} 
+                  disabled={bulkUploading} 
+                />
+              </label>
+            </div>
+
+            {previews.length > 0 && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                  {previews.map((item, idx) => (
+                    <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-zinc-800 group">
+                      <img src={item.url} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
+                      <button 
+                        onClick={() => removePreview(idx)}
+                        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-end">
+                  <Button 
+                    onClick={processBulkUpload} 
+                    disabled={bulkUploading}
+                    className="bg-amber-600 hover:bg-amber-700 text-black font-bold"
+                  >
+                    {bulkUploading ? (
+                      <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processando...</>
+                    ) : (
+                      <><Save className="mr-2 h-4 w-4" /> Criar {previews.length} Produto(s)</>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800">
         <Table>
