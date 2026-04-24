@@ -58,6 +58,20 @@ const products = [
       'Acompanha bainha'
     ]
   },
+  { 
+    id: 5, 
+    name: 'Faca Imperador 31cm – Cabo em Osso', 
+    price: 'R$ 149,90', 
+    oldPrice: 'R$ 199,90',
+    image: '/faca-imperador.png', 
+    description: 'Faca imponente com lâmina longa de 31cm e cabo em osso com acabamento premium. Ideal para quem busca desempenho, presença e estilo.',
+    features: [
+      'Lâmina longa e precisa',
+      'Cabo em osso premium',
+      'Design sofisticado',
+      'Pegada firme'
+    ]
+  },
 ];
 
 const testimonials = [
@@ -93,6 +107,7 @@ const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: str
   'Lâmina de Elite Gold': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
   'Herança Silvestre': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
   'Faca Guardião 20cm Inox': { size: '8"', font: 'Serif', symbol: '🛡️' },
+  'Faca Imperador 31cm – Cabo em Osso': { size: '12"', font: 'Serif', symbol: 'Nenhum' },
 };
 
 const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
