@@ -82,6 +82,7 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
   const [selectedFont, setSelectedFont] = useState(() => localStorage.getItem(`selectedFont_${product.id}`) || getProductDefault('font'));
   const [selectedSymbol, setSelectedSymbol] = useState(() => localStorage.getItem(`selectedSymbol_${product.id}`) || getProductDefault('symbol'));
   const [selectedSize, setSelectedSize] = useState(() => localStorage.getItem(`selectedSize_${product.id}`) || getProductDefault('size'));
+  const [previewImage, setPreviewImage] = useState(product.image_url);
 
   useEffect(() => {
     localStorage.setItem(`engravedName_${product.id}`, engravedName);
