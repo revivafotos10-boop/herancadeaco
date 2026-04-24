@@ -365,7 +365,7 @@ export default function Index() {
               >
                 <button 
                   onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="group relative px-12 py-6 bg-gradient-to-r from-amber-700 to-amber-600 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(217,119,6,0.3)]"
+                  className="group relative px-12 py-6 bg-gradient-to-r from-amber-800 to-amber-600 rounded-full font-black text-sm uppercase tracking-[0.4em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_50px_rgba(217,119,6,0.4)] hover:shadow-[0_0_80px_rgba(217,119,6,0.6)]"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                   <span className="relative flex items-center gap-4">
