@@ -48,6 +48,10 @@ interface Product {
   engraving_area_y: number;
   engraving_area_width: number;
   engraving_area_height: number;
+  engraving_start_x: number;
+  engraving_start_y: number;
+  engraving_end_x: number;
+  engraving_end_y: number;
   created_at?: string;
 }
 
@@ -73,6 +77,10 @@ const INITIAL_PRODUCT: Product = {
   engraving_area_y: 40,
   engraving_area_width: 30,
   engraving_area_height: 10,
+  engraving_start_x: 30,
+  engraving_start_y: 45,
+  engraving_end_x: 60,
+  engraving_end_y: 40,
 };
 
 export default function AdminProdutos() {
@@ -285,6 +293,10 @@ export default function AdminProdutos() {
           engraving_area_y: 40,
           engraving_area_width: 30,
           engraving_area_height: 10,
+          engraving_start_x: 30,
+          engraving_start_y: 45,
+          engraving_end_x: 60,
+          engraving_end_y: 40,
         };
 
         const { data, error: insertError } = await supabase
@@ -493,6 +505,70 @@ export default function AdminProdutos() {
                 </div>
               </div>
 
+              <div className="space-y-2">
+                <Label>Imagem Principal (Clique para marcar pontos de gravação)</Label>
+                <div 
+                  className="relative aspect-square bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 cursor-crosshair group"
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    
+                    // Toggle between start and end point logic
+                    // Simple heuristic: if we click closer to current start than current end, update start? 
+                    // Better: use a state to track which point we are setting
+                    setFormData(prev => {
+                      const distStart = Math.sqrt(Math.pow(x - prev.engraving_start_x, 2) + Math.pow(y - prev.engraving_start_y, 2));
+                      const distEnd = Math.sqrt(Math.pow(x - prev.engraving_end_x, 2) + Math.pow(y - prev.engraving_end_y, 2));
+                      
+                      if (distStart < distEnd) {
+                        return { ...prev, engraving_start_x: x, engraving_start_y: y };
+                      } else {
+                        return { ...prev, engraving_end_x: x, engraving_end_y: y };
+                      }
+                    });
+                  }}
+                >
+                  {formData.image_url ? (
+                    <>
+                      <img src={formData.image_url} alt="Preview" className="w-full h-full object-contain p-4" />
+                      {/* Visual indicators for points */}
+                      <div className="absolute w-3 h-3 bg-green-500 rounded-full border-2 border-white -translate-x-1/2 -translate-y-1/2 shadow-lg" style={{ left: `${formData.engraving_start_x}%`, top: `${formData.engraving_start_y}%` }}>
+                        <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[8px] font-bold bg-black px-1 rounded">INÍCIO</span>
+                      </div>
+                      <div className="absolute w-3 h-3 bg-red-500 rounded-full border-2 border-white -translate-x-1/2 -translate-y-1/2 shadow-lg" style={{ left: `${formData.engraving_end_x}%`, top: `${formData.engraving_end_y}%` }}>
+                        <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[8px] font-bold bg-black px-1 rounded">FIM</span>
+                      </div>
+                      {/* Line connecting points */}
+                      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
+                        <line 
+                          x1={`${formData.engraving_start_x}%`} 
+                          y1={`${formData.engraving_start_y}%`} 
+                          x2={`${formData.engraving_end_x}%`} 
+                          y2={`${formData.engraving_end_y}%`} 
+                          stroke="white" 
+                          strokeWidth="1" 
+                          strokeDasharray="4"
+                        />
+                      </svg>
+                    </>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-zinc-500 text-sm">Upload image to set points</div>
+                  )}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                    <p className="text-[10px] font-bold">CLIQUE PARA REPOSICIONAR PONTOS</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Input type="file" onChange={(e) => handleFileUpload(e, 'image_url')} className="hidden" id="main-image" />
+                  <Button asChild variant="outline" className="w-full bg-zinc-900 border-zinc-800">
+                    <label htmlFor="main-image" className="cursor-pointer">
+                      <Upload className="mr-2 h-4 w-4" /> {uploading ? 'Fazendo upload...' : 'Mudar Imagem Principal'}
+                    </label>
+                  </Button>
+                </div>
+              </div>
+
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="size">Tamanho (cm)</Label>
@@ -561,32 +637,27 @@ export default function AdminProdutos() {
               </div>
 
               <div className="space-y-4 p-4 border border-zinc-800 rounded-xl bg-zinc-900/30">
-                <Label className="text-amber-500 font-bold uppercase tracking-widest text-[10px]">Zona de Gravação (Automática)</Label>
+                <Label className="text-amber-500 font-bold uppercase tracking-widest text-[10px]">Posicionamento da Gravação</Label>
+                <p className="text-[10px] text-zinc-500 mb-2">Clique na imagem ao lado para definir o Ponto Inicial e Final da gravação.</p>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="area_x">Centro X (%)</Label>
-                    <Input id="area_x" type="number" value={formData.engraving_area_x} onChange={(e) => setFormData({...formData, engraving_area_x: Number(e.target.value)})} className="bg-zinc-900 border-zinc-800" />
+                    <Label className="text-[10px]">Início (X, Y)</Label>
+                    <div className="flex gap-1">
+                      <Input type="number" value={Math.round(formData.engraving_start_x)} onChange={(e) => setFormData({...formData, engraving_start_x: Number(e.target.value)})} className="bg-zinc-950 border-zinc-800 h-8 text-[10px]" />
+                      <Input type="number" value={Math.round(formData.engraving_start_y)} onChange={(e) => setFormData({...formData, engraving_start_y: Number(e.target.value)})} className="bg-zinc-950 border-zinc-800 h-8 text-[10px]" />
+                    </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="area_y">Centro Y (%)</Label>
-                    <Input id="area_y" type="number" value={formData.engraving_area_y} onChange={(e) => setFormData({...formData, engraving_area_y: Number(e.target.value)})} className="bg-zinc-900 border-zinc-800" />
+                    <Label className="text-[10px]">Fim (X, Y)</Label>
+                    <div className="flex gap-1">
+                      <Input type="number" value={Math.round(formData.engraving_end_x)} onChange={(e) => setFormData({...formData, engraving_end_x: Number(e.target.value)})} className="bg-zinc-950 border-zinc-800 h-8 text-[10px]" />
+                      <Input type="number" value={Math.round(formData.engraving_end_y)} onChange={(e) => setFormData({...formData, engraving_end_y: Number(e.target.value)})} className="bg-zinc-950 border-zinc-800 h-8 text-[10px]" />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="area_w">Largura Máx (%)</Label>
-                    <Input id="area_w" type="number" value={formData.engraving_area_width} onChange={(e) => setFormData({...formData, engraving_area_width: Number(e.target.value)})} className="bg-zinc-900 border-zinc-800" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="area_h">Altura Máx (%)</Label>
-                    <Input id="area_h" type="number" value={formData.engraving_area_height} onChange={(e) => setFormData({...formData, engraving_area_height: Number(e.target.value)})} className="bg-zinc-900 border-zinc-800" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="eng_rot">Rotação (graus)</Label>
-                    <Input id="eng_rot" type="number" value={formData.engraving_rotation} onChange={(e) => setFormData({...formData, engraving_rotation: Number(e.target.value)})} className="bg-zinc-900 border-zinc-800" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="eng_color">Cor</Label>
-                    <Input id="eng_color" type="text" value={formData.engraving_color} onChange={(e) => setFormData({...formData, engraving_color: e.target.value})} className="bg-zinc-900 border-zinc-800" placeholder="#2b2b2b" />
-                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="eng_color">Cor</Label>
+                  <Input id="eng_color" type="text" value={formData.engraving_color} onChange={(e) => setFormData({...formData, engraving_color: e.target.value})} className="bg-zinc-900 border-zinc-800" placeholder="#2b2b2b" />
                 </div>
               </div>
 
