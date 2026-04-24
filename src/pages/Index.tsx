@@ -680,7 +680,7 @@ export default function Index() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-10">
             <div className="flex items-center gap-3">
-              <Crown className="w-6 h-6 text-amber-500" />
+              <Sword className="w-6 h-6 text-amber-500" />
               <h2 className="text-xl font-black font-serif tracking-[0.4em] uppercase">Herança de Aço</h2>
             </div>
             <div className="flex gap-10 text-[10px] font-black tracking-[0.3em] text-zinc-500">
