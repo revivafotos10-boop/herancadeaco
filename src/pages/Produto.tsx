@@ -131,15 +131,46 @@ export default function Produto() {
     return acc + price;
   }, 0);
 
-  const getSizeScale = () => {
-    switch(selectedSize) {
-      case '8"': return { width: '50%', height: '35%', fontSize: '1.2rem' };
-      case '12"': return { width: '70%', height: '45%', fontSize: '1.8rem' };
-      default: return { width: '60%', height: '40%', fontSize: '1.5rem' };
+  const getEngravingStyle = () => {
+    const isAmiro = product?.name?.includes('Amiro');
+    const nameLength = engravedName.length;
+    
+    if (isAmiro) {
+      const baseSize = 22;
+      // Aggressive scaling for long names to keep them on the blade
+      const adjustedSize = nameLength > 20 ? baseSize * 0.5 : 
+                           nameLength > 12 ? baseSize * 0.75 : baseSize;
+      
+      return {
+        left: '33%',
+        top: '44%',
+        transform: `translate(-50%, -50%) rotate(-18deg) ${nameLength > 20 ? 'scaleX(0.9)' : ''}`,
+        fontSize: `${adjustedSize}px`,
+        color: '#111111',
+        opacity: 0.8,
+        mixBlendMode: 'multiply' as const,
+        maxWidth: '40%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      };
     }
+
+    // Default for other products
+    const baseSize = selectedSize === '8"' ? 16 : selectedSize === '12"' ? 24 : 20;
+    const adjustedSize = nameLength > 15 ? baseSize * 0.7 : baseSize;
+
+    return {
+      left: '55%',
+      top: '45%',
+      transform: 'translate(-50%, -50%) rotate(-5deg)',
+      fontSize: `${adjustedSize}px`,
+      color: '#111111',
+      opacity: 0.8,
+      mixBlendMode: 'multiply' as const,
+    };
   };
 
-  const scale = getSizeScale();
+  const engravingStyle = getEngravingStyle();
 
   if (loading) {
     return (
@@ -200,22 +231,19 @@ export default function Produto() {
                 />
                 
                 {/* Simulation Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                  <div 
-                    className="absolute border border-dashed border-amber-500/10"
-                    style={{ width: scale.width, height: scale.height }}
-                  />
+                <div className="absolute inset-0 pointer-events-none z-20">
                   <motion.div 
-                    animate={{ opacity: engravedName ? 1 : 0.2 }}
-                    className="text-amber-500/70 text-center px-4"
+                    animate={{ 
+                      opacity: engravedName ? 0.8 : 0.2 
+                    }}
+                    className="text-center whitespace-nowrap"
                     style={{ 
+                      ...engravingStyle,
                       fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
                                  selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
                                  selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
                       fontWeight: selectedFont === 'Bold' ? '700' : '400',
-                      fontSize: engravedName.length > 15 ? `calc(${scale.fontSize} * 0.7)` : scale.fontSize,
-                      letterSpacing: '0.05em',
-                      textShadow: '0 0 12px rgba(217,119,6,0.3)'
+                      letterSpacing: '0.01em',
                     }}
                   >
                     {engravedName || "GRAVAÇÃO"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
@@ -223,7 +251,7 @@ export default function Produto() {
                 </div>
 
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/5 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Simulador de Gravação Laser</span>
                 </div>
               </div>
