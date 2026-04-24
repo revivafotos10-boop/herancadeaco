@@ -647,7 +647,9 @@ export default function Index() {
                         {item.product.image ? (
                           <img src={item.product.image} className="w-full h-full object-cover" alt={item.product.name} />
                         ) : (
-                          <span className="text-[8px] text-zinc-600 text-center px-1 font-serif italic">Imagem da faca</span>
+                          <div className="w-full h-full bg-zinc-800 flex items-center justify-center">
+                            <Crown className="w-6 h-6 text-zinc-700" />
+                          </div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
