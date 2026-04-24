@@ -27,21 +27,21 @@ const products = [
     id: 1, 
     name: 'Cutelo Artesanal Brut', 
     price: 'R$ 349,00', 
-    image: 'https://images.unsplash.com/photo-1614362984185-3b107077e682?auto=format&fit=crop&q=80&w=800',
+    image: '', // Placeholder: Imagem da faca aqui
     description: 'Forjado em aço carbono, ideal para cortes robustos e precisos.'
   },
   { 
     id: 2, 
     name: 'Faca Chef Premium Gold', 
     price: 'R$ 299,00', 
-    image: 'https://images.unsplash.com/photo-1593618998160-e34014e67546?auto=format&fit=crop&q=80&w=800',
+    image: '', // Placeholder: Imagem da faca aqui
     description: 'Equilíbrio perfeito e fio de navalha para alta gastronomia.'
   },
   { 
     id: 3, 
     name: 'Faca Picanheira Raiz', 
     price: 'R$ 389,00', 
-    image: 'https://images.unsplash.com/photo-1580915411954-282cb1b0d780?auto=format&fit=crop&q=80&w=800',
+    image: '', // Placeholder: Imagem da faca aqui
     description: 'O clássico do churrasco brasileiro, com cabo em madeira nobre.'
   },
 ];
@@ -121,14 +121,19 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
         <button onClick={onClose} className="absolute top-4 right-4 text-zinc-500 hover:text-white z-20 p-2 transition-colors"><X /></button>
         
         <div className="md:w-3/5 p-6 md:p-12 bg-zinc-900/50 flex flex-col items-center justify-center relative min-h-[400px]">
-          <div className="relative w-full max-w-lg">
+          <div className="relative w-full max-w-lg aspect-video flex items-center justify-center">
             <motion.div
               animate={{ 
                 filter: ['brightness(1)', 'brightness(1.1)', 'brightness(1)'],
               }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="w-full h-full flex items-center justify-center bg-zinc-900/50 rounded-xl"
             >
-              <img src={product.image} alt={product.name} className="w-full h-auto object-contain rounded-xl" />
+              {product.image ? (
+                <img src={product.image} alt={product.name} className="w-full h-auto object-contain rounded-xl" />
+              ) : (
+                <span className="text-zinc-600 font-serif italic">Imagem da faca aqui</span>
+              )}
             </motion.div>
             
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -317,7 +322,7 @@ export default function Index() {
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-black">
         {/* Multi-layered Cinematic Background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544965850-6f8a66788f9b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-40 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-[#050505] opacity-90" />
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent z-10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 z-10" />
           
@@ -413,7 +418,7 @@ export default function Index() {
                 transition={{ duration: 1.5, delay: 0.4 }}
                 className="absolute w-[450px] h-[550px] bg-[#111] rounded-2xl shadow-[0_50px_100px_rgba(0,0,0,0.9)] border border-zinc-800/30 overflow-hidden"
               >
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?auto=format&fit=crop&q=80&w=800')] bg-cover opacity-20" />
+                <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black opacity-40" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-white/5" />
               </motion.div>
 
@@ -424,12 +429,9 @@ export default function Index() {
                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
                 className="relative z-30 group cursor-pointer"
               >
-                <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700">
-                  <div className="relative overflow-hidden rounded-[32px]">
-                    <img 
-                      src="https://images.unsplash.com/photo-1594133900913-c8ec23602953?auto=format&fit=crop&q=80&w=800" 
-                      className="w-full h-auto relative z-50 transition-transform duration-1000 group-hover:scale-110 object-cover rounded-[32px]"
-                    />
+                <div className="bg-gradient-to-b from-[#111] to-black p-6 rounded-[48px] border border-zinc-800/50 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden max-w-[600px] group-hover:border-amber-500/30 transition-all duration-700 aspect-video flex items-center justify-center">
+                  <div className="relative overflow-hidden rounded-[32px] w-full h-full bg-zinc-900/50 flex items-center justify-center">
+                    <span className="text-zinc-500 font-serif italic text-xl">Imagem da faca aqui</span>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-[55] flex flex-col justify-end p-8">
                       <div className="space-y-2">
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500">Edição Especial</span>
@@ -539,12 +541,20 @@ export default function Index() {
                 whileHover={{ y: -15 }}
                 className="group relative bg-gradient-to-b from-[#111] to-black rounded-[40px] overflow-hidden border border-zinc-900/50 hover:border-amber-500/30 transition-all duration-700 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)]"
               >
-                <div className="relative h-96 overflow-hidden">
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-[0.85] group-hover:brightness-100" 
-                  />
+                <div className="relative h-96 overflow-hidden flex items-center justify-center bg-zinc-900/30">
+                  {product.image ? (
+                    <img 
+                      src={product.image} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-[0.85] group-hover:brightness-100" 
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-gradient-to-b from-zinc-900 to-black p-12 text-center">
+                      <div className="w-16 h-[1px] bg-amber-500/30" />
+                      <span className="text-zinc-500 font-serif italic tracking-wide">Imagem da faca aqui</span>
+                      <div className="w-16 h-[1px] bg-amber-500/30" />
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent opacity-90" />
                   
                   {/* Hover Quick Action */}
@@ -619,8 +629,12 @@ export default function Index() {
                 ) : (
                   cart.map((item) => (
                     <div key={item.cartId} className="group relative flex gap-6 bg-[#0d0d0d] p-6 rounded-3xl border border-zinc-900 transition-all">
-                      <div className="w-24 h-24 shrink-0 overflow-hidden rounded-2xl border border-zinc-800">
-                        <img src={item.product.image} className="w-full h-full object-cover" alt={item.product.name} />
+                      <div className="w-24 h-24 shrink-0 overflow-hidden rounded-2xl border border-zinc-800 flex items-center justify-center bg-zinc-900/50">
+                        {item.product.image ? (
+                          <img src={item.product.image} className="w-full h-full object-cover" alt={item.product.name} />
+                        ) : (
+                          <span className="text-[8px] text-zinc-600 text-center px-1 font-serif italic">Imagem da faca</span>
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start mb-2">
