@@ -45,6 +45,8 @@ interface Product {
   engraving_rotation: number;
   engraving_font_size: number;
   engraving_color: string;
+  engraving_opacity: number;
+  engraving_blend_mode: string;
   engraving_area_x: number;
   engraving_area_y: number;
   engraving_area_width: number;
@@ -74,7 +76,9 @@ const INITIAL_PRODUCT: Product = {
   engraving_y: 45,
   engraving_rotation: -55,
   engraving_font_size: 20,
-  engraving_color: '#2b2b2b',
+  engraving_color: '#000000',
+  engraving_opacity: 1.0,
+  engraving_blend_mode: 'normal',
   engraving_area_x: 35,
   engraving_area_y: 40,
   engraving_area_width: 30,
@@ -291,7 +295,9 @@ export default function AdminProdutos() {
           engraving_y: 45,
           engraving_rotation: -55,
           engraving_font_size: 20,
-          engraving_color: '#2b2b2b',
+          engraving_color: '#000000',
+          engraving_opacity: 1.0,
+          engraving_blend_mode: 'normal',
           engraving_area_x: 35,
           engraving_area_y: 40,
           engraving_area_width: 30,
@@ -561,7 +567,7 @@ export default function AdminProdutos() {
 
                         return (
                           <div 
-                            className="absolute pointer-events-none flex items-center justify-center mix-blend-multiply opacity-75"
+                            className="absolute pointer-events-none flex items-center justify-center"
                             style={{
                               left: `${x - (w / 2)}%`,
                               top: `${y - (h / 2)}%`,
@@ -569,6 +575,8 @@ export default function AdminProdutos() {
                               height: `${h}%`,
                               transform: `rotate(${rot}deg)`,
                               zIndex: 20,
+                              mixBlendMode: (formData.engraving_blend_mode as any) || 'normal',
+                              opacity: formData.engraving_opacity ?? 1.0,
                             }}
                           >
                             <svg 
@@ -766,9 +774,55 @@ export default function AdminProdutos() {
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="eng_color">Cor</Label>
-                  <Input id="eng_color" type="text" value={formData.engraving_color} onChange={(e) => setFormData({...formData, engraving_color: e.target.value})} className="bg-zinc-900 border-zinc-800" placeholder="#2b2b2b" />
+                <div className="space-y-4 pt-2 border-t border-zinc-800/50">
+                  <div className="space-y-2">
+                    <Label className="text-[10px] text-zinc-400 uppercase tracking-widest">Cor da Personalização</Label>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant={formData.engraving_color === '#000000' ? "default" : "outline"}
+                        className={`flex-1 h-9 text-xs ${formData.engraving_color === '#000000' ? 'bg-zinc-100 text-black border-white hover:bg-zinc-200' : 'bg-zinc-900 border-zinc-800 text-zinc-400'}`}
+                        onClick={() => setFormData({...formData, engraving_color: '#000000', engraving_blend_mode: 'normal'})}
+                      >
+                        <div className="w-3 h-3 rounded-full bg-black border border-zinc-700 mr-2" />
+                        Preto
+                      </Button>
+                      <Button 
+                        variant={formData.engraving_color === '#BFBFBF' ? "default" : "outline"}
+                        className={`flex-1 h-9 text-xs ${formData.engraving_color === '#BFBFBF' ? 'bg-zinc-100 text-black border-white hover:bg-zinc-200' : 'bg-zinc-900 border-zinc-800 text-zinc-400'}`}
+                        onClick={() => setFormData({...formData, engraving_color: '#BFBFBF', engraving_blend_mode: 'normal'})}
+                      >
+                        <div className="w-3 h-3 rounded-full bg-[#BFBFBF] border border-zinc-400 mr-2" />
+                        Cinza
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] text-zinc-400 uppercase tracking-widest">Opacidade ({Math.round((formData.engraving_opacity ?? 1) * 100)}%)</Label>
+                      <div className="flex gap-1">
+                        {[0.6, 0.8, 1.0].map((val) => (
+                          <Button
+                            key={val}
+                            variant="ghost"
+                            size="sm"
+                            className={`h-6 px-2 text-[9px] ${formData.engraving_opacity === val ? 'bg-amber-500/20 text-amber-500 font-bold' : 'text-zinc-500'}`}
+                            onClick={() => setFormData({...formData, engraving_opacity: val})}
+                          >
+                            {val * 100}%
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                    <Slider 
+                      value={[(formData.engraving_opacity ?? 1.0) * 100]} 
+                      min={60} 
+                      max={100} 
+                      step={20} 
+                      onValueChange={(vals) => setFormData({ ...formData, engraving_opacity: vals[0] / 100 })}
+                      className="py-1"
+                    />
+                  </div>
                 </div>
               </div>
 
