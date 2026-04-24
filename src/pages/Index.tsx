@@ -128,7 +128,7 @@ const KnifeCustomizer = ({ product, onClose, onAddToCart }) => {
               }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <img src={product.image} alt={product.name} className="w-full h-auto rounded-xl shadow-2xl border border-zinc-700/50" />
+              <img src={product.image} alt={product.name} className="w-full h-auto object-contain mix-blend-screen" />
             </motion.div>
             
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
