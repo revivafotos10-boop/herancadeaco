@@ -251,7 +251,7 @@ export default function Produto() {
                 </div>
 
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/5 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Simulador de Gravação Laser</span>
                 </div>
               </div>
