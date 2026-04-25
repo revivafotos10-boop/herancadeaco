@@ -129,6 +129,12 @@ export default function AdminProdutos() {
   };
 
   useEffect(() => {
+    if (!isDialogOpen) {
+      resetZoom();
+    }
+  }, [isDialogOpen]);
+
+  useEffect(() => {
     fetchProducts();
   }, []);
 
