@@ -23,7 +23,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Pencil, Trash2, Loader2, Upload, X, Save, ImagePlus, Minus } from 'lucide-react';
+import { Plus, Pencil, Trash2, Loader2, Upload, X, Save, ImagePlus, Minus, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { toast } from "sonner";
 
 interface Product {
@@ -100,6 +100,39 @@ export default function AdminProdutos() {
   const [bulkUploading, setBulkUploading] = useState(false);
   const [previews, setPreviews] = useState<{file: File, url: string}[]>([]);
   const [featureInput, setFeatureInput] = useState('');
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const delta = e.deltaY;
+    setZoomLevel(prev => {
+      const newZoom = delta < 0 ? Math.min(prev + 0.1, 3) : Math.max(prev - 0.1, 1);
+      
+      // Se estamos dando zoom, vamos focar onde o mouse está
+      if (newZoom > 1) {
+        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        setZoomOrigin({ x, y });
+      } else {
+        setZoomOrigin({ x: 50, y: 50 });
+      }
+      
+      return newZoom;
+    });
+  };
+
+  const resetZoom = () => {
+    setZoomLevel(1);
+    setZoomOrigin({ x: 50, y: 50 });
+  };
+
+  useEffect(() => {
+    if (!isDialogOpen) {
+      resetZoom();
+    }
+  }, [isDialogOpen]);
 
   useEffect(() => {
     fetchProducts();
@@ -518,15 +551,28 @@ export default function AdminProdutos() {
               <div className="space-y-2">
                 <Label>Imagem Principal (Clique para marcar pontos de gravação)</Label>
                 <div 
-                  className="relative aspect-square bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 cursor-crosshair group"
+                  className="relative aspect-square bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 cursor-zoom-in group"
+                  onWheel={handleWheel}
                   onClick={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
-                    const x = ((e.clientX - rect.left) / rect.width) * 100;
-                    const y = ((e.clientY - rect.top) / rect.height) * 100;
                     
-                    // Toggle between start and end point logic
-                    // Simple heuristic: if we click closer to current start than current end, update start? 
-                    // Better: use a state to track which point we are setting
+                    // Consider zoom for coordinate calculation
+                    // Se o zoom origin é {x: 50, y: 50} e zoom é 2x, 
+                    // o que vemos é um recorte.
+                    // Para simplificar e manter a precisão das coordenadas originais:
+                    // As coordenadas são sempre relativas à imagem base 0-100%
+                    
+                    const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
+                    const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
+                    
+                    // Quando há zoom, a posição visual do mouse precisa ser convertida de volta
+                    // para a coordenada real da imagem base.
+                    // VisualPosition = Origin + (RealPosition - Origin) * Zoom
+                    // RealPosition = Origin + (VisualPosition - Origin) / Zoom
+                    
+                    const x = zoomOrigin.x + (mouseX - zoomOrigin.x) / zoomLevel;
+                    const y = zoomOrigin.y + (mouseY - zoomOrigin.y) / zoomLevel;
+                    
                     setFormData(prev => {
                       const distStart = Math.sqrt(Math.pow(x - prev.engraving_start_x, 2) + Math.pow(y - prev.engraving_start_y, 2));
                       const distEnd = Math.sqrt(Math.pow(x - prev.engraving_end_x, 2) + Math.pow(y - prev.engraving_end_y, 2));
@@ -539,6 +585,13 @@ export default function AdminProdutos() {
                     });
                   }}
                 >
+                  <div 
+                    className="w-full h-full transition-transform duration-200 ease-out"
+                    style={{ 
+                      transform: `scale(${zoomLevel})`,
+                      transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`
+                    }}
+                  >
                   {formData.image_url ? (
                     <>
                       <img src={formData.image_url} alt="Preview" className="w-full h-full object-contain p-4" />
@@ -630,8 +683,48 @@ export default function AdminProdutos() {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-zinc-500 text-sm">Upload image to set points</div>
                   )}
+                  </div>
+                  
+                  {/* Zoom Controls Overlay */}
+                  <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-40">
+                    <Button 
+                      size="icon" 
+                      variant="secondary" 
+                      className="bg-zinc-800/80 hover:bg-zinc-700 h-8 w-8"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setZoomLevel(prev => Math.min(prev + 0.5, 3));
+                      }}
+                    >
+                      <ZoomIn className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      size="icon" 
+                      variant="secondary" 
+                      className="bg-zinc-800/80 hover:bg-zinc-700 h-8 w-8"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setZoomLevel(prev => Math.max(prev - 0.5, 1));
+                      }}
+                    >
+                      <ZoomOut className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      size="icon" 
+                      variant="secondary" 
+                      className="bg-zinc-800/80 hover:bg-zinc-700 h-8 w-8"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        resetZoom();
+                      }}
+                      title="Reset Zoom"
+                    >
+                      <RotateCcw className="h-4 w-4" />
+                    </Button>
+                  </div>
+
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                    <p className="text-[10px] font-bold">CLIQUE PARA REPOSICIONAR PONTOS</p>
+                    <p className="text-[10px] font-bold">CLIQUE PARA REPOSICIONAR PONTOS | SCROLL PARA ZOOM</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
