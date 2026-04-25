@@ -48,6 +48,17 @@ export default function Index() {
 
   useEffect(() => {
     fetchProducts();
+    
+    // Handle initial hash scroll
+    if (window.location.hash) {
+      const id = window.location.hash.substring(1);
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
   }, []);
 
   const fetchProducts = async () => {
@@ -90,20 +101,30 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans overflow-x-hidden">
+      <div id="home" className="absolute top-0 left-0 w-0 h-0" />
       <UrgencyBanner className="z-[90] relative" />
       
       {/* Cinematic Header */}
       <nav className={`w-full z-[100] transition-all duration-300 ${scrolled ? 'fixed top-0 bg-black py-4 border-b border-zinc-900 shadow-2xl' : 'absolute top-[40px] bg-transparent py-8 mt-0'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div className="flex items-center gap-2 group cursor-pointer" onClick={() => document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })}>
             <Sword className="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform" />
             <h1 className="text-xl md:text-2xl font-black font-serif tracking-[0.3em] text-white uppercase group-hover:text-amber-500 transition-colors">Herança de Aço</h1>
           </div>
           
           <div className="hidden md:flex items-center gap-12 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
-            <a href="#produtos" className="hover:text-white transition-colors">COLEÇÃO</a>
-            <a href="#personalizacao" className="hover:text-white transition-colors">PERSONALIZAÇÃO</a>
-            <a href="#historia" className="hover:text-white transition-colors">HISTÓRIA</a>
+            <a href="#produtos" onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' });
+            }} className="hover:text-white transition-colors">COLEÇÃO</a>
+            <a href="#personalizacao" onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('personalizacao')?.scrollIntoView({ behavior: 'smooth' });
+            }} className="hover:text-white transition-colors">PERSONALIZAÇÃO</a>
+            <a href="#historia" onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('historia')?.scrollIntoView({ behavior: 'smooth' });
+            }} className="hover:text-white transition-colors">HISTÓRIA</a>
           </div>
 
           <div className="flex items-center gap-6">
