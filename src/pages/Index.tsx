@@ -101,9 +101,18 @@ export default function Index() {
           </div>
           
           <div className="hidden md:flex items-center gap-12 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
-            <a href="#produtos" className="hover:text-white transition-colors">COLEÇÃO</a>
-            <a href="#personalizacao" className="hover:text-white transition-colors">PERSONALIZAÇÃO</a>
-            <a href="#historia" className="hover:text-white transition-colors">HISTÓRIA</a>
+            <a href="#produtos" onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' });
+            }} className="hover:text-white transition-colors">COLEÇÃO</a>
+            <a href="#personalizacao" onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('personalizacao')?.scrollIntoView({ behavior: 'smooth' });
+            }} className="hover:text-white transition-colors">PERSONALIZAÇÃO</a>
+            <a href="#historia" onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('historia')?.scrollIntoView({ behavior: 'smooth' });
+            }} className="hover:text-white transition-colors">HISTÓRIA</a>
           </div>
 
           <div className="flex items-center gap-6">
