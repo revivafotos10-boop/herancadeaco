@@ -62,10 +62,10 @@ const symbols = [
 const sizes = ['8"', '10"', '12"'];
 
 const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: string }> = {
-  'Cutelo Artesanal Brut': { size: '8"', font: 'Bold', symbol: '⚔️' },
+  'Cutelo Artesanal Brut': { size: '8"', font: 'Bold', symbol: 'Corinthians' },
   'Lâmina de Elite Gold': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
-  'Herança Silvestre': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
-  'Faca Guardião 20cm Inox': { size: '8"', font: 'Serif', symbol: '🛡️' },
+  'Herança Silvestre': { size: '12"', font: 'Caligrafia', symbol: 'Palmeiras' },
+  'Faca Guardião 20cm Inox': { size: '8"', font: 'Serif', symbol: 'São Paulo' },
   '🔥 Faca Imperador 31cm – Cabo em Osso': { size: '12"', font: 'Serif', symbol: 'Nenhum' },
 };
 
