@@ -282,14 +282,19 @@ export default function Produto() {
                 {/* Simulation Overlay - Only on main image */}
                 {previewImage === product.image_url && (
                   <div className="absolute inset-0 pointer-events-none z-20">
-                    <motion.div 
+                    <div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      style={boxStyle}
+                      style={{
+                        ...boxStyle,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
                     >
                       <div 
                         style={{ 
-                          display: 'flex', 
+                          display: 'inline-flex', 
                           alignItems: 'center', 
                           gap: '6px', 
                           whiteSpace: 'nowrap',
@@ -300,30 +305,30 @@ export default function Produto() {
                           fontSize: `${(product?.engraving_font_size || 24) * 1.5}px`,
                           fontWeight: '600',
                           letterSpacing: '0px',
-                          lineHeight: 1
+                          lineHeight: 1,
+                          transformOrigin: 'center center'
                         }}
                       >
-                        {selectedSymbol.name !== 'Nenhum' && (
-                          <>
-                            {selectedSymbol.image ? (
-                              <img 
-                                src={selectedSymbol.image} 
-                                alt="" 
-                                style={{ 
-                                  height: '1.2em', 
-                                  width: 'auto', 
-                                  objectFit: 'contain',
-                                  flexShrink: 0
-                                }} 
-                              />
-                            ) : (
-                              <span style={{ marginRight: '4px' }}>{selectedSymbol.name}</span>
-                            )}
-                          </>
+                        {selectedSymbol.name !== 'Nenhum' && selectedSymbol.image && (
+                          <img 
+                            src={selectedSymbol.image} 
+                            alt="" 
+                            style={{ 
+                              height: `${((product?.engraving_font_size || 24) * 1.5) * 1.1}px`, 
+                              width: `${((product?.engraving_font_size || 24) * 1.5) * 1.1}px`, 
+                              objectFit: 'contain',
+                              flexShrink: 0
+                            }} 
+                          />
                         )}
-                        <span>{engravedName || "NOME"}</span>
+                        {selectedSymbol.name !== 'Nenhum' && !selectedSymbol.image && (
+                          <span style={{ marginRight: '4px' }}>{selectedSymbol.name}</span>
+                        )}
+                        <span style={{ letterSpacing: '0px', whiteSpace: 'nowrap' }}>
+                          {engravedName || "NOME"}
+                        </span>
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
                 )}
 
