@@ -86,6 +86,7 @@ export default function Produto() {
   const [selectedFont, setSelectedFont] = useState(fonts[0]);
   const [selectedSymbol, setSelectedSymbol] = useState(symbols[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[1]);
+  const [selectedFontSize, setSelectedFontSize] = useState(20);
   const [previewImage, setPreviewImage] = useState('');
 
   useEffect(() => {
