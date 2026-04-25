@@ -86,6 +86,7 @@ export default function Produto() {
   const [selectedFont, setSelectedFont] = useState(fonts[0]);
   const [selectedSymbol, setSelectedSymbol] = useState(symbols[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[1]);
+  const [selectedFontSize, setSelectedFontSize] = useState(20);
   const [previewImage, setPreviewImage] = useState('');
 
   useEffect(() => {
@@ -104,6 +105,11 @@ export default function Produto() {
       setProduct(data);
       setPreviewImage(data.image_url);
       
+      // Set initial engraving font size from product config
+      if (data.engraving_font_size) {
+        setSelectedFontSize(data.engraving_font_size);
+      }
+      
       // Load defaults
       const defaults = PRODUCT_DEFAULTS[data.name];
       if (defaults) {
@@ -119,6 +125,31 @@ export default function Produto() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!containerRef.current || !product?.engraving_start_x || !product?.engraving_end_x) return;
+    
+    const container = containerRef.current;
+    const parent = container.parentElement;
+    if (!parent) return;
+
+    const x1 = product.engraving_start_x;
+    const y1 = product.engraving_start_y!;
+    const x2 = product.engraving_end_x;
+    const y2 = product.engraving_end_y!;
+
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const maxWidthPercent = Math.sqrt(dx * dx + dy * dy);
+    
+    // Convert percent to pixels (parent is the boxStyle div which is maxWidthPercent wide)
+    const parentWidthPx = parent.getBoundingClientRect().width;
+    const containerWidthPx = container.getBoundingClientRect().width;
+    
+    if (containerWidthPx > parentWidthPx && selectedFontSize > 12) {
+      setSelectedFontSize(prev => Math.max(12, prev - 1));
+    }
+  }, [engravedName, selectedFontSize, selectedSymbol, selectedFont, product]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -138,6 +169,9 @@ export default function Produto() {
       selectedFont,
       selectedSymbol,
       selectedSize,
+      engraving_font_size_selected: selectedFontSize,
+      engraving_text: engravedName,
+      engraving_symbol: selectedSymbol.name,
       cartId: Date.now()
     };
     setCart([...cart, item]);
@@ -154,6 +188,8 @@ export default function Produto() {
       : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
     return acc + price;
   }, 0);
+
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   const getEngravingBoxStyle = () => {
     // If start/end points exist, use them for automatic calculation
@@ -176,8 +212,8 @@ export default function Produto() {
       const rot = Math.atan2(dy, dx) * (180 / Math.PI);
       
       // Height for the text area - adjusted by product font size
-      const h = (product.engraving_font_size || 20) / 2.5; 
-
+      const h = selectedFontSize / 2.5; 
+      const previewFontSize = selectedFontSize * 1.5;
       return {
         position: 'absolute' as const,
         left: `${x - (w / 2)}%`,
@@ -302,7 +338,7 @@ export default function Produto() {
                           fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
                                      selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
                                      selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
-                          fontSize: `${(product?.engraving_font_size || 24) * 1.5}px`,
+                          fontSize: `${selectedFontSize * 1.5}px`,
                           fontWeight: '600',
                           letterSpacing: '0px',
                           lineHeight: 1,
@@ -314,8 +350,8 @@ export default function Produto() {
                             src={selectedSymbol.image} 
                             alt="" 
                             style={{ 
-                              height: `${((product?.engraving_font_size || 24) * 1.5) * 1.1}px`, 
-                              width: `${((product?.engraving_font_size || 24) * 1.5) * 1.1}px`, 
+                              height: `${(selectedFontSize * 1.5) * 1.1}px`, 
+                              width: `${(selectedFontSize * 1.5) * 1.1}px`, 
                               objectFit: 'contain',
                               flexShrink: 0
                             }} 
@@ -414,7 +450,36 @@ export default function Produto() {
                       5% OFF no PIX
                     </div>
                   </div>
-                </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="text-xs uppercase tracking-[0.3em] text-zinc-500 font-black flex justify-between items-center">
+                      Tamanho da escrita
+                      <span className="text-[10px] text-amber-500 font-bold">{selectedFontSize}px</span>
+                    </label>
+                    <div className="flex items-center gap-4">
+                      <button 
+                        onClick={() => setSelectedFontSize(Math.max(12, selectedFontSize - 1))}
+                        className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-400 hover:border-amber-500 hover:text-amber-500 transition-all"
+                      >
+                        -
+                      </button>
+                      <input 
+                        type="range" 
+                        min="12" 
+                        max="32" 
+                        value={selectedFontSize}
+                        onChange={(e) => setSelectedFontSize(parseInt(e.target.value))}
+                        className="flex-grow accent-amber-500 h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
+                      />
+                      <button 
+                        onClick={() => setSelectedFontSize(Math.min(32, selectedFontSize + 1))}
+                        className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-400 hover:border-amber-500 hover:text-amber-500 transition-all"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
 
                 <div className="space-y-8 bg-zinc-900/20 p-8 rounded-3xl border border-zinc-800/50">
                   <div className="space-y-4">
