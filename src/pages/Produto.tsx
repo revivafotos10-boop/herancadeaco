@@ -423,7 +423,36 @@ export default function Produto() {
                       5% OFF no PIX
                     </div>
                   </div>
-                </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="text-xs uppercase tracking-[0.3em] text-zinc-500 font-black flex justify-between items-center">
+                      Tamanho da escrita
+                      <span className="text-[10px] text-amber-500 font-bold">{selectedFontSize}px</span>
+                    </label>
+                    <div className="flex items-center gap-4">
+                      <button 
+                        onClick={() => setSelectedFontSize(Math.max(12, selectedFontSize - 1))}
+                        className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-400 hover:border-amber-500 hover:text-amber-500 transition-all"
+                      >
+                        -
+                      </button>
+                      <input 
+                        type="range" 
+                        min="12" 
+                        max="32" 
+                        value={selectedFontSize}
+                        onChange={(e) => setSelectedFontSize(parseInt(e.target.value))}
+                        className="flex-grow accent-amber-500 h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
+                      />
+                      <button 
+                        onClick={() => setSelectedFontSize(Math.min(32, selectedFontSize + 1))}
+                        className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-400 hover:border-amber-500 hover:text-amber-500 transition-all"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
 
                 <div className="space-y-8 bg-zinc-900/20 p-8 rounded-3xl border border-zinc-800/50">
                   <div className="space-y-4">
