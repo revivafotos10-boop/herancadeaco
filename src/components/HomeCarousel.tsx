@@ -55,7 +55,7 @@ export default function HomeCarousel() {
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-black group">
+    <section className="relative w-full overflow-hidden bg-black group pt-[80px] md:pt-[100px]">
       <div className="relative h-[280px] md:h-[450px] w-full">
         <AnimatePresence mode="wait">
           <motion.div
