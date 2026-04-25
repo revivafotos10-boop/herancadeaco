@@ -322,7 +322,6 @@ export default function Produto() {
                             preserveAspectRatio="xMidYMid meet"
                           />
                         )}
-                        </text>
                       </svg>
                     </motion.div>
                   </div>
