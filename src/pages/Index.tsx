@@ -16,7 +16,8 @@ import {
   Loader2,
   Sword,
   Flame,
-  Pencil
+  Pencil,
+  Dna
 } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
 import HomeCarousel from '@/components/HomeCarousel';
@@ -242,7 +243,7 @@ export default function Index() {
               { 
                 title: "Gravação Permanente", 
                 desc: "Tecnologia laser de fibra óptica para uma marcação definitiva que nunca apaga.",
-                icon: Pencil
+                icon: Dna
               },
               { 
                 title: "Envio Prioritário", 
