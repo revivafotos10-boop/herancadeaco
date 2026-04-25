@@ -287,42 +287,42 @@ export default function Produto() {
                       animate={{ opacity: 1 }}
                       style={boxStyle}
                     >
-                      <svg 
-                        viewBox="0 0 200 40" 
-                        width="100%" 
-                        height="100%" 
-                        preserveAspectRatio="xMidYMid meet"
+                      <div 
+                        style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '6px', 
+                          whiteSpace: 'nowrap',
+                          color: product?.engraving_color || '#2b2b2b',
+                          fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
+                                     selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
+                                     selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
+                          fontSize: `${(product?.engraving_font_size || 24) * 1.5}px`,
+                          fontWeight: '600',
+                          letterSpacing: '0px',
+                          lineHeight: 1
+                        }}
                       >
-                        <text 
-                          x="100" 
-                          y="20" 
-                          textAnchor="middle" 
-                          dominantBaseline="middle"
-                          textLength="190"
-                          lengthAdjust="spacing"
-                          style={{ 
-                            fontSize: `${(product?.engraving_font_size || 24) * 1.5}px`, 
-                            fontWeight: '600',
-                            fill: product?.engraving_color || '#2b2b2b',
-                            fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
-                                       selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
-                                       selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
-                            letterSpacing: '0.01em',
-                          }}
-                        >
-                          {engravedName || "NOME"} {selectedSymbol.name !== 'Nenhum' && !selectedSymbol.image && selectedSymbol.name}
-                        </text>
-                        {selectedSymbol.image && (
-                          <image
-                            href={selectedSymbol.image}
-                            x="165"
-                            y="5"
-                            width="30"
-                            height="30"
-                            preserveAspectRatio="xMidYMid meet"
-                          />
+                        {selectedSymbol.name !== 'Nenhum' && (
+                          <>
+                            {selectedSymbol.image ? (
+                              <img 
+                                src={selectedSymbol.image} 
+                                alt="" 
+                                style={{ 
+                                  height: '1.2em', 
+                                  width: 'auto', 
+                                  objectFit: 'contain',
+                                  flexShrink: 0
+                                }} 
+                              />
+                            ) : (
+                              <span style={{ marginRight: '4px' }}>{selectedSymbol.name}</span>
+                            )}
+                          </>
                         )}
-                      </svg>
+                        <span>{engravedName || "NOME"}</span>
+                      </div>
                     </motion.div>
                   </div>
                 )}
