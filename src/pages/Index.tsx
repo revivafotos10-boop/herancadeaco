@@ -354,7 +354,8 @@ export default function Index() {
               <a href="#" className="hover:text-amber-500 transition-colors">TERMOS</a>
               <a href="#" className="hover:text-amber-500 transition-colors">PRIVACIDADE</a>
               <a href="#" className="hover:text-amber-500 transition-colors">CONTATO</a>
-              <a href="/admin-produtos" className="hover:text-amber-500 transition-colors">ADMIN</a>
+              <a href="/admin-produtos" className="hover:text-amber-500 transition-colors">PRODUTOS</a>
+              <a href="/admin-banners" className="hover:text-amber-500 transition-colors">BANNERS</a>
             </div>
             <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">© 2024 Herança de Aço. Todos os direitos reservados.</p>
           </div>
