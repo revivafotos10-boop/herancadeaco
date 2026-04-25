@@ -185,8 +185,8 @@ export default function Produto() {
       const rot = Math.atan2(dy, dx) * (180 / Math.PI);
       
       // Height for the text area - adjusted by product font size
-      const h = (product.engraving_font_size || 20) / 2.5; 
-
+      const h = selectedFontSize / 2.5; 
+      const previewFontSize = selectedFontSize * 1.5;
       return {
         position: 'absolute' as const,
         left: `${x - (w / 2)}%`,
