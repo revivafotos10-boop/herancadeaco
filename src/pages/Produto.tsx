@@ -164,6 +164,8 @@ export default function Produto() {
     return acc + price;
   }, 0);
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
   const getEngravingBoxStyle = () => {
     // If start/end points exist, use them for automatic calculation
     if (product?.engraving_start_x !== undefined && product?.engraving_end_x !== undefined) {
