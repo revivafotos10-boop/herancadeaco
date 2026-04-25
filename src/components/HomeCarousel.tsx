@@ -50,7 +50,7 @@ export default function HomeCarousel() {
 
   if (loading || banners.length === 0) {
     return (
-      <section className="relative w-full h-[280px] md:h-[450px] bg-black animate-pulse" />
+      <section className="relative w-full h-[280px] md:h-[450px] bg-black animate-pulse pt-[80px] md:pt-[100px]" />
     );
   }
 
