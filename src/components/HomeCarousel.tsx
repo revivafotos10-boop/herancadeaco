@@ -64,8 +64,12 @@ export default function HomeCarousel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-0 cursor-pointer flex items-center justify-center bg-black"
-            onClick={() => banners[currentIndex].button_url && (window.location.href = banners[currentIndex].button_url)}
+            className={`absolute inset-0 flex items-center justify-center bg-black ${banners[currentIndex].button_url ? 'cursor-pointer' : ''}`}
+            onClick={() => {
+              if (banners[currentIndex].button_url) {
+                window.location.href = banners[currentIndex].button_url;
+              }
+            }}
           >
             <img 
               src={banners[currentIndex].image_url}
