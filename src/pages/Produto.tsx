@@ -445,13 +445,17 @@ export default function Produto() {
                   <div className="space-y-4">
                     <label className="text-xs uppercase tracking-[0.3em] text-zinc-500 font-black">Símbolo</label>
                     <div className="grid grid-cols-4 gap-2">
-                      {symbols.map(symbol => (
+                      {symbols.map((symbol, idx) => (
                         <button 
-                          key={symbol}
+                          key={idx}
                           onClick={() => setSelectedSymbol(symbol)}
-                          className={`p-4 rounded-xl border text-xl transition-all ${selectedSymbol === symbol ? 'border-amber-500 bg-amber-500/10 text-amber-500 scale-105' : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'}`}
+                          className={`p-4 rounded-xl border flex items-center justify-center min-h-[64px] transition-all ${selectedSymbol.name === symbol.name ? 'border-amber-500 bg-amber-500/10 text-amber-500 scale-105' : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'}`}
                         >
-                          {symbol}
+                          {symbol.image ? (
+                            <img src={symbol.image} alt={symbol.name} className="w-8 h-8 object-contain" />
+                          ) : (
+                            <span className="text-sm font-bold uppercase tracking-tighter">{symbol.name}</span>
+                          )}
                         </button>
                       ))}
                     </div>
