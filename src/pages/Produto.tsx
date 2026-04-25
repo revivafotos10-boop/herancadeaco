@@ -563,7 +563,7 @@ export default function Produto() {
                           <div className="space-y-1">
                             <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
                               <Pencil className="w-3 h-3 text-amber-600" />
-                              Gravação: {item.engravedName || 'Sem nome'}
+                              Gravação: {item.engravedName || 'Sem nome'} {item.selectedSymbol?.name !== 'Nenhum' && `(${item.selectedSymbol?.name})`}
                             </p>
                             <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
                               <Crown className="w-3 h-3 text-amber-600" />
