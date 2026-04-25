@@ -127,6 +127,31 @@ export default function Produto() {
   };
 
   useEffect(() => {
+    if (!containerRef.current || !product?.engraving_start_x || !product?.engraving_end_x) return;
+    
+    const container = containerRef.current;
+    const parent = container.parentElement;
+    if (!parent) return;
+
+    const x1 = product.engraving_start_x;
+    const y1 = product.engraving_start_y!;
+    const x2 = product.engraving_end_x;
+    const y2 = product.engraving_end_y!;
+
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const maxWidthPercent = Math.sqrt(dx * dx + dy * dy);
+    
+    // Convert percent to pixels (parent is the boxStyle div which is maxWidthPercent wide)
+    const parentWidthPx = parent.getBoundingClientRect().width;
+    const containerWidthPx = container.getBoundingClientRect().width;
+    
+    if (containerWidthPx > parentWidthPx && selectedFontSize > 12) {
+      setSelectedFontSize(prev => Math.max(12, prev - 1));
+    }
+  }, [engravedName, selectedFontSize, selectedSymbol, selectedFont, product]);
+
+  useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
