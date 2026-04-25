@@ -19,6 +19,7 @@ import {
   Pencil
 } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
+import HomeCarousel from '@/components/HomeCarousel';
 import { supabase } from '@/lib/supabase';
 
 interface Product {
@@ -127,24 +128,8 @@ export default function Index() {
         </div>
       </nav>
 
-      {/* 1. New Hero Banner Image */}
-      <section className="relative w-full overflow-hidden bg-[#000000]">
-        <div 
-          className="w-full h-[280px] md:h-[520px] bg-contain bg-top bg-no-repeat"
-          style={{ 
-            backgroundImage: `url('https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/banners//image.png')`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center top',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: '#000000',
-            width: '100%',
-          }}
-          aria-label="Banner principal"
-        >
-          {/* Mobile height aspect ratio maintainer */}
-          <div className="block md:hidden pb-[56.25%] w-full h-0" />
-        </div>
-      </section>
+      {/* 1. Hero Carousel */}
+      <HomeCarousel />
 
       {/* 2. Seção de produtos (vitrine) */}
       <section id="produtos" className="py-32 relative bg-[#050505]">
