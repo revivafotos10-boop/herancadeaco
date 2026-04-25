@@ -50,7 +50,15 @@ interface Product {
 }
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
-const symbols = ['Nenhum', '⚓', '⚔️', '🔥', '🛡️', '🐎', '🤠'];
+const symbols = [
+  { name: 'Nenhum', image: null },
+  { name: 'Corinthians', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/cor.png' },
+  { name: 'Palmeiras', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/pepa.png' },
+  { name: 'São Paulo', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/sp.png' },
+  { name: 'Santos', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/san.png' },
+  { name: 'Flamengo', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/fla.png' },
+  { name: 'Flamengo 1', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/fla1.png' }
+];
 const sizes = ['8"', '10"', '12"'];
 
 const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: string }> = {
