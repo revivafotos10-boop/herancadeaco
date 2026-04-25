@@ -323,8 +323,8 @@ export default function Produto() {
                             src={selectedSymbol.image} 
                             alt="" 
                             style={{ 
-                              height: `${((product?.engraving_font_size || 24) * 1.5) * 1.1}px`, 
-                              width: `${((product?.engraving_font_size || 24) * 1.5) * 1.1}px`, 
+                              height: `${(selectedFontSize * 1.5) * 1.1}px`, 
+                              width: `${(selectedFontSize * 1.5) * 1.1}px`, 
                               objectFit: 'contain',
                               flexShrink: 0
                             }} 
