@@ -127,41 +127,22 @@ export default function Index() {
         </div>
       </nav>
 
-      {/* 1. Hero Section Split Layout */}
-      <section className="relative w-full overflow-hidden bg-[#000000] pt-20 md:pt-32">
-        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center min-h-[400px] md:min-h-[520px]">
-          {/* Left Column: Content */}
-          <div className="space-y-8 text-center md:text-left z-10">
-            <div className="space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-[0.6em] text-amber-600">Herança de Aço</span>
-              <h2 className="text-4xl md:text-7xl font-black font-serif tracking-tighter text-white leading-tight">
-                Sua paixão,<br />
-                <span className="text-amber-500">sua marca.</span>
-              </h2>
-              <p className="text-zinc-400 text-sm md:text-base font-serif italic max-w-md mx-auto md:mx-0">
-                Cutelaria premium e personalizada para quem valoriza tradição em cada detalhe.
-              </p>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <button 
-                onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-2 shadow-[0_10px_30px_rgba(217,119,6,0.3)]"
-              >
-                Explorar Acervo
-                <ArrowRight className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
-
-          {/* Right Column: Image */}
-          <div className="relative flex justify-center items-center h-full">
-            <img 
-              src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/banners//image.png"
-              alt="Faca com gravação a laser"
-              className="max-w-full h-auto object-contain max-h-[300px] md:max-h-[450px]"
-            />
-          </div>
+      {/* 1. New Hero Banner Image */}
+      <section className="relative w-full overflow-hidden bg-[#000000]">
+        <div 
+          className="w-full h-[280px] md:h-[520px] bg-contain bg-top bg-no-repeat"
+          style={{ 
+            backgroundImage: `url('https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/banners//image.png')`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center top',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: '#000000',
+            width: '100%',
+          }}
+          aria-label="Banner principal"
+        >
+          {/* Mobile height aspect ratio maintainer */}
+          <div className="block md:hidden pb-[56.25%] w-full h-0" />
         </div>
       </section>
 
