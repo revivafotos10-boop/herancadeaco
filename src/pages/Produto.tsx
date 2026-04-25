@@ -105,6 +105,11 @@ export default function Produto() {
       setProduct(data);
       setPreviewImage(data.image_url);
       
+      // Set initial engraving font size from product config
+      if (data.engraving_font_size) {
+        setSelectedFontSize(data.engraving_font_size);
+      }
+      
       // Load defaults
       const defaults = PRODUCT_DEFAULTS[data.name];
       if (defaults) {
