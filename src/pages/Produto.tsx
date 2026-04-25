@@ -311,7 +311,7 @@ export default function Produto() {
                           fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
                                      selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
                                      selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
-                          fontSize: `${(product?.engraving_font_size || 24) * 1.5}px`,
+                          fontSize: `${selectedFontSize * 1.5}px`,
                           fontWeight: '600',
                           letterSpacing: '0px',
                           lineHeight: 1,
