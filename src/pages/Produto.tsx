@@ -270,41 +270,43 @@ export default function Produto() {
                   className="w-full h-full object-contain p-12 relative z-10 transition-transform duration-700 group-hover:scale-110"
                 />
                 
-                {/* Simulation Overlay */}
-                <div className="absolute inset-0 pointer-events-none z-20">
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    style={boxStyle}
-                  >
-                    <svg 
-                      viewBox="0 0 200 40" 
-                      width="100%" 
-                      height="100%" 
-                      preserveAspectRatio="xMidYMid meet"
+                {/* Simulation Overlay - Only on main image */}
+                {previewImage === product.image_url && (
+                  <div className="absolute inset-0 pointer-events-none z-20">
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      style={boxStyle}
                     >
-                      <text 
-                        x="100" 
-                        y="20" 
-                        textAnchor="middle" 
-                        dominantBaseline="middle"
-                        textLength="190"
-                        lengthAdjust="spacing"
-                        style={{ 
-                          fontSize: `${(product?.engraving_font_size || 24) * 1.5}px`, 
-                          fontWeight: '600',
-                          fill: product?.engraving_color || '#2b2b2b',
-                          fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
-                                     selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
-                                     selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
-                          letterSpacing: '0.01em',
-                        }}
+                      <svg 
+                        viewBox="0 0 200 40" 
+                        width="100%" 
+                        height="100%" 
+                        preserveAspectRatio="xMidYMid meet"
                       >
-                        {engravedName || "NOME"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
-                      </text>
-                    </svg>
-                  </motion.div>
-                </div>
+                        <text 
+                          x="100" 
+                          y="20" 
+                          textAnchor="middle" 
+                          dominantBaseline="middle"
+                          textLength="190"
+                          lengthAdjust="spacing"
+                          style={{ 
+                            fontSize: `${(product?.engraving_font_size || 24) * 1.5}px`, 
+                            fontWeight: '600',
+                            fill: product?.engraving_color || '#2b2b2b',
+                            fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
+                                       selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
+                                       selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
+                            letterSpacing: '0.01em',
+                          }}
+                        >
+                          {engravedName || "NOME"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
+                        </text>
+                      </svg>
+                    </motion.div>
+                  </div>
+                )}
 
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/5 flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse" />
