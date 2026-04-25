@@ -310,7 +310,18 @@ export default function Produto() {
                             letterSpacing: '0.01em',
                           }}
                         >
-                          {engravedName || "NOME"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
+                          {engravedName || "NOME"} {selectedSymbol.name !== 'Nenhum' && !selectedSymbol.image && selectedSymbol.name}
+                        </text>
+                        {selectedSymbol.image && (
+                          <image
+                            href={selectedSymbol.image}
+                            x="165"
+                            y="5"
+                            width="30"
+                            height="30"
+                            preserveAspectRatio="xMidYMid meet"
+                          />
+                        )}
                         </text>
                       </svg>
                     </motion.div>
