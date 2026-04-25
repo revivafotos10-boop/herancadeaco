@@ -282,7 +282,7 @@ export default function Produto() {
                 {/* Simulation Overlay - Only on main image */}
                 {previewImage === product.image_url && (
                   <div className="absolute inset-0 pointer-events-none z-20">
-                    <div 
+                    <motion.div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       style={{
@@ -328,7 +328,7 @@ export default function Produto() {
                           {engravedName || "NOME"}
                         </span>
                       </div>
-                    </div>
+                    </motion.div>
                   </div>
                 )}
 
