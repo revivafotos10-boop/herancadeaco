@@ -64,19 +64,16 @@ export default function HomeCarousel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-0 cursor-pointer"
+            className="absolute inset-0 cursor-pointer flex items-center justify-center bg-black"
             onClick={() => banners[currentIndex].button_url && (window.location.href = banners[currentIndex].button_url)}
           >
-            <div 
-              className="w-full h-full"
-              style={{ 
-                backgroundImage: `url('${banners[currentIndex].image_url}')`,
-                backgroundSize: 'contain',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                backgroundColor: '#000',
+            <img 
+              src={banners[currentIndex].image_url}
+              alt={banners[currentIndex].title}
+              className="w-full h-auto max-h-full object-contain"
+              onError={(e) => {
+                console.error(`Erro ao carregar imagem do banner: ${banners[currentIndex].image_url}`);
               }}
-              aria-label={banners[currentIndex].title}
             />
           </motion.div>
         </AnimatePresence>
