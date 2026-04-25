@@ -144,6 +144,9 @@ export default function Produto() {
       selectedFont,
       selectedSymbol,
       selectedSize,
+      engraving_font_size_selected: selectedFontSize,
+      engraving_text: engravedName,
+      engraving_symbol: selectedSymbol.name,
       cartId: Date.now()
     };
     setCart([...cart, item]);
