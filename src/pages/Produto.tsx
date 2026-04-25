@@ -50,14 +50,22 @@ interface Product {
 }
 
 const fonts = ['Manuscrita', 'Caligrafia', 'Sans-Serif', 'Serif', 'Bold'];
-const symbols = ['Nenhum', '⚓', '⚔️', '🔥', '🛡️', '🐎', '🤠'];
+const symbols = [
+  { name: 'Nenhum', image: null },
+  { name: 'Corinthians', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/cor.png' },
+  { name: 'Palmeiras', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/pepa.png' },
+  { name: 'São Paulo', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/sp.png' },
+  { name: 'Santos', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/san.png' },
+  { name: 'Flamengo', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/fla.png' },
+  { name: 'Flamengo 1', image: 'https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/symbols/fla1.png' }
+];
 const sizes = ['8"', '10"', '12"'];
 
 const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: string }> = {
-  'Cutelo Artesanal Brut': { size: '8"', font: 'Bold', symbol: '⚔️' },
+  'Cutelo Artesanal Brut': { size: '8"', font: 'Bold', symbol: 'Corinthians' },
   'Lâmina de Elite Gold': { size: '10"', font: 'Serif', symbol: 'Nenhum' },
-  'Herança Silvestre': { size: '12"', font: 'Caligrafia', symbol: '🔥' },
-  'Faca Guardião 20cm Inox': { size: '8"', font: 'Serif', symbol: '🛡️' },
+  'Herança Silvestre': { size: '12"', font: 'Caligrafia', symbol: 'Palmeiras' },
+  'Faca Guardião 20cm Inox': { size: '8"', font: 'Serif', symbol: 'São Paulo' },
   '🔥 Faca Imperador 31cm – Cabo em Osso': { size: '12"', font: 'Serif', symbol: 'Nenhum' },
 };
 
@@ -100,7 +108,8 @@ export default function Produto() {
       const defaults = PRODUCT_DEFAULTS[data.name];
       if (defaults) {
         setSelectedFont(defaults.font);
-        setSelectedSymbol(defaults.symbol);
+        const defaultSymbol = symbols.find(s => s.name === defaults.symbol) || symbols[0];
+        setSelectedSymbol(defaultSymbol);
         setSelectedSize(defaults.size);
       }
     } catch (error: any) {
@@ -301,8 +310,18 @@ export default function Produto() {
                             letterSpacing: '0.01em',
                           }}
                         >
-                          {engravedName || "NOME"} {selectedSymbol !== 'Nenhum' && selectedSymbol}
+                          {engravedName || "NOME"} {selectedSymbol.name !== 'Nenhum' && !selectedSymbol.image && selectedSymbol.name}
                         </text>
+                        {selectedSymbol.image && (
+                          <image
+                            href={selectedSymbol.image}
+                            x="165"
+                            y="5"
+                            width="30"
+                            height="30"
+                            preserveAspectRatio="xMidYMid meet"
+                          />
+                        )}
                       </svg>
                     </motion.div>
                   </div>
@@ -426,13 +445,17 @@ export default function Produto() {
                   <div className="space-y-4">
                     <label className="text-xs uppercase tracking-[0.3em] text-zinc-500 font-black">Símbolo</label>
                     <div className="grid grid-cols-4 gap-2">
-                      {symbols.map(symbol => (
+                      {symbols.map((symbol, idx) => (
                         <button 
-                          key={symbol}
+                          key={idx}
                           onClick={() => setSelectedSymbol(symbol)}
-                          className={`p-4 rounded-xl border text-xl transition-all ${selectedSymbol === symbol ? 'border-amber-500 bg-amber-500/10 text-amber-500 scale-105' : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'}`}
+                          className={`p-4 rounded-xl border flex items-center justify-center min-h-[64px] transition-all ${selectedSymbol.name === symbol.name ? 'border-amber-500 bg-amber-500/10 text-amber-500 scale-105' : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'}`}
                         >
-                          {symbol}
+                          {symbol.image ? (
+                            <img src={symbol.image} alt={symbol.name} className="w-8 h-8 object-contain" />
+                          ) : (
+                            <span className="text-sm font-bold uppercase tracking-tighter">{symbol.name}</span>
+                          )}
                         </button>
                       ))}
                     </div>
@@ -540,7 +563,7 @@ export default function Produto() {
                           <div className="space-y-1">
                             <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
                               <Pencil className="w-3 h-3 text-amber-600" />
-                              Gravação: {item.engravedName || 'Sem nome'}
+                              Gravação: {item.engravedName || 'Sem nome'} {item.selectedSymbol?.name !== 'Nenhum' && `(${item.selectedSymbol?.name})`}
                             </p>
                             <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
                               <Crown className="w-3 h-3 text-amber-600" />
