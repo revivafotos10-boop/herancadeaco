@@ -108,7 +108,8 @@ export default function Produto() {
       const defaults = PRODUCT_DEFAULTS[data.name];
       if (defaults) {
         setSelectedFont(defaults.font);
-        setSelectedSymbol(defaults.symbol);
+        const defaultSymbol = symbols.find(s => s.name === defaults.symbol) || symbols[0];
+        setSelectedSymbol(defaultSymbol);
         setSelectedSize(defaults.size);
       }
     } catch (error: any) {
