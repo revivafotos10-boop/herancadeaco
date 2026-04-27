@@ -295,6 +295,119 @@ export default function Contato() {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isCartOpen && (
+          <div className="fixed inset-0 z-[110] flex justify-end">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCartOpen(false)}
+              className="absolute inset-0 bg-black/90 backdrop-blur-md"
+            />
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative w-full max-w-md bg-[#0a0a0a] h-full shadow-2xl border-l border-zinc-800 p-8 flex flex-col"
+            >
+              <div className="flex justify-between items-center mb-10">
+                <div className="space-y-1">
+                  <h2 className="text-2xl font-black font-serif uppercase tracking-widest">Seu Pedido</h2>
+                  <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">Acervo Herança de Aço</p>
+                </div>
+                <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-zinc-900 rounded-full transition-colors">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="flex-grow overflow-y-auto space-y-6 pr-2 custom-scrollbar">
+                {cart.length === 0 ? (
+                  <div className="h-full flex flex-col items-center justify-center text-center space-y-6">
+                    <div className="w-20 h-20 rounded-full bg-zinc-900 flex items-center justify-center">
+                      <ShoppingBag className="w-8 h-8 text-zinc-700" />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-zinc-500 font-serif italic">Seu acervo está vazio.</p>
+                      <button onClick={() => setIsCartOpen(false)} className="text-amber-500 text-[10px] font-black uppercase tracking-widest hover:underline">Continuar Explorando</button>
+                    </div>
+                  </div>
+                ) : (
+                  cart.map((item: any) => (
+                    <div key={item.cartId} className="group relative bg-zinc-900/30 p-4 rounded-2xl border border-zinc-800/50 hover:border-amber-500/20 transition-all">
+                      <div className="flex gap-4">
+                        <div className="w-20 h-20 bg-zinc-900 rounded-xl overflow-hidden flex items-center justify-center">
+                          <img src={item.product.image_url} alt={item.product.name} className="w-full h-full object-contain p-2" />
+                        </div>
+                        <div className="flex-grow space-y-2">
+                          <div className="flex justify-between items-start">
+                            <h3 className="text-xs font-black uppercase tracking-widest text-white">{item.product.name}</h3>
+                            <button onClick={() => removeFromCart(item.cartId)} className="text-zinc-600 hover:text-red-500 transition-colors">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                              <Pencil className="w-3 h-3 text-amber-600" />
+                              Gravação: {item.engravedName || 'Sem nome'}
+                            </p>
+                            <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                              <Crown className="w-3 h-3 text-amber-600" />
+                              Tamanho: {item.selectedSize}
+                            </p>
+                          </div>
+                          <p className="text-sm font-black text-amber-500 mt-2">
+                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {cart.length > 0 && (
+                <div className="mt-8 space-y-6 pt-8 border-t border-zinc-800">
+                  <div className="flex justify-between items-end">
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500">Subtotal do Acervo</span>
+                    <span className="text-2xl font-black text-white tracking-tighter">
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartTotal)}
+                    </span>
+                  </div>
+                  <button 
+                    onClick={() => navigate('/checkout')}
+                    className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-5 rounded-xl font-black text-xs uppercase tracking-[0.4em] hover:from-amber-600 hover:to-amber-500 transition-all shadow-[0_10px_30px_rgba(217,119,6,0.3)] flex items-center justify-center gap-3"
+                  >
+                    Finalizar Pedido
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      <footer className="bg-[#050505] border-t border-zinc-900 py-20">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-10">
+            <div className="flex items-center gap-3">
+              <Sword className="w-6 h-6 text-amber-500" />
+              <h2 className="text-xl font-black font-serif tracking-[0.4em] uppercase">Herança de Aço</h2>
+            </div>
+            <div className="flex gap-10 text-[10px] font-black tracking-[0.3em] text-zinc-500">
+              <a href="#" className="hover:text-amber-500 transition-colors">TERMOS</a>
+              <a href="#" className="hover:text-amber-500 transition-colors">PRIVACIDADE</a>
+              <a href="/contato" className="hover:text-amber-500 transition-colors">CONTATO</a>
+              <a href="/admin-produtos" className="hover:text-amber-500 transition-colors">PRODUTOS</a>
+              <a href="/admin-banners" className="hover:text-amber-500 transition-colors">BANNERS</a>
+            </div>
+            <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">© 2024 Herança de Aço. Todos os direitos reservados.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
