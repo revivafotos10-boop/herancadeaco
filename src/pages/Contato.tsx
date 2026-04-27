@@ -76,13 +76,13 @@ export default function Contato() {
       <UrgencyBanner className="z-[90] relative" />
       
       {/* Cinematic Header */}
-      <nav className="w-full z-[100] absolute top-[40px] bg-transparent py-10 mt-0">
+      <nav className="w-full z-[100] absolute top-[40px] bg-transparent py-12 mt-0">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2 group cursor-pointer" onClick={() => navigate('/')}>
             <img 
-              src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/header/loco%20com%20icone.png" 
+              src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/header/logo-header.png" 
               alt="Herança de Aço" 
-              className="h-[42px] md:h-[60px] max-h-[42px] md:max-h-[60px] w-auto object-contain brightness-110 contrast-110"
+              className="h-[45px] md:h-[65px] max-h-[45px] md:max-h-[65px] w-auto object-contain brightness-110 contrast-110"
             />
           </div>
           
@@ -114,7 +114,7 @@ export default function Contato() {
         </div>
       </nav>
 
-      <div className="container mx-auto px-6 pt-48 pb-20">
+      <div className="container mx-auto px-6 pt-56 pb-20">
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <motion.div
