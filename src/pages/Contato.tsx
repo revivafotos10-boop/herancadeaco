@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MessageSquare, 
   Instagram, 
@@ -9,10 +9,18 @@ import {
   Sword,
   ShieldCheck,
   CheckCircle2,
-  Crown
+  Crown,
+  User,
+  ShoppingBag,
+  Menu,
+  X,
+  Trash2,
+  Pencil,
+  ArrowRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import UrgencyBanner from '@/components/UrgencyBanner';
 
 export default function Contato() {
   const navigate = useNavigate();
