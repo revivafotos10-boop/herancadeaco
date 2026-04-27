@@ -156,12 +156,6 @@ export default function Index() {
       {/* 2. Seção de produtos (vitrine) */}
       <section id="produtos" className="py-32 relative bg-[#050505]">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-24 space-y-4">
-            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-amber-600">Coleção Exclusiva</span>
-            <h2 className="text-4xl md:text-6xl font-black font-serif tracking-tighter text-white">O Acervo</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto" />
-          </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {loading ? (
               <div className="col-span-full flex flex-col items-center justify-center py-20 gap-4">
