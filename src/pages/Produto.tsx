@@ -275,8 +275,11 @@ export default function Produto() {
       <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-8 mt-10 md:mt-12'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div onClick={() => navigate('/#home')} className="flex items-center gap-2 group cursor-pointer">
-            <Sword className="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform" />
-            <h1 className="text-xl md:text-2xl font-black font-serif tracking-[0.3em] text-white uppercase group-hover:text-amber-500 transition-colors">Herança de Aço</h1>
+            <img 
+              src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/header/loco%20com%20icone.png" 
+              alt="Herança de Aço" 
+              className="h-[32px] md:h-[42px] w-auto object-contain"
+            />
           </div>
           
           <div className="hidden md:flex items-center gap-12 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
