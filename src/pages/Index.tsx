@@ -154,7 +154,7 @@ export default function Index() {
       <HomeCarousel />
 
       {/* 2. Seção de produtos (vitrine) */}
-      <section id="produtos" className="py-32 relative bg-[#050505]">
+      <section id="produtos" className="py-16 relative bg-[#050505]">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {loading ? (
