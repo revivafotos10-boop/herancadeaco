@@ -8,7 +8,8 @@ import {
   Phone,
   Sword,
   ShieldCheck,
-  CheckCircle2
+  CheckCircle2,
+  Crown
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
