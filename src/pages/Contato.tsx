@@ -31,6 +31,26 @@ export default function Contato() {
     mensagem: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem('cart');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  const removeFromCart = (cartId: number) => {
+    setCart(cart.filter((item: any) => item.cartId !== cartId));
+  };
+
+  const cartTotal = cart.reduce((acc: number, item: any) => {
+    const price = typeof item.product.price === 'number' 
+      ? item.product.price 
+      : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
+    return acc + price;
+  }, 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
