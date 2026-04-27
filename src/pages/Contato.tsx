@@ -76,13 +76,13 @@ export default function Contato() {
       <UrgencyBanner className="z-[90] relative" />
       
       {/* Cinematic Header */}
-      <nav className="w-full z-[100] absolute top-[40px] bg-transparent py-8 mt-0">
+      <nav className="w-full z-[100] absolute top-[40px] bg-transparent py-10 mt-0">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2 group cursor-pointer" onClick={() => navigate('/')}>
             <img 
               src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/header/loco%20com%20icone.png" 
               alt="Herança de Aço" 
-              className="h-[32px] md:h-[42px] w-auto object-contain"
+              className="h-[42px] md:h-[60px] max-h-[42px] md:max-h-[60px] w-auto object-contain brightness-110 contrast-110"
             />
           </div>
           
