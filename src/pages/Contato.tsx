@@ -72,8 +72,46 @@ export default function Contato() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans overflow-x-hidden pt-32 pb-20">
-      <div className="container mx-auto px-6">
+    <div className="min-h-screen bg-[#050505] text-white font-sans overflow-x-hidden">
+      <UrgencyBanner className="z-[90] relative" />
+      
+      {/* Cinematic Header */}
+      <nav className="w-full z-[100] absolute top-[40px] bg-transparent py-8 mt-0">
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-2 group cursor-pointer" onClick={() => navigate('/')}>
+            <Sword className="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform" />
+            <h1 className="text-xl md:text-2xl font-black font-serif tracking-[0.3em] text-white uppercase group-hover:text-amber-500 transition-colors">Herança de Aço</h1>
+          </div>
+          
+          <div className="hidden md:flex items-center gap-12 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
+            <a href="/#produtos" className="hover:text-white transition-colors">COLEÇÃO</a>
+            <a href="/#personalizacao" className="hover:text-white transition-colors">PERSONALIZAÇÃO</a>
+            <a href="/#historia" className="hover:text-white transition-colors">HISTÓRIA</a>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <button className="text-zinc-400 hover:text-white transition-colors">
+              <User className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="group relative p-2 text-zinc-400 hover:text-white transition-colors"
+            >
+              <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                  {cart.length}
+                </span>
+              )}
+            </button>
+            <button className="md:hidden text-zinc-400">
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div className="container mx-auto px-6 pt-48 pb-20">
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <motion.div
