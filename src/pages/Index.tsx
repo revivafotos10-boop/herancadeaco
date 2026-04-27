@@ -219,7 +219,7 @@ export default function Index() {
                   <button 
                     className="w-full bg-zinc-900 group-hover:bg-amber-700 text-white py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-[0.3em] transition-all border border-zinc-800 group-hover:border-amber-600 flex items-center justify-center gap-2"
                   >
-                    Ver produto
+                    COMPRAR E PERSONALIZAR
                     <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </button>
                 </div>

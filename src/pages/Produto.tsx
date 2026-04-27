@@ -550,7 +550,7 @@ export default function Produto() {
                     onClick={addToCart}
                     className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-6 rounded-2xl font-black text-sm uppercase tracking-[0.4em] hover:from-amber-600 hover:to-amber-500 transition-all shadow-[0_20px_40px_rgba(217,119,6,0.3)] flex items-center justify-center gap-4 group"
                   >
-                    COMPRAR AGORA
+                    COMPRAR E PERSONALIZAR
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                   </button>
 
