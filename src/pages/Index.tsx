@@ -369,7 +369,7 @@ export default function Index() {
             <div className="flex gap-10 text-[10px] font-black tracking-[0.3em] text-zinc-500">
               <a href="#" className="hover:text-amber-500 transition-colors">TERMOS</a>
               <a href="#" className="hover:text-amber-500 transition-colors">PRIVACIDADE</a>
-              <a href="#" className="hover:text-amber-500 transition-colors">CONTATO</a>
+              <a href="/contato" className="hover:text-amber-500 transition-colors">CONTATO</a>
               <a href="/admin-produtos" className="hover:text-amber-500 transition-colors">PRODUTOS</a>
               <a href="/admin-banners" className="hover:text-amber-500 transition-colors">BANNERS</a>
             </div>

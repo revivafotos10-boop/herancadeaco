@@ -682,7 +682,7 @@ export default function Produto() {
             <div className="flex gap-10 text-[10px] font-black tracking-[0.3em] text-zinc-500">
               <a href="#" className="hover:text-amber-500 transition-colors">TERMOS</a>
               <a href="#" className="hover:text-amber-500 transition-colors">PRIVACIDADE</a>
-              <a href="#" className="hover:text-amber-500 transition-colors">CONTATO</a>
+              <a href="/contato" className="hover:text-amber-500 transition-colors">CONTATO</a>
             </div>
             <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">© 2024 Herança de Aço. Todos os direitos reservados.</p>
           </div>
