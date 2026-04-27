@@ -272,13 +272,13 @@ export default function Produto() {
       <UrgencyBanner className="z-[90] relative" />
       
       {/* Navigation */}
-      <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-8 mt-10 md:mt-12'}`}>
+      <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-6 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-10 mt-10 md:mt-12'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div onClick={() => navigate('/#home')} className="flex items-center gap-2 group cursor-pointer">
             <img 
               src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/header/loco%20com%20icone.png" 
               alt="Herança de Aço" 
-              className="h-[32px] md:h-[42px] w-auto object-contain"
+              className="h-[42px] md:h-[60px] max-h-[42px] md:max-h-[60px] w-auto object-contain brightness-110 contrast-110"
             />
           </div>
           
@@ -302,7 +302,7 @@ export default function Produto() {
         </div>
       </nav>
 
-      <main className="pt-32 pb-20">
+      <main className="pt-40 pb-20">
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-16">
             
