@@ -10,6 +10,7 @@ import AdminProdutos from "./pages/AdminProdutos.tsx";
 import AdminBanners from "./pages/AdminBanners.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Produto from "./pages/Produto.tsx";
+import Contato from "./pages/Contato.tsx";
 
 const queryClient = new QueryClient();
 
