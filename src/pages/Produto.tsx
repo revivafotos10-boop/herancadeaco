@@ -534,20 +534,6 @@ export default function Produto() {
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <label className="text-xs uppercase tracking-[0.3em] text-zinc-500 font-black">Tamanho da Lâmina</label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {sizes.map(size => (
-                        <button 
-                          key={size}
-                          onClick={() => setSelectedSize(size)}
-                          className={`p-4 rounded-xl border text-sm transition-all ${selectedSize === size ? 'border-amber-500 bg-amber-500/10 text-amber-500 font-bold' : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'}`}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
 
                   <button 
                     onClick={addToCart}
