@@ -278,7 +278,7 @@ export default function Produto() {
             <img 
               src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/header/logo-header.png" 
               alt="Herança de Aço" 
-              className="h-[45px] md:h-[65px] max-h-[45px] md:max-h-[65px] w-auto max-w-[180px] md:max-w-[320px] object-contain brightness-110 contrast-110"
+              className="h-[45px] md:h-[75px] max-h-[45px] md:max-h-[75px] w-auto max-w-[220px] md:max-w-[420px] object-contain brightness-110 contrast-110"
             />
           </div>
           
