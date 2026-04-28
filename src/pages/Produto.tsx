@@ -624,10 +624,10 @@ export default function Produto() {
                               <Pencil className="w-3 h-3 text-amber-600" />
                               Gravação: {item.engravedName || 'Sem nome'} {item.selectedSymbol?.name !== 'Nenhum' && `(${item.selectedSymbol?.name})`}
                             </p>
-                            <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
-                              <Crown className="w-3 h-3 text-amber-600" />
-                              Tamanho: {item.selectedSize}
-                            </p>
+                             <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                               <Crown className="w-3 h-3 text-amber-600" />
+                               Autêntica Herança de Aço
+                             </p>
                           </div>
                           <p className="text-sm font-black text-amber-500 mt-2">
                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
