@@ -534,20 +534,6 @@ export default function Produto() {
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <label className="text-xs uppercase tracking-[0.3em] text-zinc-500 font-black">Tamanho da Lâmina</label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {sizes.map(size => (
-                        <button 
-                          key={size}
-                          onClick={() => setSelectedSize(size)}
-                          className={`p-4 rounded-xl border text-sm transition-all ${selectedSize === size ? 'border-amber-500 bg-amber-500/10 text-amber-500 font-bold' : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'}`}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
 
                   <button 
                     onClick={addToCart}
@@ -638,10 +624,10 @@ export default function Produto() {
                               <Pencil className="w-3 h-3 text-amber-600" />
                               Gravação: {item.engravedName || 'Sem nome'} {item.selectedSymbol?.name !== 'Nenhum' && `(${item.selectedSymbol?.name})`}
                             </p>
-                            <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
-                              <Crown className="w-3 h-3 text-amber-600" />
-                              Tamanho: {item.selectedSize}
-                            </p>
+                             <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                               <Crown className="w-3 h-3 text-amber-600" />
+                               Autêntica Herança de Aço
+                             </p>
                           </div>
                           <p className="text-sm font-black text-amber-500 mt-2">
                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
