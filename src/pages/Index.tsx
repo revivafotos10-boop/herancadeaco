@@ -327,7 +327,7 @@ export default function Index() {
                             </p>
                             <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest flex items-center gap-2">
                               <Crown className="w-3 h-3 text-amber-600" />
-                              Tamanho: {item.selectedSize}
+                              Autêntica Herança de Aço
                             </p>
                           </div>
                           <p className="text-sm font-black text-amber-500 mt-2">
