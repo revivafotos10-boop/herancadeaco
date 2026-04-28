@@ -77,12 +77,12 @@ export default function Contato() {
       
       {/* Cinematic Header */}
       <nav className="w-full z-[100] absolute top-[40px] bg-transparent py-12 mt-0">
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-2 group cursor-pointer" onClick={() => navigate('/')}>
+        <div className="container mx-auto px-6 flex justify-between items-center gap-10">
+          <div className="flex items-center group cursor-pointer shrink-0" onClick={() => navigate('/')}>
             <img 
               src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/header/logo-header.png" 
               alt="Herança de Aço" 
-              className="h-[45px] md:h-[65px] max-h-[45px] md:max-h-[65px] w-auto object-contain brightness-110 contrast-110"
+              className="h-[45px] md:h-[65px] max-h-[45px] md:max-h-[65px] w-auto max-w-[180px] md:max-w-[320px] object-contain brightness-110 contrast-110"
             />
           </div>
           
