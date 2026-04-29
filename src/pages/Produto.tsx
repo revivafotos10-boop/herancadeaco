@@ -282,8 +282,10 @@ export default function Produto() {
             />
           </div>
           
-          <div className="hidden md:flex items-center gap-12 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
-            <button onClick={() => navigate('/#home')} className="hover:text-white transition-colors">VOLTAR PARA LOJA</button>
+          <div className="hidden md:flex items-center gap-16 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
+            <button onClick={() => navigate('/#produtos')} className="hover:text-white transition-colors">FACAS</button>
+            <button onClick={() => navigate('/#personalizacao')} className="hover:text-white transition-colors">CUTELOS</button>
+            <button onClick={() => navigate('/#historia')} className="hover:text-white transition-colors">LÂMINAS RARAS</button>
           </div>
 
           <div className="flex items-center gap-6">
