@@ -45,6 +45,7 @@ export default function Index() {
   });
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -146,7 +147,10 @@ export default function Index() {
                 </span>
               )}
             </button>
-            <button className="md:hidden text-zinc-400">
+            <button 
+              onClick={() => setIsMenuOpen(true)}
+              className="md:hidden text-zinc-400 hover:text-white transition-colors p-2"
+            >
               <Menu className="w-6 h-6" />
             </button>
           </div>
@@ -357,6 +361,70 @@ export default function Index() {
                   </button>
                 </div>
               )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isMenuOpen && (
+          <div className="fixed inset-0 z-[120] md:hidden">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMenuOpen(false)}
+              className="absolute inset-0 bg-black/95 backdrop-blur-xl"
+            />
+            <motion.div 
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative w-[85%] max-w-[320px] bg-[#0a0a0a] h-full shadow-2xl border-r border-zinc-800/50 flex flex-col p-8"
+            >
+              <div className="flex justify-between items-center mb-16">
+                <img 
+                  src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/header/logo-header.png" 
+                  alt="Herança de Aço" 
+                  className="h-[32px] w-auto object-contain brightness-110"
+                />
+                <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-zinc-900 rounded-full transition-colors text-zinc-400 hover:text-white">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <nav className="flex flex-col gap-8">
+                {[
+                  { label: 'FACAS', href: '#produtos' },
+                  { label: 'CUTELOS', href: '#personalizacao' },
+                  { label: 'LÂMINAS RARAS', href: '#historia' }
+                ].map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsMenuOpen(false);
+                      document.getElementById(item.href.substring(1))?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="group flex items-center justify-between text-[13px] font-black tracking-[0.4em] text-zinc-400 hover:text-white transition-all duration-300"
+                  >
+                    <span className="group-hover:translate-x-2 transition-transform">{item.label}</span>
+                    <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-600" />
+                  </a>
+                ))}
+              </nav>
+
+              <div className="mt-auto space-y-8 pt-8 border-t border-zinc-900">
+                <div className="flex items-center gap-4 text-zinc-500">
+                  <User className="w-5 h-5 text-amber-600" />
+                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Minha Conta</span>
+                </div>
+                <p className="text-[9px] text-zinc-600 font-medium leading-relaxed tracking-wider">
+                  PEÇAS EXCLUSIVAS PARA<br />COLECIONADORES EXIGENTES
+                </p>
+              </div>
             </motion.div>
           </div>
         )}
