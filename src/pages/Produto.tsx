@@ -532,7 +532,7 @@ export default function Produto() {
                     </div>
                   </div>
 
-                <div className="space-y-8 bg-[#141414] p-8 rounded-3xl border border-[#f59e0b]/[0.25] shadow-[0_0_30px_rgba(245,158,11,0.08)]">
+                <div className="space-y-8 bg-zinc-800/40 p-8 rounded-3xl border border-amber-500/30 shadow-[0_0_40px_rgba(245,158,11,0.1)] backdrop-blur-sm">
                   <div className="space-y-4">
                     <label className="text-xs uppercase tracking-[0.3em] text-[#f59e0b] font-black flex justify-between items-center">
                       Personalize sua Lâmina
