@@ -311,13 +311,13 @@ export default function Produto() {
         </div>
       </nav>
 
-      <main className="pt-32 md:pt-48 pb-20">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-16">
+      <main className="pt-32 md:pt-48 pb-20 overflow-x-hidden">
+        <div className="container mx-auto px-0 md:px-6">
+          <div className="flex flex-col lg:flex-row gap-8 md:gap-16">
             
             {/* Gallery & Preview */}
-            <div className="w-full lg:w-3/5 space-y-8">
-              <div className="relative aspect-square bg-zinc-900/30 rounded-[32px] flex items-center justify-center overflow-hidden border border-zinc-800/50 group">
+            <div className="w-full lg:w-3/5 space-y-4 md:space-y-8">
+              <div className="relative aspect-square md:aspect-square w-full max-h-[70vh] md:max-h-none bg-black md:bg-zinc-900/30 rounded-none md:rounded-[32px] flex items-center justify-center overflow-hidden border-y md:border border-zinc-800/50 group">
                 <div 
                   className="w-full h-full relative"
                   style={{ 
@@ -334,7 +334,7 @@ export default function Produto() {
                     animate={{ opacity: 1, scale: 1 }}
                     src={previewImage} 
                     alt={product.name} 
-                    className="w-full h-full object-contain p-12 relative z-10"
+                    className="w-full h-full object-contain p-3 md:p-12 relative z-10"
                   />
                   
                   {/* Simulation Overlay - Only on main image */}
@@ -399,7 +399,7 @@ export default function Produto() {
 
                 {/* Zoom Controls - Only for main image with engraving simulation */}
                 {previewImage === product.image_url && (
-                  <div className="mt-6 p-6 rounded-3xl bg-zinc-900/30 border border-zinc-800/50 space-y-4">
+                  <div className="mt-4 md:mt-6 mx-4 md:mx-0 p-4 md:p-6 rounded-3xl bg-zinc-900/30 border border-zinc-800/50 space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Zoom da gravação</span>
                       <button 
@@ -427,7 +427,7 @@ export default function Produto() {
 
               {/* Gallery Thumbnails */}
               {(product.gallery_images && product.gallery_images.length > 0) && (
-                <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
+                <div className="flex gap-4 overflow-x-auto px-4 md:px-0 pb-4 custom-scrollbar">
                   {[product.image_url, ...product.gallery_images].map((img, idx) => (
                     <button 
                       key={idx}
@@ -441,7 +441,7 @@ export default function Produto() {
               )}
 
               {/* Description & Features */}
-              <div className="space-y-12 py-12 border-t border-zinc-900">
+              <div className="space-y-12 py-12 px-6 md:px-0 border-t border-zinc-900">
                 <div className="space-y-6">
                   <h3 className="text-2xl font-serif font-bold text-amber-500">O Legado por trás da Peça</h3>
                   <p className="text-zinc-400 leading-relaxed text-lg font-light">{product.description}</p>
@@ -469,7 +469,7 @@ export default function Produto() {
             </div>
 
             {/* Product Info & Options */}
-            <div className="w-full lg:w-2/5">
+            <div className="w-full lg:w-2/5 px-6 md:px-0">
               <div className="sticky top-32 space-y-10">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
