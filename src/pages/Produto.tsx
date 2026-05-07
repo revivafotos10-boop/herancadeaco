@@ -504,9 +504,9 @@ export default function Produto() {
                   </div>
 
                   <div className="space-y-4">
-                    <label className="text-xs uppercase tracking-[0.3em] text-zinc-500 font-black flex justify-between items-center">
+                    <label className="text-xs uppercase tracking-[0.3em] text-[#f59e0b] font-black flex justify-between items-center">
                       Tamanho da escrita
-                      <span className="text-[10px] text-amber-500 font-bold">{selectedFontSize}px</span>
+                      <span className="text-[10px] text-[#f59e0b] font-bold">{selectedFontSize}px</span>
                     </label>
                     <div className="flex items-center gap-4">
                       <button 
