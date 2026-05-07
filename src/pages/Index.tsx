@@ -183,12 +183,12 @@ export default function Index() {
                 className="group cursor-pointer bg-[#0d0d0d] rounded-2xl overflow-hidden border border-zinc-900 hover:border-amber-600/30 transition-all duration-500 flex flex-col h-full"
               >
                 {/* Image Container with Zoom Effect */}
-                <div className="relative aspect-square overflow-hidden bg-zinc-900/50">
+                <div className="relative aspect-square overflow-hidden bg-zinc-900/50 rounded-t-2xl">
                   {product.image_url ? (
                     <img 
                       src={product.image_url} 
                       alt={product.name} 
-                      className="w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-110" 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
