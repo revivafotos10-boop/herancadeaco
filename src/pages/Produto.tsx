@@ -88,6 +88,7 @@ export default function Produto() {
   const [selectedSize, setSelectedSize] = useState(sizes[1]);
   const [selectedFontSize, setSelectedFontSize] = useState(20);
   const [previewImage, setPreviewImage] = useState('');
+  const [zoomLevel, setZoomLevel] = useState(1);
 
   useEffect(() => {
     if (slug) fetchProduct();
@@ -317,12 +318,24 @@ export default function Produto() {
                   animate={{ opacity: 1, scale: 1 }}
                   src={previewImage} 
                   alt={product.name} 
-                  className="w-full h-full object-contain p-12 relative z-10 transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-contain p-12 relative z-10 transition-transform duration-300"
+                  style={{ 
+                    transform: `scale(${zoomLevel})`,
+                    transformOrigin: product?.engraving_start_x !== undefined && product?.engraving_end_x !== undefined 
+                      ? `${(product.engraving_start_x + product.engraving_end_x) / 2}% ${(product.engraving_start_y! + product.engraving_end_y!) / 2}%`
+                      : 'center center'
+                  }}
                 />
                 
                 {/* Simulation Overlay - Only on main image */}
                 {previewImage === product.image_url && (
-                  <div className="absolute inset-0 pointer-events-none z-20">
+                  <div className="absolute inset-0 pointer-events-none z-20" style={{ 
+                    transform: `scale(${zoomLevel})`,
+                    transformOrigin: product?.engraving_start_x !== undefined && product?.engraving_end_x !== undefined 
+                      ? `${(product.engraving_start_x + product.engraving_end_x) / 2}% ${(product.engraving_start_y! + product.engraving_end_y!) / 2}%`
+                      : 'center center',
+                    transition: 'transform 0.3s ease'
+                  }}>
                     <motion.div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -377,7 +390,35 @@ export default function Produto() {
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Simulador de Gravação Laser</span>
                 </div>
-              </div>
+                </div>
+
+                {/* Zoom Controls - Only for main image with engraving simulation */}
+                {previewImage === product.image_url && (
+                  <div className="mt-6 p-6 rounded-3xl bg-zinc-900/30 border border-zinc-800/50 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Zoom da gravação</span>
+                      <button 
+                        onClick={() => setZoomLevel(1)}
+                        className="text-[10px] font-bold uppercase tracking-widest text-amber-500 hover:text-amber-400 transition-colors"
+                      >
+                        Resetar zoom
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span className="text-[10px] font-medium text-zinc-500">1x</span>
+                      <input 
+                        type="range" 
+                        min="1" 
+                        max="3" 
+                        step="0.1" 
+                        value={zoomLevel} 
+                        onChange={(e) => setZoomLevel(parseFloat(e.target.value))}
+                        className="flex-1 h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-amber-600"
+                      />
+                      <span className="text-[10px] font-medium text-zinc-500">3x</span>
+                    </div>
+                  </div>
+                )}
 
               {/* Gallery Thumbnails */}
               {(product.gallery_images && product.gallery_images.length > 0) && (
