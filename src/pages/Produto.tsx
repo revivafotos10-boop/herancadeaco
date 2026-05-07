@@ -532,30 +532,30 @@ export default function Produto() {
                     </div>
                   </div>
 
-                <div className="space-y-8 bg-zinc-900/20 p-8 rounded-3xl border border-zinc-800/50">
+                <div className="space-y-8 bg-[#141414] p-8 rounded-3xl border border-[#f59e0b]/[0.25] shadow-[0_0_30px_rgba(245,158,11,0.08)]">
                   <div className="space-y-4">
-                    <label className="text-xs uppercase tracking-[0.3em] text-amber-500/70 font-black flex justify-between items-center">
+                    <label className="text-xs uppercase tracking-[0.3em] text-[#f59e0b] font-black flex justify-between items-center">
                       Personalize sua Lâmina
-                      <span className="text-[10px] text-zinc-600 font-normal">Máx 25 caracteres</span>
+                      <span className="text-[10px] text-[#b8b8b8] font-normal">Máx 25 caracteres</span>
                     </label>
                     <input 
                       type="text" 
                       value={engravedName}
                       onChange={(e) => setEngravedName(e.target.value)}
-                      className="w-full bg-black/50 border border-zinc-800 rounded-2xl p-5 text-white focus:border-amber-600 outline-none transition-all placeholder:text-zinc-800 uppercase font-bold tracking-widest"
+                      className="w-full bg-[#1a1a1a] border border-white/10 rounded-2xl p-5 text-white focus:border-[#f59e0b] outline-none transition-all placeholder:text-zinc-800 uppercase font-bold tracking-widest"
                       placeholder="Ex: NOME DO SEU PAI"
                       maxLength={25}
                     />
                   </div>
 
                   <div className="space-y-4">
-                    <label className="text-xs uppercase tracking-[0.3em] text-zinc-500 font-black">Estilo da Fonte</label>
+                    <label className="text-xs uppercase tracking-[0.3em] text-[#f59e0b] font-black">Estilo da Fonte</label>
                     <div className="grid grid-cols-2 gap-2">
                       {fonts.map(font => (
                         <button 
                           key={font}
                           onClick={() => setSelectedFont(font)}
-                          className={`p-4 rounded-xl border text-sm transition-all ${selectedFont === font ? 'border-amber-500 bg-amber-500/10 text-amber-500 font-bold' : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'}`}
+                          className={`p-4 rounded-xl border text-sm transition-all ${selectedFont === font ? 'border-[#f59e0b] bg-[#f59e0b]/[0.12] text-[#f59e0b] font-bold' : 'border-white/[0.14] bg-[#151515] text-[#b8b8b8] hover:border-zinc-700'}`}
                         >
                           {font}
                         </button>
@@ -564,13 +564,13 @@ export default function Produto() {
                   </div>
 
                   <div className="space-y-4">
-                    <label className="text-xs uppercase tracking-[0.3em] text-zinc-500 font-black">Símbolo</label>
+                    <label className="text-xs uppercase tracking-[0.3em] text-[#f59e0b] font-black">Símbolo</label>
                     <div className="grid grid-cols-4 gap-2">
                       {symbols.map((symbol, idx) => (
                         <button 
                           key={idx}
                           onClick={() => setSelectedSymbol(symbol)}
-                          className={`p-4 rounded-xl border flex items-center justify-center min-h-[64px] transition-all ${selectedSymbol.name === symbol.name ? 'border-amber-500 bg-amber-500/10 text-amber-500 scale-105' : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'}`}
+                          className={`p-4 rounded-xl border flex items-center justify-center min-h-[64px] transition-all ${selectedSymbol.name === symbol.name ? 'border-[#f59e0b] bg-[#f59e0b]/[0.12] text-[#f59e0b] scale-105' : 'border-white/[0.14] bg-[#151515] text-[#b8b8b8] hover:border-zinc-700'}`}
                         >
                           {symbol.image ? (
                             <img src={symbol.image} alt={symbol.name} className="w-8 h-8 object-contain" />
