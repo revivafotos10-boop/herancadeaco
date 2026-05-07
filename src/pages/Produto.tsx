@@ -273,7 +273,7 @@ export default function Produto() {
       <UrgencyBanner className="z-[90] relative" />
       
       {/* Navigation */}
-      <nav className={`fixed w-full z-[80] transition-all duration-700 ${scrolled ? 'bg-black/95 backdrop-blur-md py-8 border-b border-zinc-900 shadow-2xl' : 'bg-transparent py-12 mt-10 md:mt-12'}`}>
+      <nav className={`w-full z-[100] absolute top-[40px] bg-transparent py-12 mt-0`}>
         <div className="container mx-auto px-6 flex justify-between items-center gap-10">
           <div onClick={() => navigate('/#home')} className="flex items-center group cursor-pointer shrink-0">
             <img 
@@ -284,12 +284,15 @@ export default function Produto() {
           </div>
           
           <div className="hidden md:flex items-center gap-16 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
-            <button onClick={() => navigate('/#produtos')} className="hover:text-white transition-colors">FACAS</button>
-            <button onClick={() => navigate('/#personalizacao')} className="hover:text-white transition-colors">CUTELOS</button>
-            <button onClick={() => navigate('/#historia')} className="hover:text-white transition-colors">LÂMINAS RARAS</button>
+            <button onClick={() => navigate('/#produtos')} className="hover:text-white transition-colors uppercase">Facas</button>
+            <button onClick={() => navigate('/#personalizacao')} className="hover:text-white transition-colors uppercase">Cutelos</button>
+            <button onClick={() => navigate('/#historia')} className="hover:text-white transition-colors uppercase">Lâminas Raras</button>
           </div>
 
           <div className="flex items-center gap-6">
+            <button className="text-zinc-400 hover:text-white transition-colors">
+              <User className="w-5 h-5" />
+            </button>
             <button 
               onClick={() => setIsCartOpen(true)}
               className="group relative p-2 text-zinc-400 hover:text-white transition-colors"
@@ -301,11 +304,14 @@ export default function Produto() {
                 </span>
               )}
             </button>
+            <button className="md:hidden text-zinc-400 hover:text-white transition-colors p-2">
+              <Menu className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </nav>
 
-      <main className="pt-48 pb-20">
+      <main className="pt-32 md:pt-48 pb-20">
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-16">
             
