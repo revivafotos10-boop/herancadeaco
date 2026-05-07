@@ -469,7 +469,7 @@ export default function Produto() {
             </div>
 
             {/* Product Info & Options */}
-            <div className="w-full lg:w-2/5">
+            <div className="w-full lg:w-2/5 px-6 md:px-0">
               <div className="sticky top-32 space-y-10">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
