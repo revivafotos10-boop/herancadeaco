@@ -311,13 +311,13 @@ export default function Produto() {
         </div>
       </nav>
 
-      <main className="pt-32 md:pt-48 pb-20">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-16">
+      <main className="pt-32 md:pt-48 pb-20 overflow-x-hidden">
+        <div className="container mx-auto px-0 md:px-6">
+          <div className="flex flex-col lg:flex-row gap-8 md:gap-16">
             
             {/* Gallery & Preview */}
-            <div className="w-full lg:w-3/5 space-y-8">
-              <div className="relative aspect-square bg-zinc-900/30 rounded-[32px] flex items-center justify-center overflow-hidden border border-zinc-800/50 group">
+            <div className="w-full lg:w-3/5 space-y-4 md:space-y-8">
+              <div className="relative aspect-square md:aspect-square w-full max-h-[70vh] md:max-h-none bg-black md:bg-zinc-900/30 rounded-none md:rounded-[32px] flex items-center justify-center overflow-hidden border-y md:border border-zinc-800/50 group">
                 <div 
                   className="w-full h-full relative"
                   style={{ 
