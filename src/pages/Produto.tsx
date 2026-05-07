@@ -312,85 +312,84 @@ export default function Produto() {
             {/* Gallery & Preview */}
             <div className="w-full lg:w-3/5 space-y-8">
               <div className="relative aspect-square bg-zinc-900/30 rounded-[32px] flex items-center justify-center overflow-hidden border border-zinc-800/50 group">
-                <motion.img 
-                  key={previewImage}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  src={previewImage} 
-                  alt={product.name} 
-                  className="w-full h-full object-contain p-12 relative z-10 transition-transform duration-300"
+                <div 
+                  className="w-full h-full relative"
                   style={{ 
                     transform: `scale(${zoomLevel})`,
                     transformOrigin: product?.engraving_start_x !== undefined && product?.engraving_end_x !== undefined 
                       ? `${(product.engraving_start_x + product.engraving_end_x) / 2}% ${(product.engraving_start_y! + product.engraving_end_y!) / 2}%`
-                      : 'center center'
-                  }}
-                />
-                
-                {/* Simulation Overlay - Only on main image */}
-                {previewImage === product.image_url && (
-                  <div className="absolute inset-0 pointer-events-none z-20" style={{ 
-                    transform: `scale(${zoomLevel})`,
-                    transformOrigin: product?.engraving_start_x !== undefined && product?.engraving_end_x !== undefined 
-                      ? `${(product.engraving_start_x + product.engraving_end_x) / 2}% ${(product.engraving_start_y! + product.engraving_end_y!) / 2}%`
                       : 'center center',
-                    transition: 'transform 0.3s ease'
-                  }}>
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      style={{
-                        ...boxStyle,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      <div 
-                        style={{ 
-                          display: 'inline-flex', 
-                          alignItems: 'center', 
-                          gap: '6px', 
-                          whiteSpace: 'nowrap',
-                          color: product?.engraving_color || '#2b2b2b',
-                          fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
-                                     selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
-                                     selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
-                          fontSize: `${selectedFontSize * 1.5}px`,
-                          fontWeight: '600',
-                          letterSpacing: '0px',
-                          lineHeight: 1,
-                          transformOrigin: 'center center'
+                    transition: 'transform 0.3s ease-out'
+                  }}
+                >
+                  <motion.img 
+                    key={previewImage}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    src={previewImage} 
+                    alt={product.name} 
+                    className="w-full h-full object-contain p-12 relative z-10"
+                  />
+                  
+                  {/* Simulation Overlay - Only on main image */}
+                  {previewImage === product.image_url && (
+                    <div className="absolute inset-0 pointer-events-none z-20">
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        style={{
+                          ...boxStyle,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
                         }}
                       >
-                        {selectedSymbol.name !== 'Nenhum' && selectedSymbol.image && (
-                          <img 
-                            src={selectedSymbol.image} 
-                            alt="" 
-                            style={{ 
-                              height: `${(selectedFontSize * 1.5) * 1.1}px`, 
-                              width: `${(selectedFontSize * 1.5) * 1.1}px`, 
-                              objectFit: 'contain',
-                              flexShrink: 0
-                            }} 
-                          />
-                        )}
-                        {selectedSymbol.name !== 'Nenhum' && !selectedSymbol.image && (
-                          <span style={{ marginRight: '4px' }}>{selectedSymbol.name}</span>
-                        )}
-                        <span style={{ letterSpacing: '0px', whiteSpace: 'nowrap' }}>
-                          {engravedName || "NOME"}
-                        </span>
-                      </div>
-                    </motion.div>
-                  </div>
-                )}
+                        <div 
+                          style={{ 
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            gap: '6px', 
+                            whiteSpace: 'nowrap',
+                            color: product?.engraving_color || '#2b2b2b',
+                            fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
+                                       selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
+                                       selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
+                            fontSize: `${selectedFontSize * 1.5}px`,
+                            fontWeight: '600',
+                            letterSpacing: '0px',
+                            lineHeight: 1,
+                            transformOrigin: 'center center'
+                          }}
+                        >
+                          {selectedSymbol.name !== 'Nenhum' && selectedSymbol.image && (
+                            <img 
+                              src={selectedSymbol.image} 
+                              alt="" 
+                              style={{ 
+                                height: `${(selectedFontSize * 1.5) * 1.1}px`, 
+                                width: `${(selectedFontSize * 1.5) * 1.1}px`, 
+                                objectFit: 'contain',
+                                flexShrink: 0
+                              }} 
+                            />
+                          )}
+                          {selectedSymbol.name !== 'Nenhum' && !selectedSymbol.image && (
+                            <span style={{ marginRight: '4px' }}>{selectedSymbol.name}</span>
+                          )}
+                          <span style={{ letterSpacing: '0px', whiteSpace: 'nowrap' }}>
+                            {engravedName || "NOME"}
+                          </span>
+                        </div>
+                      </motion.div>
+                    </div>
+                  )}
+                </div>
 
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/5 flex items-center gap-2">
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/5 flex items-center gap-2 z-[30]">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Simulador de Gravação Laser</span>
                 </div>
-                </div>
+              </div>
 
                 {/* Zoom Controls - Only for main image with engraving simulation */}
                 {previewImage === product.image_url && (
