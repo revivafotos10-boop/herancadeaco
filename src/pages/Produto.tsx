@@ -334,7 +334,7 @@ export default function Produto() {
                     animate={{ opacity: 1, scale: 1 }}
                     src={previewImage} 
                     alt={product.name} 
-                    className="w-full h-full object-contain p-12 relative z-10"
+                    className="w-full h-full object-contain p-3 md:p-12 relative z-10"
                   />
                   
                   {/* Simulation Overlay - Only on main image */}
