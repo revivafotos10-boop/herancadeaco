@@ -122,12 +122,14 @@ const Checkout = () => {
     setLoading(true);
     
     try {
+      const items = cart.map((item: any) => ({
+        product_id: item.product.id,
+        quantity: 1,
+        engraved_name: item.engravedName || '',
+      }));
+
       const { data, error } = await supabase.functions.invoke('create-payment', {
-        body: { 
-          title: `Pedido Herança de Aço - ${cart.length} item(ns)`,
-          price: cartTotal,
-          quantity: 1
-        }
+        body: { items }
       });
 
       if (error) throw error;
