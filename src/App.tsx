@@ -13,6 +13,8 @@ import Produto from "./pages/Produto.tsx";
 import Contato from "./pages/Contato.tsx";
 import Termos from "./pages/Termos.tsx";
 import Privacidade from "./pages/Privacidade.tsx";
+import Login from "./pages/Login.tsx";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute.tsx";
 
 const queryClient = new QueryClient();
 
@@ -26,8 +28,23 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment-status" element={<PaymentStatus />} />
-          <Route path="/admin-produtos" element={<AdminProdutos />} />
-          <Route path="/admin-banners" element={<AdminBanners />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/admin-produtos"
+            element={
+              <ProtectedAdminRoute>
+                <AdminProdutos />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin-banners"
+            element={
+              <ProtectedAdminRoute>
+                <AdminBanners />
+              </ProtectedAdminRoute>
+            }
+          />
           <Route path="/produto/:slug" element={<Produto />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/termos" element={<Termos />} />
