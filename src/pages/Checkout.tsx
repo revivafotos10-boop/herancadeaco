@@ -119,19 +119,14 @@ const Checkout = () => {
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!customer.email || !customer.cpf) {
-      toast.error("Por favor, preencha o e-mail e CPF.");
-      return;
-    }
-
     setLoading(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('create-checkout', {
+      const { data, error } = await supabase.functions.invoke('create-payment', {
         body: { 
-          items: cart,
-          customer: customer
+          title: `Pedido Herança de Aço - ${cart.length} item(ns)`,
+          price: cartTotal,
+          quantity: 1
         }
       });
 
