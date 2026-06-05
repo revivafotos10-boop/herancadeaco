@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -103,22 +104,48 @@ const Checkout = () => {
 
   const [paymentMethod, setPaymentMethod] = useState('pix');
   const [loading, setLoading] = useState(false);
+  const [customer, setCustomer] = useState({
+    email: '',
+    phone: '',
+    cpf: '',
+    cep: '',
+    address: ''
+  });
 
-  const handlePayment = (e: React.FormEvent) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setCustomer(prev => ({ ...prev, [id]: value }));
+  };
+
+  const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!customer.email || !customer.cpf) {
+      toast.error("Por favor, preencha o e-mail e CPF.");
+      return;
+    }
+
     setLoading(true);
     
-    // Simulating payment processing
-    setTimeout(() => {
-      setLoading(false);
-      if (paymentMethod === 'pix') {
-        navigate('/payment-status', { state: { status: 'pending', method: 'pix', cart } });
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { 
+          items: cart,
+          customer: customer
+        }
+      });
+
+      if (error) throw error;
+      if (data?.init_url) {
+        window.location.href = data.init_url;
       } else {
-        navigate('/payment-status', { state: { status: 'success', method: 'card', cart } });
+        throw new Error("URL de checkout não recebida");
       }
-
-
-    }, 2000);
+    } catch (error: any) {
+      console.error('Payment error:', error);
+      toast.error("Erro ao processar pagamento. Tente novamente.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -212,11 +239,24 @@ const Checkout = () => {
                 <CardContent className="pt-6 grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">E-mail</Label>
-                    <Input id="email" placeholder="seu@email.com" className="bg-zinc-950 border-zinc-700" />
+                    <Input 
+                      id="email" 
+                      placeholder="seu@email.com" 
+                      className="bg-zinc-950 border-zinc-700" 
+                      value={customer.email}
+                      onChange={handleInputChange}
+                      required
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Telefone / WhatsApp</Label>
-                    <Input id="phone" placeholder="(00) 00000-0000" className="bg-zinc-950 border-zinc-700" />
+                    <Input 
+                      id="phone" 
+                      placeholder="(00) 00000-0000" 
+                      className="bg-zinc-950 border-zinc-700" 
+                      value={customer.phone}
+                      onChange={handleInputChange}
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -232,16 +272,35 @@ const Checkout = () => {
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="cpf">CPF</Label>
-                      <Input id="cpf" placeholder="000.000.000-00" className="bg-zinc-950 border-zinc-700" />
+                      <Input 
+                        id="cpf" 
+                        placeholder="000.000.000-00" 
+                        className="bg-zinc-950 border-zinc-700" 
+                        value={customer.cpf}
+                        onChange={handleInputChange}
+                        required
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="cep">CEP</Label>
-                      <Input id="cep" placeholder="00000-000" className="bg-zinc-950 border-zinc-700" />
+                      <Input 
+                        id="cep" 
+                        placeholder="00000-000" 
+                        className="bg-zinc-950 border-zinc-700" 
+                        value={customer.cep}
+                        onChange={handleInputChange}
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="address">Endereço</Label>
-                    <Input id="address" placeholder="Rua, número e bairro" className="bg-zinc-950 border-zinc-700" />
+                    <Input 
+                      id="address" 
+                      placeholder="Rua, número e bairro" 
+                      className="bg-zinc-950 border-zinc-700" 
+                      value={customer.address}
+                      onChange={handleInputChange}
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -254,70 +313,25 @@ const Checkout = () => {
               </h2>
               <form onSubmit={handlePayment}>
                 <Card className="bg-zinc-900 border-zinc-800 text-white">
-                  <CardHeader>
-                    <RadioGroup defaultValue="pix" onValueChange={setPaymentMethod} className="grid grid-cols-2 gap-4">
-                      <div>
-                        <RadioGroupItem value="pix" id="pix" className="peer sr-only" />
-                        <Label
-                          htmlFor="pix"
-                          className="flex flex-col items-center justify-between rounded-md border-2 border-zinc-800 bg-zinc-950 p-4 hover:bg-zinc-900 peer-data-[state=checked]:border-amber-500 [&:has([data-state=checked])]:border-amber-500 cursor-pointer"
-                        >
-                          <QrCode className="mb-3 h-6 w-6" />
-                          <span>Pix</span>
-                        </Label>
+                  <CardContent className="pt-6 space-y-4">
+                    <div className="flex flex-col items-center justify-center py-6 bg-zinc-950/50 rounded-lg border border-dashed border-zinc-700 text-center space-y-3">
+                      <div className="flex gap-4">
+                        <CreditCard className="h-8 w-8 text-amber-500" />
+                        <QrCode className="h-8 w-8 text-amber-500" />
                       </div>
-                      <div>
-                        <RadioGroupItem value="card" id="card" className="peer sr-only" />
-                        <Label
-                          htmlFor="card"
-                          className="flex flex-col items-center justify-between rounded-md border-2 border-zinc-800 bg-zinc-950 p-4 hover:bg-zinc-900 peer-data-[state=checked]:border-amber-500 [&:has([data-state=checked])]:border-amber-500 cursor-pointer"
-                        >
-                          <CreditCard className="mb-3 h-6 w-6" />
-                          <span>Cartão</span>
-                        </Label>
+                      <div className="space-y-1">
+                        <p className="font-bold">Mercado Pago</p>
+                        <p className="text-sm text-zinc-400">Pague com Cartão, Pix ou Boleto de forma segura.</p>
                       </div>
-                    </RadioGroup>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {paymentMethod === 'card' && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        className="space-y-4"
-                      >
-                        <div className="space-y-2">
-                          <Label htmlFor="cardNumber">Número do Cartão</Label>
-                          <Input id="cardNumber" placeholder="0000 0000 0000 0000" className="bg-zinc-950 border-zinc-700" />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="expiry">Validade</Label>
-                            <Input id="expiry" placeholder="MM/AA" className="bg-zinc-950 border-zinc-700" />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="cvv">CVV</Label>
-                            <Input id="cvv" placeholder="123" className="bg-zinc-950 border-zinc-700" />
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                    {paymentMethod === 'pix' && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        className="text-center py-4 bg-zinc-950/50 rounded-lg border border-dashed border-zinc-700"
-                      >
-                        <p className="text-sm text-zinc-400">O código Pix será gerado após clicar em finalizar.</p>
-                        <p className="text-xs text-amber-500/70 mt-2">Aprovação instantânea</p>
-                      </motion.div>
-                    )}
+                    </div>
                   </CardContent>
                   <CardFooter>
                     <Button 
+                      type="submit"
                       disabled={loading}
                       className="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-6 text-lg"
                     >
-                      {loading ? "Processando..." : `Pagar ${formattedTotal}`}
+                      {loading ? "Processando..." : `Finalizar Pedido (${formattedTotal})`}
                     </Button>
                   </CardFooter>
                 </Card>
