@@ -356,7 +356,7 @@ const Checkout = () => {
                         {item.engravedName && (
                           <p className="text-xs text-amber-500">Gravação: "{item.engravedName}"</p>
                         )}
-                        <p className="text-[10px] text-zinc-500">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {item.selectedSymbol}</p>
+                        <p className="text-[10px] text-zinc-500">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {typeof item.selectedSymbol === 'object' ? item.selectedSymbol.name : item.selectedSymbol}</p>
                       </div>
                       <p className="text-sm text-zinc-400 mt-1">
                         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
