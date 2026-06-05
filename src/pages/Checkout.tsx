@@ -313,7 +313,7 @@ const Checkout = () => {
               </h2>
               <form onSubmit={handlePayment}>
                 <Card className="bg-zinc-900 border-zinc-800 text-white">
-                  <CardHeader>
+                  <CardContent className="pt-6 space-y-4">
                     <div className="flex flex-col items-center justify-center py-6 bg-zinc-950/50 rounded-lg border border-dashed border-zinc-700 text-center space-y-3">
                       <div className="flex gap-4">
                         <CreditCard className="h-8 w-8 text-amber-500" />
