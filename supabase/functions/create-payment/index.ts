@@ -121,10 +121,10 @@ serve(async (req) => {
       JSON.stringify({ init_url: preference.init_point }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
-  } catch (error) {
+  } catch (error: any) {
     console.error('create-payment error:', error)
     return new Response(
-      JSON.stringify({ error: 'Internal error' }),
+      JSON.stringify({ error: error.message || 'Internal error' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     )
   }
