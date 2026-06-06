@@ -439,7 +439,7 @@ export default function Produto() {
 
                 {/* Zoom Controls - Only for main image with engraving simulation */}
                 {previewImage === product.image_url && (
-                  <div className="mt-4 md:mt-6 mx-4 md:mx-0 p-4 md:p-6 rounded-3xl bg-zinc-900/30 border border-zinc-800/50 space-y-4">
+                  <div className="order-2 lg:order-none mx-4 md:mx-0 p-4 md:p-6 rounded-3xl bg-zinc-900/30 border border-zinc-800/50 space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Zoom da gravação</span>
                       <button 
