@@ -467,7 +467,7 @@ export default function Produto() {
 
               {/* Gallery Thumbnails */}
               {(product.gallery_images && product.gallery_images.length > 0) && (
-                <div className="flex gap-4 overflow-x-auto px-4 md:px-0 pb-4 custom-scrollbar">
+                <div className="order-6 lg:order-none flex gap-4 overflow-x-auto px-4 md:px-0 pb-4 custom-scrollbar">
                   {[product.image_url, ...product.gallery_images].map((img, idx) => (
                     <button 
                       key={idx}
