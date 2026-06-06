@@ -543,7 +543,7 @@ export default function Produto() {
                   </div>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="order-3 lg:order-none space-y-4 px-6 lg:px-0">
                     <label className="text-xs uppercase tracking-[0.3em] text-[#f59e0b] font-black flex justify-between items-center">
                       Tamanho da escrita
                       <span className="text-[10px] text-[#f59e0b] font-bold">{selectedFontSize}px</span>
