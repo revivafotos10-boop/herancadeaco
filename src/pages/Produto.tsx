@@ -191,6 +191,33 @@ export default function Produto() {
   }, 0);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const engravingBoxRef = useRef<HTMLDivElement>(null);
+  const engravingContentRef = useRef<HTMLDivElement>(null);
+  const [engravingScale, setEngravingScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const fit = () => {
+      const box = engravingBoxRef.current;
+      const content = engravingContentRef.current;
+      if (!box || !content) return;
+      const boxW = box.clientWidth;
+      const boxH = box.clientHeight;
+      // Measure content at natural (unscaled) size
+      const contentW = content.scrollWidth;
+      const contentH = content.scrollHeight;
+      if (!contentW || !contentH || !boxW || !boxH) return;
+      const scale = Math.min(1, boxW / contentW, boxH / contentH);
+      setEngravingScale(scale > 0 ? scale : 1);
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    if (engravingBoxRef.current) ro.observe(engravingBoxRef.current);
+    window.addEventListener('resize', fit);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', fit);
+    };
+  }, [engravedName, selectedFontSize, selectedFont, selectedSymbol, product, zoomLevel, previewImage]);
 
   const getEngravingBoxStyle = () => {
     // If start/end points exist, use them for automatic calculation
