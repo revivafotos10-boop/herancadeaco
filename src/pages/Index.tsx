@@ -162,8 +162,8 @@ export default function Index() {
 
       {/* 2. Seção de produtos (vitrine) */}
       <section id="produtos" className="py-16 relative bg-[#050505]">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="container mx-auto px-3 sm:px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {loading ? (
               <div className="col-span-full flex flex-col items-center justify-center py-20 gap-4">
                 <Loader2 className="w-12 h-12 text-amber-500 animate-spin" />
@@ -180,10 +180,10 @@ export default function Index() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 onClick={() => navigate(`/produto/${product.slug}`)}
-                className="group cursor-pointer bg-[#0d0d0d] rounded-2xl overflow-hidden border border-zinc-900 hover:border-amber-600/30 transition-all duration-500 flex flex-col h-full"
+                className="group cursor-pointer bg-[#0d0d0d] rounded-xl sm:rounded-2xl overflow-hidden border border-zinc-900 hover:border-amber-600/30 transition-all duration-500 flex flex-col h-full"
               >
                 {/* Image Container with Zoom Effect */}
-                <div className="relative h-[260px] overflow-hidden bg-black rounded-t-2xl flex items-center justify-center">
+                <div className="relative h-[160px] sm:h-[220px] lg:h-[260px] overflow-hidden bg-black rounded-t-xl sm:rounded-t-2xl flex items-center justify-center">
                   {product.image_url ? (
                     <img 
                       src={product.image_url} 
@@ -197,37 +197,38 @@ export default function Index() {
                   )}
                   
                   {/* MAIS VENDIDA Badge */}
-                  <div className="absolute top-4 left-4">
-                    <div className="px-3 py-1 bg-amber-600 text-white rounded-full flex items-center gap-1.5 shadow-lg">
-                      <Flame className="w-3 h-3 fill-current" />
-                      <span className="text-[9px] font-black uppercase tracking-widest">MAIS VENDIDA</span>
+                  <div className="absolute top-2 left-2 sm:top-4 sm:left-4">
+                    <div className="px-2 py-0.5 sm:px-3 sm:py-1 bg-amber-600 text-white rounded-full flex items-center gap-1 sm:gap-1.5 shadow-lg">
+                      <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
+                      <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest">MAIS VENDIDA</span>
                     </div>
                   </div>
                 </div>
                 
                 {/* Info Container */}
-                <div className="p-6 space-y-4 flex-grow flex flex-col justify-between text-center">
+                <div className="p-3 sm:p-6 space-y-3 sm:space-y-4 flex-grow flex flex-col justify-between text-center">
                   <div className="space-y-1">
-                    <h3 className="text-lg font-bold font-serif text-white tracking-tight group-hover:text-amber-500 transition-colors line-clamp-1">
+                    <h3 className="text-sm sm:text-lg font-bold font-serif text-white tracking-tight group-hover:text-amber-500 transition-colors line-clamp-1">
                       {product.name}
                     </h3>
-                    <div className="flex flex-col items-center gap-1 pt-2">
+                    <div className="flex flex-col items-center gap-0.5 sm:gap-1 pt-1 sm:pt-2">
                       {product.old_price && (
-                        <span className="text-xs text-zinc-600 line-through decoration-amber-500/30">
+                        <span className="text-[10px] sm:text-xs text-zinc-600 line-through decoration-amber-500/30">
                           {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.old_price)}
                         </span>
                       )}
-                      <p className="text-2xl font-black text-white tracking-tighter">
+                      <p className="text-lg sm:text-2xl font-black text-white tracking-tighter">
                         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                       </p>
                     </div>
                   </div>
                   
                   <button 
-                    className="w-full bg-zinc-900 group-hover:bg-amber-700 text-white py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-[0.3em] transition-all border border-zinc-800 group-hover:border-amber-600 flex items-center justify-center gap-2"
+                    className="w-full min-h-[48px] bg-amber-700 sm:bg-zinc-900 group-hover:bg-amber-700 text-white px-2 py-3 sm:py-3.5 rounded-lg sm:rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all border border-amber-600 sm:border-zinc-800 group-hover:border-amber-600 flex items-center justify-center gap-2 active:scale-95"
                   >
-                    COMPRAR E PERSONALIZAR
-                    <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    <span className="sm:hidden">COMPRAR</span>
+                    <span className="hidden sm:inline">COMPRAR E PERSONALIZAR</span>
+                    <ArrowRight className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </button>
                 </div>
               </motion.div>
