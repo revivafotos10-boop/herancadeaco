@@ -509,9 +509,9 @@ export default function Produto() {
             </div>
 
             {/* Product Info & Options */}
-            <div className="w-full lg:w-2/5 px-6 md:px-0">
-              <div className="sticky top-32 space-y-10">
-                <div className="space-y-4">
+            <div className="contents lg:block lg:col-span-2">
+              <div className="contents lg:block lg:sticky lg:top-32 lg:space-y-10">
+                <div className="order-5 lg:order-none space-y-4 px-6 lg:px-0">
                   <div className="flex items-center gap-3">
                     <div className="px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full">
                       <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest flex items-center gap-2">
