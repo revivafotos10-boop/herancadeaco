@@ -484,7 +484,7 @@ export default function Produto() {
               <div className="space-y-12 py-12 px-6 md:px-0 border-t border-zinc-900">
                 <div className="space-y-6">
                   <h3 className="text-2xl font-serif font-bold text-amber-500">O Legado por trás da Peça</h3>
-                  <p className="text-zinc-400 leading-relaxed text-lg font-light">{product.description}</p>
+                  <p className="text-zinc-400 font-light text-sm leading-snug md:text-lg md:leading-relaxed">{product.description}</p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8">
