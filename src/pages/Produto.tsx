@@ -340,11 +340,11 @@ export default function Produto() {
 
       <main className="pt-32 md:pt-48 pb-20 overflow-x-hidden">
         <div className="container mx-auto px-0 md:px-6">
-          <div className="flex flex-col lg:flex-row gap-8 md:gap-16">
+          <div className="flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-5 lg:gap-16">
             
             {/* Gallery & Preview */}
-            <div className="w-full lg:w-3/5 space-y-4 md:space-y-8">
-              <div className="relative aspect-square md:aspect-square w-full max-h-[70vh] md:max-h-none bg-black md:bg-zinc-900/30 rounded-none md:rounded-[32px] flex items-center justify-center overflow-hidden border-y md:border border-zinc-800/50 group">
+            <div className="contents lg:block lg:col-span-3 lg:space-y-8">
+              <div className="order-1 lg:order-none relative aspect-square md:aspect-square w-full max-h-[70vh] md:max-h-none bg-black md:bg-zinc-900/30 rounded-none md:rounded-[32px] flex items-center justify-center overflow-hidden border-y md:border border-zinc-800/50 group">
                 <div 
                   className="w-full h-full relative"
                   style={{ 
