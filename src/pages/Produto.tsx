@@ -341,54 +341,67 @@ export default function Produto() {
                   {previewImage === product.image_url && (
                     <div className="absolute inset-0 pointer-events-none z-20">
                       <motion.div 
+                        ref={engravingBoxRef}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         style={{
                           ...boxStyle,
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center'
+                          justifyContent: 'center',
+                          overflow: 'hidden',
                         }}
                       >
-                        <div 
-                          style={{ 
-                            display: 'inline-flex', 
-                            alignItems: 'center', 
-                            gap: '6px', 
-                            whiteSpace: 'nowrap',
-                            color: product?.engraving_color || '#2b2b2b',
-                            fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
-                                       selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
-                                       selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
-                            fontSize: `${selectedFontSize * 1.5}px`,
-                            fontWeight: '600',
-                            letterSpacing: '0px',
-                            lineHeight: 1,
-                            transformOrigin: 'center center'
+                        <div
+                          style={{
+                            transform: `scale(${engravingScale})`,
+                            transformOrigin: 'center center',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                           }}
                         >
-                          {selectedSymbol.name !== 'Nenhum' && selectedSymbol.image && (
-                            <img 
-                              src={selectedSymbol.image} 
-                              alt="" 
-                              style={{ 
-                                height: `${(selectedFontSize * 1.5) * 1.1}px`, 
-                                width: `${(selectedFontSize * 1.5) * 1.1}px`, 
-                                objectFit: 'contain',
-                                flexShrink: 0
-                              }} 
-                            />
-                          )}
-                          {selectedSymbol.name !== 'Nenhum' && !selectedSymbol.image && (
-                            <span style={{ marginRight: '4px' }}>{selectedSymbol.name}</span>
-                          )}
-                          <span style={{ letterSpacing: '0px', whiteSpace: 'nowrap' }}>
-                            {engravedName || "NOME"}
-                          </span>
+                          <div 
+                            ref={engravingContentRef}
+                            style={{ 
+                              display: 'inline-flex', 
+                              alignItems: 'center', 
+                              gap: '6px', 
+                              whiteSpace: 'nowrap',
+                              color: product?.engraving_color || '#2b2b2b',
+                              fontFamily: selectedFont === 'Manuscrita' ? 'Dancing Script, cursive' : 
+                                         selectedFont === 'Caligrafia' ? 'Great Vibes, cursive' :
+                                         selectedFont === 'Serif' ? 'Cormorant Garamond, serif' : 'Montserrat, sans-serif',
+                              fontSize: `${selectedFontSize * 1.5}px`,
+                              fontWeight: '600',
+                              letterSpacing: '0px',
+                              lineHeight: 1,
+                            }}
+                          >
+                            {selectedSymbol.name !== 'Nenhum' && selectedSymbol.image && (
+                              <img 
+                                src={selectedSymbol.image} 
+                                alt="" 
+                                style={{ 
+                                  height: `${(selectedFontSize * 1.5) * 1.1}px`, 
+                                  width: `${(selectedFontSize * 1.5) * 1.1}px`, 
+                                  objectFit: 'contain',
+                                  flexShrink: 0
+                                }} 
+                              />
+                            )}
+                            {selectedSymbol.name !== 'Nenhum' && !selectedSymbol.image && (
+                              <span style={{ marginRight: '4px' }}>{selectedSymbol.name}</span>
+                            )}
+                            <span style={{ letterSpacing: '0px', whiteSpace: 'nowrap' }}>
+                              {engravedName || "NOME"}
+                            </span>
+                          </div>
                         </div>
                       </motion.div>
                     </div>
                   )}
+
                 </div>
 
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/5 flex items-center gap-2 z-[30]">
