@@ -340,11 +340,11 @@ export default function Produto() {
 
       <main className="pt-32 md:pt-48 pb-20 overflow-x-hidden">
         <div className="container mx-auto px-0 md:px-6">
-          <div className="flex flex-col lg:flex-row gap-8 md:gap-16">
+          <div className="flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-5 lg:gap-16">
             
             {/* Gallery & Preview */}
-            <div className="w-full lg:w-3/5 space-y-4 md:space-y-8">
-              <div className="relative aspect-square md:aspect-square w-full max-h-[70vh] md:max-h-none bg-black md:bg-zinc-900/30 rounded-none md:rounded-[32px] flex items-center justify-center overflow-hidden border-y md:border border-zinc-800/50 group">
+            <div className="contents lg:block lg:col-span-3 lg:space-y-8">
+              <div className="order-1 lg:order-none relative aspect-square md:aspect-square w-full max-h-[70vh] md:max-h-none bg-black md:bg-zinc-900/30 rounded-none md:rounded-[32px] flex items-center justify-center overflow-hidden border-y md:border border-zinc-800/50 group">
                 <div 
                   className="w-full h-full relative"
                   style={{ 
@@ -439,7 +439,7 @@ export default function Produto() {
 
                 {/* Zoom Controls - Only for main image with engraving simulation */}
                 {previewImage === product.image_url && (
-                  <div className="mt-4 md:mt-6 mx-4 md:mx-0 p-4 md:p-6 rounded-3xl bg-zinc-900/30 border border-zinc-800/50 space-y-4">
+                  <div className="order-2 lg:order-none mx-4 md:mx-0 p-4 md:p-6 rounded-3xl bg-zinc-900/30 border border-zinc-800/50 space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Zoom da gravação</span>
                       <button 
@@ -467,7 +467,7 @@ export default function Produto() {
 
               {/* Gallery Thumbnails */}
               {(product.gallery_images && product.gallery_images.length > 0) && (
-                <div className="flex gap-4 overflow-x-auto px-4 md:px-0 pb-4 custom-scrollbar">
+                <div className="order-6 lg:order-none flex gap-4 overflow-x-auto px-4 md:px-0 pb-4 custom-scrollbar">
                   {[product.image_url, ...product.gallery_images].map((img, idx) => (
                     <button 
                       key={idx}
@@ -481,7 +481,7 @@ export default function Produto() {
               )}
 
               {/* Description & Features */}
-              <div className="space-y-12 py-12 px-6 md:px-0 border-t border-zinc-900">
+              <div className="order-7 lg:order-none space-y-12 py-12 px-6 md:px-0 border-t border-zinc-900">
                 <div className="space-y-6">
                   <h3 className="text-2xl font-serif font-bold text-amber-500">O Legado por trás da Peça</h3>
                   <p className="text-zinc-400 font-light text-sm leading-snug md:text-lg md:leading-relaxed">{product.description}</p>
@@ -509,9 +509,9 @@ export default function Produto() {
             </div>
 
             {/* Product Info & Options */}
-            <div className="w-full lg:w-2/5 px-6 md:px-0">
-              <div className="sticky top-32 space-y-10">
-                <div className="space-y-4">
+            <div className="contents lg:block lg:col-span-2">
+              <div className="contents lg:block lg:sticky lg:top-32 lg:space-y-10">
+                <div className="order-5 lg:order-none space-y-4 px-6 lg:px-0">
                   <div className="flex items-center gap-3">
                     <div className="px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full">
                       <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest flex items-center gap-2">
@@ -543,7 +543,7 @@ export default function Produto() {
                   </div>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="order-3 lg:order-none space-y-4 px-6 lg:px-0">
                     <label className="text-xs uppercase tracking-[0.3em] text-[#f59e0b] font-black flex justify-between items-center">
                       Tamanho da escrita
                       <span className="text-[10px] text-[#f59e0b] font-bold">{selectedFontSize}px</span>
@@ -572,7 +572,7 @@ export default function Produto() {
                     </div>
                   </div>
 
-                <div className="space-y-8 bg-zinc-800/40 p-8 rounded-3xl border border-amber-500/30 shadow-[0_0_40px_rgba(245,158,11,0.1)] backdrop-blur-sm">
+                <div className="order-4 lg:order-none mx-6 lg:mx-0 space-y-8 bg-zinc-800/40 p-8 rounded-3xl border border-amber-500/30 shadow-[0_0_40px_rgba(245,158,11,0.1)] backdrop-blur-sm">
                   <div className="space-y-4">
                     <label className="text-xs uppercase tracking-[0.3em] text-[#f59e0b] font-black flex justify-between items-center">
                       Personalize sua Lâmina
