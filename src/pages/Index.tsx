@@ -113,6 +113,10 @@ export default function Index() {
             <img 
               src="https://dqfbzfebreviezupegcx.supabase.co/storage/v1/object/public/header/logo-header.png" 
               alt="Herança de Aço" 
+              width={420}
+              height={75}
+              decoding="async"
+              fetchPriority="high"
               className="h-[45px] md:h-[75px] max-h-[45px] md:max-h-[75px] w-auto max-w-[220px] md:max-w-[420px] object-contain brightness-110 contrast-110"
             />
           </div>
@@ -188,6 +192,8 @@ export default function Index() {
                     <img 
                       src={product.image_url} 
                       alt={product.name} 
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-contain" 
                     />
                   ) : (
@@ -316,7 +322,7 @@ export default function Index() {
                     <div key={item.cartId} className="group relative bg-zinc-900/30 p-4 rounded-2xl border border-zinc-800/50 hover:border-amber-500/20 transition-all">
                       <div className="flex gap-4">
                         <div className="w-20 h-20 bg-zinc-900 rounded-xl overflow-hidden flex items-center justify-center">
-                          <img src={item.product.image_url} alt={item.product.name} className="w-full h-full object-contain p-2" />
+                          <img src={item.product.image_url} alt={item.product.name} loading="lazy" decoding="async" className="w-full h-full object-contain p-2" />
                         </div>
                         <div className="flex-grow space-y-2">
                           <div className="flex justify-between items-start">
