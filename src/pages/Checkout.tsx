@@ -456,7 +456,7 @@ const Checkout = () => {
                   <CardFooter>
                     <Button 
                       type="submit"
-                      disabled={loading || cart.length === 0 || showValidationAlert}
+                      disabled={loading || cart.length === 0 || showValidationAlert || hasErrors}
                       className="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-6 text-lg"
                     >
                       {loading ? "Processando..." : `Finalizar Pedido (${formattedTotal})`}
