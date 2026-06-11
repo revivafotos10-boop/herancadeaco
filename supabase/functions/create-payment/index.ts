@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4"
+import { z } from "npm:zod@3.25.76"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,39 +13,42 @@ interface CartItem {
   engraved_name?: string
 }
 
+const BodySchema = z.object({
+  items: z.array(z.object({
+    product_id: z.string().uuid(),
+    quantity: z.number().int().min(1).max(20).default(1),
+    engraved_name: z.string().trim().max(25).default(''),
+  })).min(1).max(20),
+  customer: z.object({
+    email: z.string().email().max(254),
+    phone: z.string().trim().max(30).optional(),
+    cpf: z.string().trim().max(20).optional(),
+    cep: z.string().trim().max(12).optional(),
+    address: z.string().trim().max(300).optional(),
+  }),
+})
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
 
   try {
-    const body = await req.json()
+    const parsed = BodySchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid checkout data', details: parsed.error.flatten().fieldErrors }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+    const body = parsed.data
     const accessToken = Deno.env.get('MERCADO_PAGO_ACCESS_TOKEN') || Deno.env.get('MERCADOPAGO_ACCESS_TOKEN')
 
     if (!accessToken) {
       throw new Error('MERCADO_PAGO_ACCESS_TOKEN is not set')
     }
 
-    // Build normalized cart items list (only product_id + quantity accepted)
-    let cartItems: CartItem[] = []
-    if (Array.isArray(body.items)) {
-      cartItems = body.items
-        .map((i: any) => ({
-          product_id: i.product_id ?? i.product?.id,
-          quantity: Number(i.quantity) || 1,
-          engraved_name: i.engraved_name ?? i.engravedName ?? '',
-        }))
-        .filter((i: CartItem) => typeof i.product_id === 'string' && i.product_id.length > 0)
-    } else if (body.product_id) {
-      cartItems = [{ product_id: body.product_id, quantity: Number(body.quantity) || 1 }]
-    }
-
-    if (cartItems.length === 0) {
-      return new Response(
-        JSON.stringify({ error: 'No valid items provided' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
+    const cartItems: CartItem[] = body.items
 
     // Fetch real prices from database — never trust client-supplied prices
     const supabase = createClient(
@@ -98,12 +102,21 @@ serve(async (req) => {
       body: JSON.stringify({
         items: mpItems,
         back_urls: {
-          success: `https://herancadeaco.lovable.app/sucesso`,
-          failure: `https://herancadeaco.lovable.app/erro`,
-          pending: `https://herancadeaco.lovable.app/pendente`,
+          success: `https://herancadeaco.lovable.app/payment-status`,
+          failure: `https://herancadeaco.lovable.app/payment-status`,
+          pending: `https://herancadeaco.lovable.app/payment-status`,
         },
         auto_return: 'approved',
         statement_descriptor: 'HERANCA ACO',
+        payer: {
+          email: body.customer.email,
+          phone: body.customer.phone ? { number: body.customer.phone } : undefined,
+          identification: body.customer.cpf ? { type: 'CPF', number: body.customer.cpf.replace(/\D/g, '') } : undefined,
+          address: body.customer.address || body.customer.cep ? {
+            street_name: body.customer.address,
+            zip_code: body.customer.cep?.replace(/\D/g, ''),
+          } : undefined,
+        },
       }),
     })
 
