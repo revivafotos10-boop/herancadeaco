@@ -85,16 +85,23 @@ const Checkout = () => {
     navigate('/');
   };
 
-  const cartTotal = cart.reduce((acc, item) => {
-    const price = typeof item.product.price === 'number' 
-      ? item.product.price 
+  const cartSubtotal = cart.reduce((acc, item) => {
+    const price = typeof item.product.price === 'number'
+      ? item.product.price
       : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
-    return acc + price;
+    const qty = item.quantity ?? 1;
+    return acc + price * qty;
   }, 0);
 
-  const formattedTotal = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartTotal);
+  const FREE_SHIPPING_THRESHOLD = 200;
+  const shipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD || cartSubtotal === 0 ? 0 : 25;
+  const cartTotal = cartSubtotal + shipping;
 
-
+  const fmt = (n: number) =>
+    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
+  const formattedSubtotal = fmt(cartSubtotal);
+  const formattedShipping = shipping === 0 ? 'Grátis' : fmt(shipping);
+  const formattedTotal = fmt(cartTotal);
 
   const [loading, setLoading] = useState(false);
   const [customer, setCustomer] = useState({
@@ -102,7 +109,9 @@ const Checkout = () => {
     phone: '',
     cpf: '',
     cep: '',
-    address: ''
+    address: '',
+    number: '',
+    complement: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [cepLoading, setCepLoading] = useState(false);
@@ -155,6 +164,7 @@ const Checkout = () => {
       case 'cpf': return isValidCPF(value) ? '' : 'CPF inválido';
       case 'cep': return isValidCEP(value) ? '' : 'CEP inválido';
       case 'address': return isValidAddress(value) ? '' : 'Endereço deve ter no mínimo 5 caracteres';
+      case 'number': return value.trim().length >= 1 ? '' : 'Informe o número';
       default: return '';
     }
   };
@@ -200,8 +210,8 @@ const Checkout = () => {
 
   const validateAll = () => {
     const next: Record<string, string> = {};
-    (['email', 'phone', 'cpf', 'cep', 'address'] as const).forEach(k => {
-      const e = validateField(k, customer[k]);
+    (['email', 'phone', 'cpf', 'cep', 'address', 'number'] as const).forEach(k => {
+      const e = validateField(k, (customer as any)[k]);
       if (e) next[k] = e;
     });
     setErrors(next);
@@ -227,7 +237,7 @@ const Checkout = () => {
     try {
       const items = cart.map((item: any) => ({
         product_id: item.product.id,
-        quantity: 1,
+        quantity: item.quantity ?? 1,
         engraved_name: item.engravedName || '',
       }));
 
@@ -421,7 +431,7 @@ const Checkout = () => {
                     <Label htmlFor="address">Endereço</Label>
                     <Input 
                       id="address" 
-                      placeholder="Rua, número e bairro" 
+                      placeholder="Rua e bairro" 
                       className={fieldClass('address')}
                       value={customer.address}
                       onChange={handleInputChange}
@@ -429,6 +439,33 @@ const Checkout = () => {
                       required
                     />
                     <ErrorMsg id="address" />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <Label htmlFor="number">Número</Label>
+                      <Input
+                        id="number"
+                        placeholder="123"
+                        className={fieldClass('number')}
+                        value={customer.number}
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        maxLength={10}
+                        required
+                      />
+                      <ErrorMsg id="number" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="complement">Complemento <span className="text-zinc-500 text-xs">(opcional)</span></Label>
+                      <Input
+                        id="complement"
+                        placeholder="Apto, bloco, referência"
+                        className={fieldClass('complement')}
+                        value={customer.complement}
+                        onChange={handleInputChange}
+                        maxLength={100}
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -459,7 +496,7 @@ const Checkout = () => {
                       disabled={loading || cart.length === 0 || showValidationAlert || hasErrors}
                       className="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-6 text-lg"
                     >
-                      {loading ? "Processando..." : `Finalizar Pedido (${formattedTotal})`}
+                      {loading ? "Processando..." : `Continuar para Pagamento (${formattedTotal})`}
                     </Button>
                   </CardFooter>
                 </Card>
@@ -487,7 +524,7 @@ const Checkout = () => {
                         <p className="text-[10px] text-zinc-500">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {typeof item.selectedSymbol === 'object' ? item.selectedSymbol.name : item.selectedSymbol}</p>
                       </div>
                       <p className="text-sm text-zinc-400 mt-1">
-                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
+                        {(item.quantity ?? 1)}× {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
                       </p>
                     </div>
                   </div>
@@ -497,12 +534,17 @@ const Checkout = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-400">Subtotal</span>
-                    <span>{formattedTotal}</span>
+                    <span>{formattedSubtotal}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-400">Frete</span>
-                    <span className="text-green-500">Grátis</span>
+                    <span className={shipping === 0 ? 'text-green-500' : ''}>{formattedShipping}</span>
                   </div>
+                  {shipping > 0 && (
+                    <p className="text-xs text-zinc-500">
+                      Faltam {fmt(FREE_SHIPPING_THRESHOLD - cartSubtotal)} para frete grátis.
+                    </p>
+                  )}
                   <Separator className="bg-zinc-800" />
                   <div className="flex justify-between font-bold text-lg pt-2">
                     <span>Total</span>
