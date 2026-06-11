@@ -13,7 +13,6 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -36,20 +35,9 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: window.location.origin + '/login' },
-        });
-        if (error) throw error;
-        toast.success('Conta criada! Verifique seu e-mail se necessário.');
-        if (data.session) checkAdminAndRedirect(data.session.user.id);
-      } else {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        if (data.session) checkAdminAndRedirect(data.session.user.id);
-      }
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      if (data.session) await checkAdminAndRedirect(data.session.user.id);
     } catch (err: any) {
       toast.error(err.message || 'Erro ao autenticar');
     } finally {
@@ -66,7 +54,7 @@ export default function Login() {
           </div>
           <CardTitle className="text-xl font-serif">Acesso Administrativo</CardTitle>
           <CardDescription className="text-zinc-400">
-            {mode === 'signin' ? 'Entre na sua conta de administrador' : 'Crie uma nova conta'}
+            Entre na sua conta de administrador
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -95,15 +83,8 @@ export default function Login() {
               />
             </div>
             <Button type="submit" disabled={loading} className="w-full bg-amber-600 hover:bg-amber-500">
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : mode === 'signin' ? 'Entrar' : 'Criar conta'}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Entrar'}
             </Button>
-            <button
-              type="button"
-              onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
-              className="w-full text-xs text-zinc-400 hover:text-amber-500 transition-colors"
-            >
-              {mode === 'signin' ? 'Não tem conta? Criar agora' : 'Já tem conta? Entrar'}
-            </button>
           </form>
         </CardContent>
       </Card>

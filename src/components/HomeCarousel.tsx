@@ -77,7 +77,7 @@ export default function HomeCarousel() {
               className="w-full h-auto max-h-full object-contain"
               loading={currentIndex === 0 ? 'eager' : 'lazy'}
               decoding="async"
-              fetchPriority={currentIndex === 0 ? 'high' : 'low'}
+              fetchpriority={currentIndex === 0 ? 'high' : 'low'}
               onError={() => {
                 console.error(`Erro ao carregar imagem do banner: ${banners[currentIndex].image_url}`);
               }}
@@ -89,12 +89,14 @@ export default function HomeCarousel() {
           <>
             {/* Controls */}
             <button 
+              aria-label="Banner anterior"
               onClick={(e) => { e.stopPropagation(); prevSlide(); }}
               className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button 
+              aria-label="Próximo banner"
               onClick={(e) => { e.stopPropagation(); nextSlide(); }}
               className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
             >
@@ -106,6 +108,7 @@ export default function HomeCarousel() {
               {banners.map((_, index) => (
                 <button
                   key={index}
+                  aria-label={`Exibir banner ${index + 1}`}
                   onClick={(e) => { e.stopPropagation(); setCurrentIndex(index); }}
                   className={`w-2 h-2 rounded-full transition-all ${
                     index === currentIndex ? 'bg-amber-500 w-4' : 'bg-white/50'

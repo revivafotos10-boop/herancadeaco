@@ -38,7 +38,11 @@ export default function AdminBanners() {
       .select('*')
       .order('sort_order', { ascending: true });
 
-    if (data) setBanners(data);
+    if (error) {
+      alert('Erro ao carregar banners: ' + error.message);
+    } else if (data) {
+      setBanners(data);
+    }
     setLoading(false);
   };
 
@@ -59,8 +63,10 @@ export default function AdminBanners() {
   };
 
   const removeBanner = async (id: string) => {
-    if (!id.includes('-')) { // Only if it's already in DB
-       await supabase.from('home_banners').delete().eq('id', id);
+    const { error } = await supabase.from('home_banners').delete().eq('id', id);
+    if (error) {
+      alert('Erro ao excluir banner: ' + error.message);
+      return;
     }
     setBanners(banners.filter(b => b.id !== id));
   };
@@ -72,7 +78,7 @@ export default function AdminBanners() {
       const bannersToSave = banners.map((b, index) => ({
         ...b,
         sort_order: index,
-        id: b.id.length > 36 ? undefined : b.id // Clean temporary IDs
+        id: b.id
       })).filter(b => b.image_url);
 
       const { error } = await supabase
