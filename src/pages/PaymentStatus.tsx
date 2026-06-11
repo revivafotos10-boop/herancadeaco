@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Clock, Copy, QrCode, ChevronLeft, Package, Calendar, AlertCircle, RefreshCw } from 'lucide-react';
+import { CheckCircle2, Clock, Package, Calendar, AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -128,12 +128,6 @@ const PaymentStatus = () => {
 
   const formattedTotal = `R$ ${cartTotal.toFixed(2).replace('.', ',')}`;
 
-
-  const copyPix = () => {
-    navigator.clipboard.writeText("00020101021226850014br.gov.bcb.pix013662d59302-604a-4363-9524-766723f6685a5204000053039865802BR5925HERANCA DE ACO6009SAO PAULO62070503***6304E22A");
-    toast.success("Código Pix copiado!");
-  };
-
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans flex items-center justify-center p-4">
       <div className="w-full max-w-lg space-y-4">
@@ -214,25 +208,8 @@ const PaymentStatus = () => {
 
             <CardContent className="p-8 space-y-6">
               {status === 'pending' && method === 'pix' && (
-                <div className="space-y-6">
-                  <div className="flex justify-center">
-                    <div className="p-4 bg-white rounded-xl">
-                      <QrCode className="w-48 h-48 text-black" />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-sm text-center text-zinc-400">Ou copie o código abaixo:</p>
-                    <div className="flex gap-2">
-                      <div className="bg-zinc-950 border border-zinc-700 p-3 rounded-lg flex-1 overflow-hidden">
-                        <code className="text-xs text-zinc-500 block truncate">
-                          00020101021226850014br.gov.bcb.pix013662d59302-604a-4363-9524-766723f6685a5204000053039865802BR5925HERANCA DE ACO6009SAO PAULO62070503***6304E22A
-                        </code>
-                      </div>
-                      <Button onClick={copyPix} variant="outline" className="border-zinc-700 bg-zinc-900 hover:bg-zinc-800">
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
+                <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-center">
+                  <p className="text-sm text-zinc-300">Conclua o Pix na página segura do Mercado Pago. A confirmação será atualizada pelo próprio pagamento.</p>
                 </div>
               )}
 
