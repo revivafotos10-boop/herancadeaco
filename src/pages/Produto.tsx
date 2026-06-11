@@ -315,9 +315,9 @@ export default function Produto() {
               className="group relative p-2 text-zinc-400 hover:text-white transition-colors"
             >
               <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              {cart.length > 0 && (
+              {itemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                  {cart.length}
+                  {itemCount}
                 </span>
               )}
             </button>
@@ -726,10 +726,10 @@ export default function Produto() {
                     </span>
                   </div>
                   <button 
-                    onClick={() => navigate('/checkout')}
+                    onClick={() => navigate('/carrinho')}
                     className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-5 rounded-xl font-black text-xs uppercase tracking-[0.4em] hover:from-amber-600 hover:to-amber-500 transition-all shadow-[0_10px_30px_rgba(217,119,6,0.3)] flex items-center justify-center gap-3"
                   >
-                    Finalizar Pedido
+                    Ver Carrinho
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
