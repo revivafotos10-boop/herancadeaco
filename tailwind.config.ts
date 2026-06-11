@@ -18,11 +18,6 @@ export default {
         display: ["Cormorant Garamond", "serif"],
         sans: ["Montserrat", "sans-serif"],
       },
-      fontFamily: {
-        serif: ["Cinzel", "serif"],
-        display: ["Cormorant Garamond", "serif"],
-        sans: ["Montserrat", "sans-serif"],
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

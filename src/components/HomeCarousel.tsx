@@ -77,7 +77,6 @@ export default function HomeCarousel() {
               className="w-full h-auto max-h-full object-contain"
               loading={currentIndex === 0 ? 'eager' : 'lazy'}
               decoding="async"
-              fetchpriority={currentIndex === 0 ? 'high' : 'low'}
               onError={() => {
                 console.error(`Erro ao carregar imagem do banner: ${banners[currentIndex].image_url}`);
               }}

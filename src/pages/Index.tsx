@@ -116,7 +116,6 @@ export default function Index() {
               width={420}
               height={75}
               decoding="async"
-              fetchpriority="high"
               className="h-[45px] md:h-[75px] max-h-[45px] md:max-h-[75px] w-auto max-w-[220px] md:max-w-[420px] object-contain brightness-110 contrast-110"
             />
           </div>

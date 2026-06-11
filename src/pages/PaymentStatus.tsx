@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
+import { supabase } from '@/lib/supabase';
 
 const PRODUCT_DEFAULTS: Record<string, { size: string, font: string, symbol: string }> = {
   'Cutelo Artesanal Brut': { size: '8"', font: 'Bold', symbol: '⚔️' },
@@ -18,17 +19,44 @@ const PaymentStatus = () => {
   const navigate = useNavigate();
   const [orderData, setOrderData] = useState(() => {
     if (location.state) return location.state;
-    const savedCart = localStorage.getItem('cart');
+    let cart = [];
+    try {
+      const savedCart = localStorage.getItem('cart');
+      cart = savedCart ? JSON.parse(savedCart) : [];
+    } catch {
+      localStorage.removeItem('cart');
+    }
     return {
-      status: 'success',
+      status: 'checking',
       method: 'card',
-      cart: savedCart ? JSON.parse(savedCart) : []
+      cart
     };
   });
   const { status, method, cart } = orderData;
   
   const [showValidationAlert, setShowValidationAlert] = useState(false);
   const [missingDetails, setMissingDetails] = useState<{itemName: string, fields: string[]}[]>([]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const paymentId = params.get('payment_id') || params.get('collection_id');
+    if (!paymentId) {
+      setOrderData((current: any) => ({ ...current, status: 'unknown' }));
+      return;
+    }
+
+    supabase.functions.invoke('verify-payment', { body: { payment_id: paymentId } })
+      .then(({ data, error }) => {
+        if (error || !data?.status) throw error || new Error('Resposta inválida');
+        setOrderData((current: any) => ({
+          ...current,
+          status: data.status === 'approved' ? 'success' : data.status,
+          method: data.payment_method_id || current.method,
+        }));
+        if (data.status === 'approved') localStorage.removeItem('cart');
+      })
+      .catch(() => setOrderData((current: any) => ({ ...current, status: 'unknown' })));
+  }, [location.search]);
 
   useEffect(() => {
     const incompleteItems: {itemName: string, fields: string[]}[] = [];
@@ -91,8 +119,11 @@ const PaymentStatus = () => {
   };
 
   const cartTotal = cart.reduce((acc, item) => {
-    const price = parseFloat(item.product.price.replace('R$ ', '').replace(',', '.'));
-    return acc + price;
+    const rawPrice = item.product?.price;
+    const price = typeof rawPrice === 'number'
+      ? rawPrice
+      : parseFloat(String(rawPrice ?? 0).replace('R$ ', '').replace('.', '').replace(',', '.'));
+    return acc + (Number.isFinite(price) ? price : 0);
   }, 0);
 
   const formattedTotal = `R$ ${cartTotal.toFixed(2).replace('.', ',')}`;
@@ -151,7 +182,13 @@ const PaymentStatus = () => {
           transition={{ duration: 0.5 }}
         >
           <Card className="bg-zinc-900 border-zinc-800 text-white overflow-hidden">
-            {status === 'success' ? (
+            {status === 'checking' ? (
+              <div className="bg-zinc-800/50 p-8 text-center border-b border-zinc-800">
+                <RefreshCw className="w-12 h-12 text-amber-500 animate-spin mx-auto mb-4" />
+                <h1 className="text-2xl font-bold">Verificando pagamento</h1>
+                <p className="text-zinc-400 mt-2">Aguarde enquanto confirmamos a transação.</p>
+              </div>
+            ) : status === 'success' ? (
               <div className="bg-green-500/10 p-8 text-center border-b border-green-500/20">
                 <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle2 className="w-12 h-12 text-black" />
@@ -159,13 +196,19 @@ const PaymentStatus = () => {
                 <h1 className="text-2xl font-bold text-green-500">Pagamento Aprovado!</h1>
                 <p className="text-zinc-400 mt-2">Seu pedido foi recebido e já está em processamento.</p>
               </div>
-            ) : (
+            ) : status === 'pending' ? (
               <div className="bg-amber-500/10 p-8 text-center border-b border-amber-500/20">
                 <div className="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Clock className="w-12 h-12 text-black" />
                 </div>
                 <h1 className="text-2xl font-bold text-amber-500">Aguardando Pagamento</h1>
                 <p className="text-zinc-400 mt-2">Finalize o pagamento via Pix para confirmar seu pedido.</p>
+              </div>
+            ) : (
+              <div className="bg-red-500/10 p-8 text-center border-b border-red-500/20">
+                <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                <h1 className="text-2xl font-bold text-red-500">Pagamento não confirmado</h1>
+                <p className="text-zinc-400 mt-2">Não foi possível validar esta transação. Volte à loja e tente novamente.</p>
               </div>
             )}
 

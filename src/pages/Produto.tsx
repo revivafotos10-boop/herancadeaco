@@ -89,6 +89,10 @@ export default function Produto() {
   const [selectedFontSize, setSelectedFontSize] = useState(20);
   const [previewImage, setPreviewImage] = useState('');
   const [zoomLevel, setZoomLevel] = useState(1);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const engravingBoxRef = useRef<HTMLDivElement>(null);
+  const engravingContentRef = useRef<HTMLDivElement>(null);
+  const [engravingScale, setEngravingScale] = useState(1);
 
   useEffect(() => {
     if (slug) fetchProduct();
@@ -128,16 +132,16 @@ export default function Produto() {
   };
 
   useEffect(() => {
-    if (!containerRef.current || !product?.engraving_start_x || !product?.engraving_end_x) return;
+    if (!containerRef.current || product?.engraving_start_x === undefined || product?.engraving_end_x === undefined || product.engraving_start_y === undefined || product.engraving_end_y === undefined) return;
     
     const container = containerRef.current;
     const parent = container.parentElement;
     if (!parent) return;
 
     const x1 = product.engraving_start_x;
-    const y1 = product.engraving_start_y!;
+    const y1 = product.engraving_start_y;
     const x2 = product.engraving_end_x;
-    const y2 = product.engraving_end_y!;
+    const y2 = product.engraving_end_y;
 
     const dx = x2 - x1;
     const dy = y2 - y1;
@@ -189,11 +193,6 @@ export default function Produto() {
       : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
     return acc + price;
   }, 0);
-
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const engravingBoxRef = useRef<HTMLDivElement>(null);
-  const engravingContentRef = useRef<HTMLDivElement>(null);
-  const [engravingScale, setEngravingScale] = useState(1);
 
   useLayoutEffect(() => {
     const fit = () => {
