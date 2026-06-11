@@ -386,37 +386,49 @@ const Checkout = () => {
               <Card className="bg-zinc-900 border-zinc-800 text-white">
                 <CardContent className="pt-6 space-y-4">
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
+                    <div className="space-y-1">
                       <Label htmlFor="cpf">CPF</Label>
                       <Input 
                         id="cpf" 
+                        inputMode="numeric"
                         placeholder="000.000.000-00" 
-                        className="bg-zinc-950 border-zinc-700" 
+                        className={fieldClass('cpf')}
                         value={customer.cpf}
                         onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        maxLength={14}
                         required
                       />
+                      <ErrorMsg id="cpf" />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="cep">CEP</Label>
+                    <div className="space-y-1">
+                      <Label htmlFor="cep">CEP {cepLoading && <span className="text-xs text-zinc-500">(buscando...)</span>}</Label>
                       <Input 
                         id="cep" 
+                        inputMode="numeric"
                         placeholder="00000-000" 
-                        className="bg-zinc-950 border-zinc-700" 
+                        className={fieldClass('cep')}
                         value={customer.cep}
                         onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        maxLength={9}
+                        required
                       />
+                      <ErrorMsg id="cep" />
                     </div>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     <Label htmlFor="address">Endereço</Label>
                     <Input 
                       id="address" 
                       placeholder="Rua, número e bairro" 
-                      className="bg-zinc-950 border-zinc-700" 
+                      className={fieldClass('address')}
                       value={customer.address}
                       onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      required
                     />
+                    <ErrorMsg id="address" />
                   </div>
                 </CardContent>
               </Card>
