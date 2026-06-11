@@ -22,6 +22,7 @@ import {
 import UrgencyBanner from '@/components/UrgencyBanner';
 import HomeCarousel from '@/components/HomeCarousel';
 import { supabase } from '@/lib/supabase';
+import { useCart } from '@/hooks/useCart';
 
 interface Product {
   id: string;
@@ -39,10 +40,7 @@ interface Product {
 export default function Index() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('cart');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const { cart, addToCart, removeFromCart, updateQuantity, subtotal, itemCount } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -86,20 +84,7 @@ export default function Index() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
-
-  const removeFromCart = (cartId: number) => {
-    setCart(cart.filter((item: any) => item.cartId !== cartId));
-  };
-
-  const cartTotal = cart.reduce((acc: number, item: any) => {
-    const price = typeof item.product.price === 'number' 
-      ? item.product.price 
-      : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
-    return acc + price;
-  }, 0);
+  const cartTotal = subtotal;
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans overflow-x-hidden">
