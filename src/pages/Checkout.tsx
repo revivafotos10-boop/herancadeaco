@@ -237,7 +237,7 @@ const Checkout = () => {
     try {
       const items = cart.map((item: any) => ({
         product_id: item.product.id,
-        quantity: 1,
+        quantity: item.quantity ?? 1,
         engraved_name: item.engravedName || '',
       }));
 
