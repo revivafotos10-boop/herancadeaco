@@ -431,7 +431,7 @@ const Checkout = () => {
                     <Label htmlFor="address">Endereço</Label>
                     <Input 
                       id="address" 
-                      placeholder="Rua, número e bairro" 
+                      placeholder="Rua e bairro" 
                       className={fieldClass('address')}
                       value={customer.address}
                       onChange={handleInputChange}
@@ -439,6 +439,33 @@ const Checkout = () => {
                       required
                     />
                     <ErrorMsg id="address" />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <Label htmlFor="number">Número</Label>
+                      <Input
+                        id="number"
+                        placeholder="123"
+                        className={fieldClass('number')}
+                        value={customer.number}
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        maxLength={10}
+                        required
+                      />
+                      <ErrorMsg id="number" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="complement">Complemento <span className="text-zinc-500 text-xs">(opcional)</span></Label>
+                      <Input
+                        id="complement"
+                        placeholder="Apto, bloco, referência"
+                        className={fieldClass('complement')}
+                        value={customer.complement}
+                        onChange={handleInputChange}
+                        maxLength={100}
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
