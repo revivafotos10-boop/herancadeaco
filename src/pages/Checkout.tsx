@@ -524,7 +524,7 @@ const Checkout = () => {
                         <p className="text-[10px] text-zinc-500">Tam: {item.selectedSize} | Fonte: {item.selectedFont} | Símbolo: {typeof item.selectedSymbol === 'object' ? item.selectedSymbol.name : item.selectedSymbol}</p>
                       </div>
                       <p className="text-sm text-zinc-400 mt-1">
-                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
+                        {(item.quantity ?? 1)}× {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.product.price)}
                       </p>
                     </div>
                   </div>
@@ -534,12 +534,17 @@ const Checkout = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-400">Subtotal</span>
-                    <span>{formattedTotal}</span>
+                    <span>{formattedSubtotal}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-400">Frete</span>
-                    <span className="text-green-500">Grátis</span>
+                    <span className={shipping === 0 ? 'text-green-500' : ''}>{formattedShipping}</span>
                   </div>
+                  {shipping > 0 && (
+                    <p className="text-xs text-zinc-500">
+                      Faltam {fmt(FREE_SHIPPING_THRESHOLD - cartSubtotal)} para frete grátis.
+                    </p>
+                  )}
                   <Separator className="bg-zinc-800" />
                   <div className="flex justify-between font-bold text-lg pt-2">
                     <span>Total</span>
