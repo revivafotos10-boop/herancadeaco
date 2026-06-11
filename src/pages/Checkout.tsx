@@ -210,8 +210,8 @@ const Checkout = () => {
 
   const validateAll = () => {
     const next: Record<string, string> = {};
-    (['email', 'phone', 'cpf', 'cep', 'address'] as const).forEach(k => {
-      const e = validateField(k, customer[k]);
+    (['email', 'phone', 'cpf', 'cep', 'address', 'number'] as const).forEach(k => {
+      const e = validateField(k, (customer as any)[k]);
       if (e) next[k] = e;
     });
     setErrors(next);
