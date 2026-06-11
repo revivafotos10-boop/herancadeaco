@@ -53,11 +53,8 @@ export function useCart() {
 
   const addToCart = useCallback((item: Omit<CartItem, 'cartId' | 'quantity'> & { quantity?: number }) => {
     const current = readCart();
-    const next: CartItem[] = [
-      ...current,
-      { ...item, cartId: Date.now() + Math.random(), quantity: item.quantity ?? 1 },
-    ];
-    writeCart(next);
+    const newItem: CartItem = { ...item, cartId: Date.now() + Math.random(), quantity: item.quantity ?? 1 };
+    writeCart([...current, newItem]);
   }, []);
 
   const removeFromCart = useCallback((cartId: number) => {
