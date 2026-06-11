@@ -104,10 +104,108 @@ const Checkout = () => {
     cep: '',
     address: ''
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [cepLoading, setCepLoading] = useState(false);
+
+  // ---------- Masks ----------
+  const maskPhone = (v: string) => {
+    const d = v.replace(/\D/g, '').slice(0, 11);
+    if (d.length <= 10) {
+      return d.replace(/^(\d{0,2})(\d{0,4})(\d{0,4}).*/, (_, a, b, c) =>
+        [a && `(${a}`, a && a.length === 2 ? ') ' : '', b, c && `-${c}`].filter(Boolean).join('')
+      );
+    }
+    return d.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3');
+  };
+  const maskCPF = (v: string) =>
+    v.replace(/\D/g, '').slice(0, 11)
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  const maskCEP = (v: string) =>
+    v.replace(/\D/g, '').slice(0, 8).replace(/(\d{5})(\d)/, '$1-$2');
+
+  // ---------- Validators ----------
+  const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+  const isValidPhone = (v: string) => {
+    const d = v.replace(/\D/g, '');
+    return d.length >= 10 && d.length <= 11;
+  };
+  const isValidCPF = (v: string) => {
+    const cpf = v.replace(/\D/g, '');
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+    let sum = 0;
+    for (let i = 0; i < 9; i++) sum += parseInt(cpf[i]) * (10 - i);
+    let d1 = (sum * 10) % 11;
+    if (d1 === 10) d1 = 0;
+    if (d1 !== parseInt(cpf[9])) return false;
+    sum = 0;
+    for (let i = 0; i < 10; i++) sum += parseInt(cpf[i]) * (11 - i);
+    let d2 = (sum * 10) % 11;
+    if (d2 === 10) d2 = 0;
+    return d2 === parseInt(cpf[10]);
+  };
+  const isValidCEP = (v: string) => v.replace(/\D/g, '').length === 8;
+  const isValidAddress = (v: string) => v.trim().length >= 5;
+
+  const validateField = (id: string, value: string): string => {
+    switch (id) {
+      case 'email': return isValidEmail(value) ? '' : 'Digite um e-mail válido';
+      case 'phone': return isValidPhone(value) ? '' : 'Digite um telefone válido';
+      case 'cpf': return isValidCPF(value) ? '' : 'CPF inválido';
+      case 'cep': return isValidCEP(value) ? '' : 'CEP inválido';
+      case 'address': return isValidAddress(value) ? '' : 'Endereço deve ter no mínimo 5 caracteres';
+      default: return '';
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setCustomer(prev => ({ ...prev, [id]: value }));
+    let v = value;
+    if (id === 'phone') v = maskPhone(value);
+    else if (id === 'cpf') v = maskCPF(value);
+    else if (id === 'cep') v = maskCEP(value);
+    setCustomer(prev => ({ ...prev, [id]: v }));
+    if (errors[id]) setErrors(prev => ({ ...prev, [id]: '' }));
+  };
+
+  const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    const err = validateField(id, value);
+    setErrors(prev => ({ ...prev, [id]: err }));
+
+    if (id === 'cep' && !err) {
+      const cep = value.replace(/\D/g, '');
+      try {
+        setCepLoading(true);
+        const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await res.json();
+        if (data.erro) {
+          setErrors(prev => ({ ...prev, cep: 'CEP inválido' }));
+        } else {
+          const addr = [data.logradouro, data.bairro, data.localidade, data.uf]
+            .filter(Boolean).join(', ');
+          if (addr) {
+            setCustomer(prev => ({ ...prev, address: addr }));
+            setErrors(prev => ({ ...prev, address: '' }));
+          }
+        }
+      } catch {
+        toast.error('Não foi possível buscar o endereço.');
+      } finally {
+        setCepLoading(false);
+      }
+    }
+  };
+
+  const validateAll = () => {
+    const next: Record<string, string> = {};
+    (['email', 'phone', 'cpf', 'cep', 'address'] as const).forEach(k => {
+      const e = validateField(k, customer[k]);
+      if (e) next[k] = e;
+    });
+    setErrors(next);
+    return Object.keys(next).length === 0;
   };
 
   const handlePayment = async (e: React.FormEvent) => {
@@ -118,6 +216,10 @@ const Checkout = () => {
     }
     if (showValidationAlert) {
       toast.error("Revise os dados de personalização antes de continuar.");
+      return;
+    }
+    if (!validateAll()) {
+      toast.error("Revise os campos do formulário.");
       return;
     }
     setLoading(true);
@@ -145,6 +247,13 @@ const Checkout = () => {
       setLoading(false);
     }
   };
+
+  const hasErrors = Object.values(errors).some(Boolean);
+  const fieldClass = (id: string) =>
+    `bg-zinc-950 ${errors[id] ? 'border-red-500 focus-visible:ring-red-500' : 'border-zinc-700'}`;
+  const ErrorMsg = ({ id }: { id: string }) =>
+    errors[id] ? <p className="text-xs text-red-500 mt-1">{errors[id]}</p> : null;
+
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans pb-12">
