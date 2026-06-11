@@ -85,16 +85,23 @@ const Checkout = () => {
     navigate('/');
   };
 
-  const cartTotal = cart.reduce((acc, item) => {
-    const price = typeof item.product.price === 'number' 
-      ? item.product.price 
+  const cartSubtotal = cart.reduce((acc, item) => {
+    const price = typeof item.product.price === 'number'
+      ? item.product.price
       : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
-    return acc + price;
+    const qty = item.quantity ?? 1;
+    return acc + price * qty;
   }, 0);
 
-  const formattedTotal = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartTotal);
+  const FREE_SHIPPING_THRESHOLD = 200;
+  const shipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD || cartSubtotal === 0 ? 0 : 25;
+  const cartTotal = cartSubtotal + shipping;
 
-
+  const fmt = (n: number) =>
+    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
+  const formattedSubtotal = fmt(cartSubtotal);
+  const formattedShipping = shipping === 0 ? 'Grátis' : fmt(shipping);
+  const formattedTotal = fmt(cartTotal);
 
   const [loading, setLoading] = useState(false);
   const [customer, setCustomer] = useState({
@@ -102,7 +109,9 @@ const Checkout = () => {
     phone: '',
     cpf: '',
     cep: '',
-    address: ''
+    address: '',
+    number: '',
+    complement: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [cepLoading, setCepLoading] = useState(false);
