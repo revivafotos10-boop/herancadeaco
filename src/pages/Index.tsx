@@ -22,6 +22,7 @@ import {
 import UrgencyBanner from '@/components/UrgencyBanner';
 import HomeCarousel from '@/components/HomeCarousel';
 import { supabase } from '@/lib/supabase';
+import { useCart } from '@/hooks/useCart';
 
 interface Product {
   id: string;
@@ -39,10 +40,7 @@ interface Product {
 export default function Index() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('cart');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const { cart, addToCart, removeFromCart, updateQuantity, subtotal, itemCount } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -86,20 +84,7 @@ export default function Index() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
-
-  const removeFromCart = (cartId: number) => {
-    setCart(cart.filter((item: any) => item.cartId !== cartId));
-  };
-
-  const cartTotal = cart.reduce((acc: number, item: any) => {
-    const price = typeof item.product.price === 'number' 
-      ? item.product.price 
-      : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
-    return acc + price;
-  }, 0);
+  const cartTotal = subtotal;
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans overflow-x-hidden">
@@ -144,9 +129,9 @@ export default function Index() {
               className="group relative p-2 text-zinc-400 hover:text-white transition-colors"
             >
               <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              {cart.length > 0 && (
+              {itemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                  {cart.length}
+                  {itemCount}
                 </span>
               )}
             </button>
@@ -228,11 +213,15 @@ export default function Index() {
                     </div>
                   </div>
                   
-                  <button 
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart({ product: { id: product.id, name: product.name, price: product.price, image_url: product.image_url, slug: product.slug } });
+                      setIsCartOpen(true);
+                    }}
                     className="w-full min-h-[48px] bg-amber-700 sm:bg-zinc-900 group-hover:bg-amber-700 text-white px-2 py-3 sm:py-3.5 rounded-lg sm:rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all border border-amber-600 sm:border-zinc-800 group-hover:border-amber-600 flex items-center justify-center gap-2 active:scale-95"
                   >
-                    <span className="sm:hidden">COMPRAR</span>
-                    <span className="hidden sm:inline">COMPRAR E PERSONALIZAR</span>
+                    ADICIONAR AO CARRINHO
                     <ArrowRight className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </button>
                 </div>
@@ -359,10 +348,10 @@ export default function Index() {
                     </span>
                   </div>
                   <button 
-                    onClick={() => navigate('/checkout')}
+                    onClick={() => navigate('/carrinho')}
                     className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-5 rounded-xl font-black text-xs uppercase tracking-[0.4em] hover:from-amber-600 hover:to-amber-500 transition-all shadow-[0_10px_30px_rgba(217,119,6,0.3)] flex items-center justify-center gap-3"
                   >
-                    Finalizar Pedido
+                    Ver Carrinho
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>

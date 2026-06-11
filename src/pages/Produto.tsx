@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import UrgencyBanner from '@/components/UrgencyBanner';
 import { supabase } from '@/lib/supabase';
+import { useCart } from '@/hooks/useCart';
 
 interface Product {
   id: string;
@@ -74,10 +75,7 @@ export default function Produto() {
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('cart');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const { cart, addToCart: addCartItem, removeFromCart, subtotal: cartTotal, itemCount } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
@@ -168,8 +166,14 @@ export default function Produto() {
 
   const addToCart = () => {
     if (!product) return;
-    const item = {
-      product,
+    addCartItem({
+      product: {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image_url: product.image_url,
+        slug: product.slug,
+      },
       engravedName,
       selectedFont,
       selectedSymbol,
@@ -177,22 +181,9 @@ export default function Produto() {
       engraving_font_size_selected: selectedFontSize,
       engraving_text: engravedName,
       engraving_symbol: selectedSymbol.name,
-      cartId: Date.now()
-    };
-    setCart([...cart, item]);
+    });
     setIsCartOpen(true);
   };
-
-  const removeFromCart = (cartId: number) => {
-    setCart(cart.filter((item: any) => item.cartId !== cartId));
-  };
-
-  const cartTotal = cart.reduce((acc: number, item: any) => {
-    const price = typeof item.product.price === 'number' 
-      ? item.product.price 
-      : parseFloat(item.product.price.toString().replace('R$ ', '').replace('.', '').replace(',', '.'));
-    return acc + price;
-  }, 0);
 
   useLayoutEffect(() => {
     const fit = () => {
@@ -324,9 +315,9 @@ export default function Produto() {
               className="group relative p-2 text-zinc-400 hover:text-white transition-colors"
             >
               <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              {cart.length > 0 && (
+              {itemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                  {cart.length}
+                  {itemCount}
                 </span>
               )}
             </button>
@@ -735,10 +726,10 @@ export default function Produto() {
                     </span>
                   </div>
                   <button 
-                    onClick={() => navigate('/checkout')}
+                    onClick={() => navigate('/carrinho')}
                     className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-5 rounded-xl font-black text-xs uppercase tracking-[0.4em] hover:from-amber-600 hover:to-amber-500 transition-all shadow-[0_10px_30px_rgba(217,119,6,0.3)] flex items-center justify-center gap-3"
                   >
-                    Finalizar Pedido
+                    Ver Carrinho
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>

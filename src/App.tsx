@@ -10,6 +10,7 @@ import ProtectedAdminRoute from "./components/ProtectedAdminRoute.tsx";
 
 // Lazy-load non-critical routes to shrink initial JS bundle
 const Checkout = lazy(() => import("./pages/Checkout.tsx"));
+const Carrinho = lazy(() => import("./pages/Carrinho.tsx"));
 const PaymentStatus = lazy(() => import("./pages/PaymentStatus.tsx"));
 const AdminProdutos = lazy(() => import("./pages/AdminProdutos.tsx"));
 const AdminBanners = lazy(() => import("./pages/AdminBanners.tsx"));
@@ -38,6 +39,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/carrinho" element={<Carrinho />} />
             <Route path="/payment-status" element={<PaymentStatus />} />
             <Route path="/login" element={<Login />} />
             <Route
