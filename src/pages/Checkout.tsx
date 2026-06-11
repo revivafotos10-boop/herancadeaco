@@ -164,6 +164,7 @@ const Checkout = () => {
       case 'cpf': return isValidCPF(value) ? '' : 'CPF inválido';
       case 'cep': return isValidCEP(value) ? '' : 'CEP inválido';
       case 'address': return isValidAddress(value) ? '' : 'Endereço deve ter no mínimo 5 caracteres';
+      case 'number': return value.trim().length >= 1 ? '' : 'Informe o número';
       default: return '';
     }
   };
