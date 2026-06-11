@@ -344,26 +344,35 @@ const Checkout = () => {
               </h2>
               <Card className="bg-zinc-900 border-zinc-800 text-white">
                 <CardContent className="pt-6 grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     <Label htmlFor="email">E-mail</Label>
                     <Input 
                       id="email" 
+                      type="email"
                       placeholder="seu@email.com" 
-                      className="bg-zinc-950 border-zinc-700" 
+                      className={fieldClass('email')}
                       value={customer.email}
                       onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      maxLength={255}
                       required
                     />
+                    <ErrorMsg id="email" />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     <Label htmlFor="phone">Telefone / WhatsApp</Label>
                     <Input 
                       id="phone" 
+                      inputMode="numeric"
                       placeholder="(00) 00000-0000" 
-                      className="bg-zinc-950 border-zinc-700" 
+                      className={fieldClass('phone')}
                       value={customer.phone}
                       onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      maxLength={15}
+                      required
                     />
+                    <ErrorMsg id="phone" />
                   </div>
                 </CardContent>
               </Card>
