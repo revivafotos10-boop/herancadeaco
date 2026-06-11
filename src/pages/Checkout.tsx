@@ -5,8 +5,7 @@ import { CreditCard, QrCode, ShieldCheck, Truck, ChevronLeft, Lock, AlertCircle,
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
@@ -27,8 +26,13 @@ const Checkout = () => {
         cartId: Date.now() 
       }];
     }
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+      const savedCart = localStorage.getItem('cart');
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch {
+      localStorage.removeItem('cart');
+      return [];
+    }
   });
   
   const [showValidationAlert, setShowValidationAlert] = useState(false);
@@ -42,17 +46,7 @@ const Checkout = () => {
       item.selectedSize === '' || item.selectedFont === '' || item.selectedSymbol === '' || item.engravedName === ''
     );
     
-    // Check for top-level localStorage items mentioned in prompt
-    const savedSize = localStorage.getItem('selectedSize');
-    const savedFont = localStorage.getItem('selectedFont');
-    const savedSymbol = localStorage.getItem('selectedSymbol');
-    const savedName = localStorage.getItem('selectedEngravedName');
-    
-    if (isIncomplete || !savedSize || !savedFont || !savedSymbol || !savedName) {
-      setShowValidationAlert(true);
-    } else {
-      setShowValidationAlert(false);
-    }
+    setShowValidationAlert(isIncomplete);
   }, [cart]);
 
   const recoverData = () => {
@@ -102,7 +96,6 @@ const Checkout = () => {
 
 
 
-  const [paymentMethod, setPaymentMethod] = useState('pix');
   const [loading, setLoading] = useState(false);
   const [customer, setCustomer] = useState({
     email: '',
@@ -119,6 +112,14 @@ const Checkout = () => {
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (cart.length === 0) {
+      toast.error("Seu carrinho está vazio.");
+      return;
+    }
+    if (showValidationAlert) {
+      toast.error("Revise os dados de personalização antes de continuar.");
+      return;
+    }
     setLoading(true);
     
     try {
@@ -129,7 +130,7 @@ const Checkout = () => {
       }));
 
       const { data, error } = await supabase.functions.invoke('create-payment', {
-        body: { items }
+        body: { items, customer }
       });
 
       if (error) throw error;
@@ -325,7 +326,7 @@ const Checkout = () => {
                   <CardFooter>
                     <Button 
                       type="submit"
-                      disabled={loading}
+                      disabled={loading || cart.length === 0 || showValidationAlert}
                       className="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-6 text-lg"
                     >
                       {loading ? "Processando..." : `Finalizar Pedido (${formattedTotal})`}

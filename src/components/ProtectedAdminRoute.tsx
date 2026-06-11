@@ -31,7 +31,9 @@ export default function ProtectedAdminRoute({ children }: Props) {
 
     check();
 
-    const { data: sub } = supabase.auth.onAuthStateChange(() => check());
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') check();
+    });
     return () => {
       mounted = false;
       sub.subscription.unsubscribe();
