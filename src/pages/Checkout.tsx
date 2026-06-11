@@ -256,7 +256,7 @@ const Checkout = () => {
 
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans pb-12">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-zinc-950 text-white font-sans pb-12">
       <header className="border-b border-zinc-800 bg-zinc-950/50 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
