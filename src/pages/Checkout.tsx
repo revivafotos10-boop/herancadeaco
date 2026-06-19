@@ -449,6 +449,61 @@ const Checkout = () => {
                       />
                     </div>
                   </div>
+
+                  {/* Shipping options (Melhor Envio) */}
+                  <div className="pt-2">
+                    <Label className="mb-2 block">Opções de envio</Label>
+                    {shippingLoading && (
+                      <p className="text-sm text-zinc-400">Calculando frete...</p>
+                    )}
+                    {!shippingLoading && shippingError && (
+                      <p className="text-sm text-red-500">{shippingError}</p>
+                    )}
+                    {!shippingLoading && !shippingError && shippingOptions.length === 0 && (
+                      <p className="text-sm text-zinc-500">Digite o CEP para ver as opções.</p>
+                    )}
+                    {!shippingLoading && shippingOptions.length > 0 && (
+                      <div className="space-y-2">
+                        {freeShipping && (
+                          <p className="text-xs text-green-500">🎉 Frete GRÁTIS para sua região!</p>
+                        )}
+                        {shippingOptions.map((opt) => {
+                          const isSel = String(opt.id) === String(selectedShippingId);
+                          return (
+                            <label
+                              key={opt.id}
+                              className={`flex items-center justify-between gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                                isSel
+                                  ? 'border-amber-500 bg-amber-500/10'
+                                  : 'border-zinc-700 bg-zinc-950 hover:border-zinc-600'
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <input
+                                  type="radio"
+                                  name="shipping"
+                                  className="accent-amber-500"
+                                  checked={isSel}
+                                  onChange={() => setSelectedShippingId(opt.id)}
+                                />
+                                <div>
+                                  <p className="text-sm font-medium">
+                                    {opt.company} {opt.name}
+                                  </p>
+                                  <p className="text-xs text-zinc-400">
+                                    {opt.delivery_time} dia(s) úteis
+                                  </p>
+                                </div>
+                              </div>
+                              <span className={`text-sm font-bold ${opt.price === 0 ? 'text-green-500' : 'text-amber-500'}`}>
+                                {opt.price === 0 ? 'Grátis' : fmt(opt.price)}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </section>
