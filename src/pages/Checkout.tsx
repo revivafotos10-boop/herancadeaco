@@ -211,8 +211,47 @@ const Checkout = () => {
       } finally {
         setCepLoading(false);
       }
+      // Calculate shipping
+      fetchShipping(cep);
     }
   };
+
+  const fetchShipping = async (rawCep: string) => {
+    const cep = rawCep.replace(/\D/g, '');
+    if (cep.length !== 8) return;
+    setShippingLoading(true);
+    setShippingError('');
+    setShippingOptions([]);
+    setSelectedShippingId(null);
+    try {
+      const { data, error } = await supabase.functions.invoke('calculate-shipping', {
+        body: { cep, subtotal: cartSubtotal },
+      });
+      if (error) throw error;
+      const opts = (data?.options ?? []).filter((o: any) => !o.error);
+      if (opts.length === 0) {
+        setShippingError('Nenhuma opção de frete disponível para este CEP.');
+      } else {
+        setShippingOptions(opts);
+        setFreeShipping(!!data?.free_shipping);
+        // auto-select cheapest
+        const cheapest = [...opts].sort((a, b) => a.price - b.price)[0];
+        setSelectedShippingId(cheapest.id);
+      }
+    } catch (e: any) {
+      console.error('shipping error', e);
+      setShippingError('Não foi possível calcular o frete. Tente novamente.');
+    } finally {
+      setShippingLoading(false);
+    }
+  };
+
+  // Recalculate when subtotal changes (cart changes)
+  useEffect(() => {
+    const cep = customer.cep.replace(/\D/g, '');
+    if (cep.length === 8) fetchShipping(cep);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartSubtotal]);
 
   const validateAll = () => {
     const next: Record<string, string> = {};
