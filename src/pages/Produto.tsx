@@ -182,7 +182,7 @@ export default function Produto() {
       engraving_text: engravedName,
       engraving_symbol: selectedSymbol.name,
     });
-    setIsCartOpen(true);
+    navigate('/carrinho');
   };
 
   useLayoutEffect(() => {
