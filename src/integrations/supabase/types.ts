@@ -146,6 +146,105 @@ export type Database = {
         }
         Relationships: []
       }
+      raffle_config: {
+        Row: {
+          created_at: string
+          description: string
+          draw_seed: string | null
+          draw_seed_hash: string | null
+          draw_status: string
+          drawn_at: string | null
+          drawn_number: number | null
+          id: string
+          price_per_number: number
+          prize_image_url: string | null
+          reservation_minutes: number
+          singleton: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          draw_seed?: string | null
+          draw_seed_hash?: string | null
+          draw_status?: string
+          drawn_at?: string | null
+          drawn_number?: number | null
+          id?: string
+          price_per_number?: number
+          prize_image_url?: string | null
+          reservation_minutes?: number
+          singleton?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          draw_seed?: string | null
+          draw_seed_hash?: string | null
+          draw_status?: string
+          drawn_at?: string | null
+          drawn_number?: number | null
+          id?: string
+          price_per_number?: number
+          prize_image_url?: string | null
+          reservation_minutes?: number
+          singleton?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      raffle_tickets: {
+        Row: {
+          buyer_email: string | null
+          buyer_name: string | null
+          buyer_phone: string | null
+          buyer_photo_url: string | null
+          created_at: string
+          id: string
+          number: number
+          paid_at: string | null
+          payment_id: string | null
+          payment_provider: string | null
+          reserved_until: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          buyer_email?: string | null
+          buyer_name?: string | null
+          buyer_phone?: string | null
+          buyer_photo_url?: string | null
+          created_at?: string
+          id?: string
+          number: number
+          paid_at?: string | null
+          payment_id?: string | null
+          payment_provider?: string | null
+          reserved_until?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          buyer_email?: string | null
+          buyer_name?: string | null
+          buyer_phone?: string | null
+          buyer_photo_url?: string | null
+          created_at?: string
+          id?: string
+          number?: number
+          paid_at?: string | null
+          payment_id?: string | null
+          payment_provider?: string | null
+          reserved_until?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
