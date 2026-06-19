@@ -231,6 +231,64 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Depoimentos */}
+      <section id="depoimentos" className="relative py-24 bg-[#050505] overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(217,119,6,0.08),transparent_60%)] pointer-events-none" />
+        <div className="container mx-auto px-6 relative">
+          <div className="text-center mb-16 space-y-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-500">Forjados na Confiança</p>
+            <h2 className="text-3xl md:text-5xl font-black font-serif uppercase tracking-tight text-white">
+              Histórias de quem <span className="text-amber-500">herdou um aço</span>
+            </h2>
+            <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto" />
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { name: "Ricardo Almeida", city: "Curitiba, PR", initials: "RA", text: "Comprei a faca com o nome do meu pai gravado e o resultado superou todas as expectativas. Acabamento impecável, peso perfeito na mão e a gravação ficou nítida demais. Virou peça de herança mesmo." },
+              { name: "Mariana Costa", city: "Belo Horizonte, MG", initials: "MC", text: "Presenteei meu marido no aniversário de 40 anos com o nome dele gravado a laser. Ele ficou emocionado. Entregaram em 4 dias úteis, embalagem premium. Recomendo de olhos fechados." },
+              { name: "Carlos Henrique Souza", city: "Porto Alegre, RS", initials: "CH", text: "Sou churrasqueiro há 20 anos e nunca tive uma lâmina tão afiada e equilibrada. O cabo em madeira de lei é uma obra de arte. A gravação do meu apelido ficou perfeita." },
+              { name: "Juliana Ferreira", city: "São Paulo, SP", initials: "JF", text: "Encomendei um cutelo com gravação personalizada para meu irmão chef. Qualidade absurda, corte preciso e atendimento atencioso do início ao fim. Chegou antes do prazo previsto." },
+              { name: "Eduardo Tavares", city: "Recife, PE", initials: "ET", text: "Pedi com receio por ser compra online, mas a Herança de Aço entrega o que promete. Aço de verdade, acabamento artesanal e a gravação com a data do meu casamento ficou impecável." },
+            ].map((t, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="group relative bg-[#0d0d0d] border border-zinc-900 hover:border-amber-600/40 rounded-2xl p-7 transition-all duration-500 flex flex-col"
+              >
+                <div className="flex gap-1 mb-5">
+                  {[...Array(5)].map((_, s) => (
+                    <Star key={s} className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  ))}
+                </div>
+                <p className="text-zinc-300 text-sm leading-relaxed font-serif italic mb-8 flex-grow">
+                  "{t.text}"
+                </p>
+                <div className="flex items-center gap-4 pt-5 border-t border-zinc-900">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center border border-amber-500/40 shadow-lg shrink-0">
+                    <span className="text-white font-black text-sm tracking-wider">{t.initials}</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-white font-bold text-sm tracking-wide">{t.name}</p>
+                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.25em]">{t.city}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+            <div className="hidden lg:flex bg-gradient-to-br from-amber-900/20 to-transparent border border-amber-700/30 rounded-2xl p-7 flex-col justify-center items-center text-center gap-4">
+              <Crown className="w-10 h-10 text-amber-500" />
+              <p className="text-3xl font-black text-white tracking-tight">4.9<span className="text-amber-500">/5</span></p>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">+2.300 Clientes Satisfeitos</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       {/* Trust & Quality Grid (Small Refactor) */}
       <section id="personalizacao" className="relative py-24 bg-[#080808] border-y border-zinc-900/50">
         <div className="container mx-auto px-6">
