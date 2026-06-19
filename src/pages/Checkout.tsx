@@ -93,14 +93,20 @@ const Checkout = () => {
     return acc + price * qty;
   }, 0);
 
-  const FREE_SHIPPING_THRESHOLD = 200;
-  const shipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD || cartSubtotal === 0 ? 0 : 25;
+  const [shippingOptions, setShippingOptions] = useState<any[]>([]);
+  const [selectedShippingId, setSelectedShippingId] = useState<string | number | null>(null);
+  const [shippingLoading, setShippingLoading] = useState(false);
+  const [shippingError, setShippingError] = useState<string>('');
+  const [freeShipping, setFreeShipping] = useState(false);
+
+  const selectedShipping = shippingOptions.find(o => String(o.id) === String(selectedShippingId));
+  const shipping = selectedShipping ? Number(selectedShipping.price) : 0;
   const cartTotal = cartSubtotal + shipping;
 
   const fmt = (n: number) =>
     new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
   const formattedSubtotal = fmt(cartSubtotal);
-  const formattedShipping = shipping === 0 ? 'Grátis' : fmt(shipping);
+  const formattedShipping = selectedShipping ? (shipping === 0 ? 'Grátis' : fmt(shipping)) : '—';
   const formattedTotal = fmt(cartTotal);
 
   const [loading, setLoading] = useState(false);
