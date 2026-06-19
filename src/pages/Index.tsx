@@ -210,12 +210,11 @@ export default function Index() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      addToCart({ product: { id: product.id, name: product.name, price: product.price, image_url: product.image_url, slug: product.slug } });
-                      setIsCartOpen(true);
+                      navigate(`/produto/${product.slug}`);
                     }}
                     className="w-full min-h-[48px] bg-amber-700 sm:bg-zinc-900 group-hover:bg-amber-700 text-white px-2 py-3 sm:py-3.5 rounded-lg sm:rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all border border-amber-600 sm:border-zinc-800 group-hover:border-amber-600 flex items-center justify-center gap-2 active:scale-95"
                   >
-                    ADICIONAR AO CARRINHO
+                    COMPRAR E PERSONALIZAR
                     <ArrowRight className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </button>
                 </div>
