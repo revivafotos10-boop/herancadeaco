@@ -348,7 +348,7 @@ export default function Index() {
                     </span>
                   </div>
                   <button 
-                    onClick={() => navigate('/carrinho')}
+                    onClick={() => { setIsCartOpen(false); navigate('/carrinho'); }}
                     className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-5 rounded-xl font-black text-xs uppercase tracking-[0.4em] hover:from-amber-600 hover:to-amber-500 transition-all shadow-[0_10px_30px_rgba(217,119,6,0.3)] flex items-center justify-center gap-3"
                   >
                     Ver Carrinho
