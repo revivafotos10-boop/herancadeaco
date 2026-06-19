@@ -522,9 +522,9 @@ const Checkout = () => {
                     <span className="text-zinc-400">Frete</span>
                     <span className={shipping === 0 ? 'text-green-500' : ''}>{formattedShipping}</span>
                   </div>
-                  {shipping > 0 && (
+                  {selectedShipping && (
                     <p className="text-xs text-zinc-500">
-                      Faltam {fmt(FREE_SHIPPING_THRESHOLD - cartSubtotal)} para frete grátis.
+                      {selectedShipping.company} {selectedShipping.name} • {selectedShipping.delivery_time} dia(s) úteis
                     </p>
                   )}
                   <Separator className="bg-zinc-800" />
