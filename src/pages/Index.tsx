@@ -95,14 +95,13 @@ export default function Index() {
       <nav className="w-full z-[100] absolute top-[40px] bg-transparent py-12 mt-0">
         <div className="container mx-auto px-6 flex justify-between items-center gap-10">
           <div className="flex items-center gap-3 group cursor-pointer shrink-0" onClick={() => document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })}>
-            <div className="relative w-11 h-11 md:w-12 md:h-12 rounded-lg bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center shadow-[0_4px_20px_rgba(217,119,6,0.35)] border border-amber-500/40">
-              <span className="text-white font-black font-serif text-lg md:text-xl tracking-tighter">HA</span>
-              <Sword className="absolute -bottom-1 -right-1 w-3.5 h-3.5 text-amber-300 rotate-45 drop-shadow-lg" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-zinc-100 font-serif font-light text-2xl md:text-3xl tracking-tight">H</span>
+              <Sword className="w-5 h-5 md:w-6 md:h-6 text-zinc-300 -rotate-90" strokeWidth={1.25} />
+              <span className="text-zinc-100 font-serif font-light text-2xl md:text-3xl tracking-tight">A</span>
             </div>
-            <div className="flex flex-col leading-none">
-              <span className="text-white font-black font-serif uppercase text-sm md:text-base tracking-[0.18em]">Herança</span>
-              <span className="text-amber-500 font-bold font-serif uppercase text-[10px] md:text-xs tracking-[0.42em] mt-1">de Aço</span>
-            </div>
+            <div className="hidden sm:block h-8 w-px bg-zinc-700/60 mx-1" />
+            <span className="hidden sm:block text-zinc-300 font-serif font-light uppercase text-[11px] md:text-xs tracking-[0.42em]">Herança de Aço</span>
           </div>
           
           <div className="hidden md:flex items-center gap-16 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
