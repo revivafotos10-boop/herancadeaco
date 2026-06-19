@@ -600,7 +600,7 @@ export default function Produto() {
                         <button 
                           key={idx}
                           onClick={() => setSelectedSymbol(symbol)}
-                          className={`p-4 rounded-xl border flex items-center justify-center min-h-[64px] transition-all ${selectedSymbol.name === symbol.name ? 'border-[#f59e0b] bg-[#f59e0b]/[0.12] text-[#f59e0b] scale-105' : 'border-white/[0.14] bg-[#151515] text-[#b8b8b8] hover:border-zinc-700'}`}
+                          className={`p-4 rounded-xl border flex items-center justify-center min-h-[64px] transition-all ${selectedSymbol.name === symbol.name ? 'border-[#f59e0b] bg-[#E8E8E8] text-[#1a1a1a] scale-105 ring-2 ring-[#f59e0b]' : 'border-white/[0.14] bg-[#D0D0D0] text-[#1a1a1a] hover:border-[#f59e0b]/60'}`}
                         >
                           {symbol.image ? (
                             <img src={symbol.image} alt={symbol.name} className="w-8 h-8 object-contain" />
