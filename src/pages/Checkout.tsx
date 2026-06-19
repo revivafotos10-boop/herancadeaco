@@ -282,69 +282,6 @@ const Checkout = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        {showValidationAlert && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="mb-8"
-          >
-            <Alert className="bg-amber-500/10 border-amber-500/50 text-amber-500">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle className="font-bold">Dados de Personalização Incompletos</AlertTitle>
-              <AlertDescription className="mt-2 space-y-4">
-                <div className="text-zinc-300">
-                  <p className="mb-2">Detectamos que alguns itens do seu carrinho ou preferências gerais estão com informações faltando:</p>
-                  <ul className="space-y-2 mb-4">
-                    {cart.map((item: any) => {
-                      const missing = [];
-                      if (!item.selectedSize || item.selectedSize === '') missing.push('Tamanho');
-                      if (!item.selectedFont || item.selectedFont === '') missing.push('Fonte');
-                      if (!item.selectedSymbol || item.selectedSymbol === '') missing.push('Símbolo');
-                      if (!item.engravedName || item.engravedName === '') missing.push('Nome');
-                      
-                      if (missing.length === 0) return null;
-                      
-                      return (
-                        <li key={item.cartId} className="text-sm bg-zinc-900/50 p-2 rounded border border-zinc-800">
-                          <span className="font-bold text-amber-500">{item.product.name}:</span>
-                          <span className="ml-1 text-zinc-400">Faltando: {missing.join(', ')}</span>
-                        </li>
-                      );
-                    })}
-                    {(!localStorage.getItem('selectedSize') || !localStorage.getItem('selectedFont') || !localStorage.getItem('selectedSymbol') || !localStorage.getItem('selectedEngravedName')) && (
-                      <li className="text-sm bg-zinc-900/50 p-2 rounded border border-zinc-800 italic text-zinc-400">
-                        Preferências gerais do sistema também precisam ser recuperadas.
-                      </li>
-                    )}
-                  </ul>
-                </div>
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-amber-500/20">
-                  <span className="text-xs text-zinc-400">Clique em "Recuperar Dados" para preencher com suas últimas preferências.</span>
-                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={recoverData}
-                      className="bg-amber-500 text-black hover:bg-amber-400 border-none font-bold flex items-center justify-center gap-2 whitespace-nowrap"
-                    >
-                      <RefreshCw className="h-4 w-4" />
-                      Recuperar Dados
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={clearCartAndGoHome}
-                      className="bg-zinc-800 text-zinc-300 hover:bg-zinc-700 border-none font-bold flex items-center justify-center gap-2 whitespace-nowrap"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      Limpar e Início
-                    </Button>
-                  </div>
-                </div>
-              </AlertDescription>
-            </Alert>
-          </motion.div>
-        )}
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <section>
@@ -493,7 +430,7 @@ const Checkout = () => {
                   <CardFooter>
                     <Button 
                       type="submit"
-                      disabled={loading || cart.length === 0 || showValidationAlert || hasErrors}
+                      disabled={loading || cart.length === 0 || hasErrors}
                       className="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-6 text-lg"
                     >
                       {loading ? "Processando..." : `Continuar para Pagamento (${formattedTotal})`}
