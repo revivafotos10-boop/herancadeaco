@@ -96,7 +96,7 @@ export default function Index() {
       <nav className="w-full z-[100] absolute top-[40px] bg-transparent py-12 mt-0">
         <div className="container mx-auto px-6 flex justify-between items-center gap-10">
           <div className="flex items-center cursor-pointer shrink-0" onClick={() => document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })}>
-            <img src={logoAsset.url} alt="Herança de Aço" className="h-[80px] w-auto object-contain" />
+            <img src={logoAsset.url} alt="Herança de Aço" className="h-[120px] w-auto object-contain" />
           </div>
           
           <div className="hidden md:flex items-center gap-16 text-[11px] font-bold tracking-[0.3em] text-zinc-400">
