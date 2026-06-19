@@ -93,14 +93,20 @@ const Checkout = () => {
     return acc + price * qty;
   }, 0);
 
-  const FREE_SHIPPING_THRESHOLD = 200;
-  const shipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD || cartSubtotal === 0 ? 0 : 25;
+  const [shippingOptions, setShippingOptions] = useState<any[]>([]);
+  const [selectedShippingId, setSelectedShippingId] = useState<string | number | null>(null);
+  const [shippingLoading, setShippingLoading] = useState(false);
+  const [shippingError, setShippingError] = useState<string>('');
+  const [freeShipping, setFreeShipping] = useState(false);
+
+  const selectedShipping = shippingOptions.find(o => String(o.id) === String(selectedShippingId));
+  const shipping = selectedShipping ? Number(selectedShipping.price) : 0;
   const cartTotal = cartSubtotal + shipping;
 
   const fmt = (n: number) =>
     new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
   const formattedSubtotal = fmt(cartSubtotal);
-  const formattedShipping = shipping === 0 ? 'Grátis' : fmt(shipping);
+  const formattedShipping = selectedShipping ? (shipping === 0 ? 'Grátis' : fmt(shipping)) : '—';
   const formattedTotal = fmt(cartTotal);
 
   const [loading, setLoading] = useState(false);
@@ -205,8 +211,47 @@ const Checkout = () => {
       } finally {
         setCepLoading(false);
       }
+      // Calculate shipping
+      fetchShipping(cep);
     }
   };
+
+  const fetchShipping = async (rawCep: string) => {
+    const cep = rawCep.replace(/\D/g, '');
+    if (cep.length !== 8) return;
+    setShippingLoading(true);
+    setShippingError('');
+    setShippingOptions([]);
+    setSelectedShippingId(null);
+    try {
+      const { data, error } = await supabase.functions.invoke('calculate-shipping', {
+        body: { cep, subtotal: cartSubtotal },
+      });
+      if (error) throw error;
+      const opts = (data?.options ?? []).filter((o: any) => !o.error);
+      if (opts.length === 0) {
+        setShippingError('Nenhuma opção de frete disponível para este CEP.');
+      } else {
+        setShippingOptions(opts);
+        setFreeShipping(!!data?.free_shipping);
+        // auto-select cheapest
+        const cheapest = [...opts].sort((a, b) => a.price - b.price)[0];
+        setSelectedShippingId(cheapest.id);
+      }
+    } catch (e: any) {
+      console.error('shipping error', e);
+      setShippingError('Não foi possível calcular o frete. Tente novamente.');
+    } finally {
+      setShippingLoading(false);
+    }
+  };
+
+  // Recalculate when subtotal changes (cart changes)
+  useEffect(() => {
+    const cep = customer.cep.replace(/\D/g, '');
+    if (cep.length === 8) fetchShipping(cep);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartSubtotal]);
 
   const validateAll = () => {
     const next: Record<string, string> = {};
@@ -404,6 +449,61 @@ const Checkout = () => {
                       />
                     </div>
                   </div>
+
+                  {/* Shipping options (Melhor Envio) */}
+                  <div className="pt-2">
+                    <Label className="mb-2 block">Opções de envio</Label>
+                    {shippingLoading && (
+                      <p className="text-sm text-zinc-400">Calculando frete...</p>
+                    )}
+                    {!shippingLoading && shippingError && (
+                      <p className="text-sm text-red-500">{shippingError}</p>
+                    )}
+                    {!shippingLoading && !shippingError && shippingOptions.length === 0 && (
+                      <p className="text-sm text-zinc-500">Digite o CEP para ver as opções.</p>
+                    )}
+                    {!shippingLoading && shippingOptions.length > 0 && (
+                      <div className="space-y-2">
+                        {freeShipping && (
+                          <p className="text-xs text-green-500">🎉 Frete GRÁTIS para sua região!</p>
+                        )}
+                        {shippingOptions.map((opt) => {
+                          const isSel = String(opt.id) === String(selectedShippingId);
+                          return (
+                            <label
+                              key={opt.id}
+                              className={`flex items-center justify-between gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                                isSel
+                                  ? 'border-amber-500 bg-amber-500/10'
+                                  : 'border-zinc-700 bg-zinc-950 hover:border-zinc-600'
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <input
+                                  type="radio"
+                                  name="shipping"
+                                  className="accent-amber-500"
+                                  checked={isSel}
+                                  onChange={() => setSelectedShippingId(opt.id)}
+                                />
+                                <div>
+                                  <p className="text-sm font-medium">
+                                    {opt.company} {opt.name}
+                                  </p>
+                                  <p className="text-xs text-zinc-400">
+                                    {opt.delivery_time} dia(s) úteis
+                                  </p>
+                                </div>
+                              </div>
+                              <span className={`text-sm font-bold ${opt.price === 0 ? 'text-green-500' : 'text-amber-500'}`}>
+                                {opt.price === 0 ? 'Grátis' : fmt(opt.price)}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </section>
@@ -430,7 +530,7 @@ const Checkout = () => {
                   <CardFooter>
                     <Button 
                       type="submit"
-                      disabled={loading || cart.length === 0 || hasErrors}
+                      disabled={loading || cart.length === 0 || hasErrors || !selectedShipping}
                       className="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-6 text-lg"
                     >
                       {loading ? "Processando..." : `Continuar para Pagamento (${formattedTotal})`}
@@ -477,9 +577,9 @@ const Checkout = () => {
                     <span className="text-zinc-400">Frete</span>
                     <span className={shipping === 0 ? 'text-green-500' : ''}>{formattedShipping}</span>
                   </div>
-                  {shipping > 0 && (
+                  {selectedShipping && (
                     <p className="text-xs text-zinc-500">
-                      Faltam {fmt(FREE_SHIPPING_THRESHOLD - cartSubtotal)} para frete grátis.
+                      {selectedShipping.company} {selectedShipping.name} • {selectedShipping.delivery_time} dia(s) úteis
                     </p>
                   )}
                   <Separator className="bg-zinc-800" />
