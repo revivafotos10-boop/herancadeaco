@@ -101,8 +101,22 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Whitelist: only show these carrier+service combinations
+    const ALLOWED = [
+      { company: 'correios', name: 'sedex' },
+      { company: 'correios', name: 'pac' },
+      { company: 'jadlog', name: '.package' },
+      { company: 'jadlog', name: '.com' },
+    ];
+    const isAllowed = (companyName: string, serviceName: string) => {
+      const c = companyName.toLowerCase();
+      const n = serviceName.toLowerCase();
+      return ALLOWED.some((a) => c.includes(a.company) && n.includes(a.name));
+    };
+
     const options: ShippingOption[] = (Array.isArray(meData) ? meData : [])
       .filter((s: any) => !s?.error)
+      .filter((s: any) => isAllowed(s?.company?.name ?? '', s?.name ?? ''))
       .map((s: any) => ({
         id: s.id,
         name: s.name,
